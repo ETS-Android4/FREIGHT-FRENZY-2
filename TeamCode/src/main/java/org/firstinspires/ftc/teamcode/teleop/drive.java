@@ -161,32 +161,4 @@ public class drive extends LinearOpMode {
         conserva.lr.setPower(-root2 * speed * cos + rotateSpeed);
         conserva.rr.setPower(-root2 * speed * sin - rotateSpeed);
     }
-}
-
-
-/* gamepad 2 */
-
-//            if (gp2.left_bumper && !cont_glisiera){
-//                carousel.setVelocity(HIGH_VELO);
-//                out1.close();
-//                out2.close();
-//                sleep(250);
-//                outg.close();
-//                cont_glisiera = true;
-//            }
-//            if (!gp2.left_bumper && cont_glisiera){
-//                outg.open();
-//                sleep(400);
-//                out1.open();
-//                out2.open();
-//                cont_glisiera = false;
-//                carousel.setVelocity(0);
-//            }
-
-
-//            if(gp2.x){
-//                wob_brat.down();
-//            }
-//            else{
-//                wob_brat.mid();
-//            }
+}   
