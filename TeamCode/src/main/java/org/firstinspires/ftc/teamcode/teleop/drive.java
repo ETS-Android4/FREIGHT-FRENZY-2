@@ -161,4 +161,5 @@ public class drive extends LinearOpMode {
         conserva.lr.setPower(-root2 * speed * cos + rotateSpeed);
         conserva.rr.setPower(-root2 * speed * sin - rotateSpeed);
     }
-}   
+}
+// test
