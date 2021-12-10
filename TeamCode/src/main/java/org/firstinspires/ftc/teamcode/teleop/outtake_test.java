@@ -32,15 +32,19 @@ package org.firstinspires.ftc.teamcode.teleop;
 import com.qualcomm.robotcore.eventloop.opmode.LinearOpMode;
 import com.qualcomm.robotcore.eventloop.opmode.TeleOp;
 import com.qualcomm.robotcore.hardware.DcMotor;
+import com.qualcomm.robotcore.hardware.DcMotorEx;
 import com.qualcomm.robotcore.hardware.Gamepad;
 
 
 @TeleOp
 //@Disabled
-public class intake_test extends LinearOpMode {
+public class outtake_test extends LinearOpMode {
 
     public double intake_speed = 0.8;
-    public DcMotor intake1 = null;
+    public int outtake_velo = 100;
+    public int outtake_dist = 200;
+    public DcMotorEx intake1 = null;
+    public int a = 0;
 
     @Override
     public void runOpMode() {
@@ -48,9 +52,9 @@ public class intake_test extends LinearOpMode {
         /* Carousel PID */
 
 
-        intake1 = hardwareMap.get(DcMotor.class, "intake");
+        intake1 = hardwareMap.get(DcMotorEx.class, "intake");
         intake1.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
-        intake1.setMode(DcMotor.RunMode.RUN_WITHOUT_ENCODER);
+        intake1.setMode(DcMotor.RunMode.RUN_USING_ENCODER);
         intake1.setZeroPowerBehavior(DcMotor.ZeroPowerBehavior.BRAKE);
         intake1.setDirection(DcMotor.Direction.FORWARD);
         intake1.setPower(0.0);
@@ -72,15 +76,22 @@ public class intake_test extends LinearOpMode {
 
             /* Intake */
 
-            if(gp2.right_trigger > 0.1) {
-                intake1.setPower(Math.min(gp2.right_trigger, intake_speed));
-            }else if(gp2.left_trigger > 0.1){
-                intake1.setPower(Math.max(-gp2.left_trigger, -intake_speed));
+            if(gp2.right_bumper){
+                intake1.setTargetPosition(outtake_dist);
+                intake1.setVelocity(outtake_velo);
+                while(intake1.isBusy()){
+                    a += 1;
+                }
+                intake1.setVelocity(0);
             }
-            else{
-                intake1.setPower(0);
+            else if(gp2.left_bumper){
+                intake1.setTargetPosition(0);
+                intake1.setVelocity(outtake_velo);
+                while(intake1.isBusy()){
+                    a += 1;
+                }
+                intake1.setVelocity(0);
             }
         }
-
     }
 }
