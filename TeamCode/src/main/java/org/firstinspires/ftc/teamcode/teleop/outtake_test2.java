@@ -43,7 +43,6 @@ public class outtake_test2 extends LinearOpMode {
     public int outtake_velo = 50;
     public int outtake_dist = 50;
     public DcMotorEx intake1 = null;
-    public int a = 0;
 
     @Override
     public void runOpMode() {

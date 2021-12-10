@@ -114,11 +114,7 @@ public class drive extends LinearOpMode {
 
             /* Intake */
 
-            if(gp2.right_bumper) {
-                reverse_intake = true;
-            }else{
-                reverse_intake = false;
-            }
+            reverse_intake = gp2.right_bumper;
 
             if(reverse_intake){
                 conserva.intake1.setPower(-intake_speed);
