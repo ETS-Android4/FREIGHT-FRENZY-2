@@ -65,6 +65,7 @@ public class outtake_test2 extends LinearOpMode {
         Gamepad gp2 = gamepad2;
 
 
+
         // Wait for the game to start (driver presses PLAY)
         waitForStart();
 
