@@ -41,8 +41,8 @@ import com.qualcomm.robotcore.hardware.Gamepad;
 public class outtake_test extends LinearOpMode {
 
     public double intake_speed = 0.8;
-    public int outtake_velo = 100;
-    public int outtake_dist = 200;
+    public int outtake_velo = 50;
+    public int outtake_dist = 50;
     public DcMotorEx intake1 = null;
     public int a = 0;
 
