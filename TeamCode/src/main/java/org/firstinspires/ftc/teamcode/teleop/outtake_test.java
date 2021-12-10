@@ -40,7 +40,6 @@ import com.qualcomm.robotcore.hardware.Gamepad;
 //@Disabled
 public class outtake_test extends LinearOpMode {
 
-    public double intake_speed = 0.8;
     public int outtake_velo = 50;
     public int outtake_dist = 50;
     public DcMotorEx intake1 = null;
@@ -84,7 +83,7 @@ public class outtake_test extends LinearOpMode {
                 }
                 intake1.setVelocity(0);
             }
-            else if(gp2.left_bumper){
+            if(gp2.left_bumper){
                 intake1.setTargetPosition(0);
                 intake1.setVelocity(outtake_velo);
                 while(intake1.isBusy()){
@@ -92,6 +91,8 @@ public class outtake_test extends LinearOpMode {
                 }
                 intake1.setVelocity(0);
             }
+            telemetry.addData("Encoder value", intake1.getCurrentPosition());
+            telemetry.update();
         }
     }
 }

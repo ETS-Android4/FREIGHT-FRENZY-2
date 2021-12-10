@@ -53,22 +53,22 @@ public class drive extends LinearOpMode {
     private double intake_speed = 0.8;
 
 
-    public static double CAROUSEL_P = 38;
-    public static double CAROUSEL_I = 14;
-    public static double CAROUSEL_D = 20;
-    public double CAROUSEL_VELO = 1400;
+//    public static double CAROUSEL_P = 38;
+//    public static double CAROUSEL_I = 14;
+//    public static double CAROUSEL_D = 20;
+//    public double CAROUSEL_VELO = 1400;
 
     @Override
     public void runOpMode() {
 
         /* Carousel PID */
 
-        DcMotorEx carousel = null; // Intake motor
-        carousel = (DcMotorEx)hardwareMap.get(DcMotor.class, "carousel");
-        PIDCoefficients pidOrig = carousel.getPIDCoefficients(DcMotor.RunMode.RUN_USING_ENCODER);
-        PIDCoefficients pidNew = new PIDCoefficients(CAROUSEL_P, CAROUSEL_I, CAROUSEL_D);
-        carousel.setPIDCoefficients(DcMotor.RunMode.RUN_USING_ENCODER, pidNew);
-        PIDCoefficients pidModified = carousel.getPIDCoefficients(DcMotor.RunMode.RUN_USING_ENCODER);
+//        DcMotorEx carousel = null; // Intake motor
+//        carousel = (DcMotorEx)hardwareMap.get(DcMotor.class, "carousel");
+//        PIDCoefficients pidOrig = carousel.getPIDCoefficients(DcMotor.RunMode.RUN_USING_ENCODER);
+//        PIDCoefficients pidNew = new PIDCoefficients(CAROUSEL_P, CAROUSEL_I, CAROUSEL_D);
+//        carousel.setPIDCoefficients(DcMotor.RunMode.RUN_USING_ENCODER, pidNew);
+//        PIDCoefficients pidModified = carousel.getPIDCoefficients(DcMotor.RunMode.RUN_USING_ENCODER);
 
 
         /* Gamepads */
@@ -131,12 +131,12 @@ public class drive extends LinearOpMode {
 
             /* Carousel */
 
-            if(gp2.a){
-                carousel.setVelocity(CAROUSEL_VELO);
-            }
-            else{
-                carousel.setVelocity(0);
-            }
+//            if(gp2.a){
+//                carousel.setVelocity(CAROUSEL_VELO);
+//            }
+//            else{
+//                carousel.setVelocity(0);
+//            }
 
 
 
@@ -162,4 +162,3 @@ public class drive extends LinearOpMode {
         conserva.rr.setPower(-root2 * speed * sin - rotateSpeed);
     }
 }
-//teeeesttttt
