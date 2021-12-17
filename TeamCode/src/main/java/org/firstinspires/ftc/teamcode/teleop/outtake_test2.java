@@ -40,8 +40,8 @@ import com.qualcomm.robotcore.hardware.Gamepad;
 //@Disabled
 public class outtake_test2 extends LinearOpMode {
 
-    public int outtake_velo = 50;
-    public int outtake_dist = 50;
+    public int outtake_velo = 3500;
+    public int outtake_dist = 1370;
     public DcMotorEx intake1 = null;
 
     @Override
@@ -52,9 +52,10 @@ public class outtake_test2 extends LinearOpMode {
 
         intake1 = hardwareMap.get(DcMotorEx.class, "intake");
         intake1.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
-        intake1.setMode(DcMotor.RunMode.RUN_USING_ENCODER);
         intake1.setZeroPowerBehavior(DcMotor.ZeroPowerBehavior.FLOAT);
         intake1.setDirection(DcMotor.Direction.FORWARD);
+        intake1.setTargetPosition(5);
+        intake1.setMode(DcMotor.RunMode.RUN_TO_POSITION);
         intake1.setPower(0.0);
 
 
@@ -80,10 +81,11 @@ public class outtake_test2 extends LinearOpMode {
                 intake1.setVelocity(outtake_velo);
             }
             if(gp2.left_bumper){
-                intake1.setTargetPosition(0);
+                intake1.setTargetPosition(15);
             }
 
             telemetry.addData("Encoder value", intake1.getCurrentPosition());
+            telemetry.addData("Velocity value", intake1.getVelocity());
             telemetry.update();
         }
     }
