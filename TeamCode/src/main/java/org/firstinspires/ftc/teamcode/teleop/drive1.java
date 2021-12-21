@@ -29,12 +29,8 @@
 
 package org.firstinspires.ftc.teamcode.teleop;
 
-import com.qualcomm.robotcore.eventloop.opmode.Disabled;
 import com.qualcomm.robotcore.eventloop.opmode.LinearOpMode;
-import com.qualcomm.robotcore.hardware.DcMotorEx;
 import com.qualcomm.robotcore.eventloop.opmode.TeleOp;
-import com.qualcomm.robotcore.hardware.DcMotor;
-import com.qualcomm.robotcore.hardware.PIDCoefficients;
 import com.qualcomm.robotcore.hardware.Gamepad;
 
 import org.firstinspires.ftc.teamcode.hardware.init_robot;
@@ -43,7 +39,7 @@ import org.firstinspires.ftc.teamcode.hardware.servo_cutie;
 
 @TeleOp
 //@Disabled
-public class drive extends LinearOpMode {
+public class drive1 extends LinearOpMode {
 
     init_robot conserva = new init_robot();
 
@@ -135,28 +131,28 @@ public class drive extends LinearOpMode {
 
              */
 
-            if(gp2.right_bumper){
+            if(gp1.right_bumper){
                 conserva.outtake.setTargetPosition(outtake_dist);
                 conserva.outtake.setVelocity(outtake_velo);
             }
-            if(gp2.left_bumper){
+            if(gp1.left_bumper){
                 ok = false;
                 cutie.drept();
                 sleep(300);
                 conserva.outtake.setTargetPosition(15);
             }
 
-            if(gp2.a && conserva.outtake.getCurrentPosition() > 1000 && !ok)
+            if(gp1.a && conserva.outtake.getCurrentPosition() > 1000 && !ok)
             {
                 ok = true;
                 cutie.unghi();
             }
 
 
-            if(gp2.right_trigger > 0.1) {
-                conserva.intake1.setPower(Math.min(gp2.right_trigger, intake_speed));
-            }else if(gp2.left_trigger > 0.1){
-                conserva.intake1.setPower(Math.max(-gp2.left_trigger, -intake_speed));
+            if(gp1.right_trigger > 0.1) {
+                conserva.intake1.setPower(Math.min(gp1.right_trigger, intake_speed));
+            }else if(gp1.left_trigger > 0.1){
+                conserva.intake1.setPower(Math.max(-gp1.left_trigger, -intake_speed));
             }
             else{
                 conserva.intake1.setPower(0);
@@ -165,7 +161,6 @@ public class drive extends LinearOpMode {
 
             /* Telemetry */
             telemetry.addData("slow_mode", slow_mode);
-            telemetry.addData(" ", gp2.right_trigger);
             telemetry.update();
         }
 

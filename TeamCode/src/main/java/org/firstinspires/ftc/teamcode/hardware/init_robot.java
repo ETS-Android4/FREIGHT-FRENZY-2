@@ -56,10 +56,10 @@ public class init_robot {
 
 
         /* Movement motors */
-        lf = hwMap.get(DcMotor.class, "lf");
-        lr = hwMap.get(DcMotor.class, "lr");
-        rf = hwMap.get(DcMotor.class, "rf");
-        rr = hwMap.get(DcMotor.class, "rr");
+        lf = hwMap.get(DcMotor.class, "leftFront");
+        lr = hwMap.get(DcMotor.class, "leftRear");
+        rf = hwMap.get(DcMotor.class, "rightFront");
+        rr = hwMap.get(DcMotor.class, "rightRear");
 
         lf.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
         lf.setMode(DcMotor.RunMode.RUN_WITHOUT_ENCODER);

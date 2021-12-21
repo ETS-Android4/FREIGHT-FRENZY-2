@@ -41,16 +41,12 @@ import org.firstinspires.ftc.teamcode.hardware.servo_cutie;
 //@Disabled
 public class outtake_test extends LinearOpMode {
 
-    servo_cutie cutie = new servo_cutie(hardwareMap);
+
 
     @Override
     public void runOpMode() {
 
-        /* Carousel PID */
-
-
-
-
+        servo_cutie cutie = new servo_cutie(hardwareMap);
 
         /* Gamepads */
 
@@ -61,8 +57,6 @@ public class outtake_test extends LinearOpMode {
         // Wait for the game to start (driver presses PLAY)
         waitForStart();
 
-
-
         // run until the end of the match (driver presses STOP)
         while(opModeIsActive()) {
             /* gamepad 2 */
@@ -70,11 +64,11 @@ public class outtake_test extends LinearOpMode {
 
             if(gp2.a)
             {
-                cutie.sus();
+                cutie.unghi();
             }
             if(gp2.b)
             {
-                cutie.jos();
+                cutie.drept();
             }
 
 

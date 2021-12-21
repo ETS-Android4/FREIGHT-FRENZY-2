@@ -37,7 +37,7 @@ import com.qualcomm.robotcore.hardware.Gamepad;
 
 
 @TeleOp
-@Disabled
+//@Disabled
 public class intake_test extends LinearOpMode {
 
     public double intake_speed = 0.8;
@@ -49,7 +49,7 @@ public class intake_test extends LinearOpMode {
         /* Carousel PID */
 
 
-        intake1 = hardwareMap.get(DcMotor.class, "intake");
+        intake1 = hardwareMap.get(DcMotor.class, "intake1");
         intake1.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
         intake1.setMode(DcMotor.RunMode.RUN_WITHOUT_ENCODER);
         intake1.setZeroPowerBehavior(DcMotor.ZeroPowerBehavior.BRAKE);
@@ -75,12 +75,16 @@ public class intake_test extends LinearOpMode {
 
             if(gp2.right_trigger > 0.1) {
                 intake1.setPower(Math.min(gp2.right_trigger, intake_speed));
+                telemetry.addData(" ", gp2.right_trigger);
+                telemetry.update();
             }else if(gp2.left_trigger > 0.1){
                 intake1.setPower(Math.max(-gp2.left_trigger, -intake_speed));
             }
             else{
                 intake1.setPower(0);
             }
+
+
         }
 
     }
