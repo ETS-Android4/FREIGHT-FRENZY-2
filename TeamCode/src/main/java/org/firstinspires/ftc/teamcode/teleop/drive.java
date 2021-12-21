@@ -38,7 +38,7 @@ import com.qualcomm.robotcore.hardware.PIDCoefficients;
 import com.qualcomm.robotcore.hardware.Gamepad;
 
 import org.firstinspires.ftc.teamcode.hardware.init_robot;
-import org.firstinspires.ftc.teamcode.hardware.servo_test;
+import org.firstinspires.ftc.teamcode.hardware.servo_cutie;
 
 
 @TeleOp
@@ -46,11 +46,17 @@ import org.firstinspires.ftc.teamcode.hardware.servo_test;
 public class drive extends LinearOpMode {
 
     init_robot conserva = new init_robot();
+    servo_cutie cutie = new servo_cutie(hardwareMap);
 
     private double root2 = Math.sqrt(2.0);
     private boolean slow_mode = false;
     private boolean reverse_intake = false;
     private double intake_speed = 0.8;
+
+    public boolean ok = false;
+
+    public int outtake_velo = 3500;
+    public int outtake_dist = 1375;
 
 
 //    public static double CAROUSEL_P = 38;
@@ -60,6 +66,9 @@ public class drive extends LinearOpMode {
 
     @Override
     public void runOpMode() {
+
+
+
 
         /* Carousel PID */
 
@@ -109,11 +118,11 @@ public class drive extends LinearOpMode {
             }
 
 
-
             /* gamepad 2 */
 
             /* Intake */
 
+            /*
             reverse_intake = gp2.right_bumper;
 
             if(reverse_intake){
@@ -124,16 +133,34 @@ public class drive extends LinearOpMode {
                 conserva.intake1.setPower(Math.min(gp2.right_trigger, intake_speed));
             }
 
+             */
 
-            /* Carousel */
+            if(gp2.right_bumper){
+                conserva.outtake.setTargetPosition(outtake_dist);
+                conserva.outtake.setVelocity(outtake_velo);
+            }
+            if(gp2.left_bumper){
+                ok = true;
+                cutie.jos();
+                sleep(300);
+                conserva.outtake.setTargetPosition(15);
+            }
 
-//            if(gp2.a){
-//                carousel.setVelocity(CAROUSEL_VELO);
-//            }
-//            else{
-//                carousel.setVelocity(0);
-//            }
+            if(gp2.a && conserva.outtake.getCurrentPosition() > 1000 && !ok)
+            {
+                ok = true;
+                cutie.sus();
+            }
 
+
+            if(gp2.right_trigger > 0.1) {
+                conserva.intake1.setPower(Math.min(gp2.right_trigger, intake_speed));
+            }else if(gp2.left_trigger > 0.1){
+                conserva.intake1.setPower(Math.max(-gp2.left_trigger, -intake_speed));
+            }
+            else{
+                conserva.intake1.setPower(0);
+            }
 
 
             /* Telemetry */

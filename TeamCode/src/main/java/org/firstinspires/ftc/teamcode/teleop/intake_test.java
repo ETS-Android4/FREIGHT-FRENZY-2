@@ -29,6 +29,7 @@
 
 package org.firstinspires.ftc.teamcode.teleop;
 
+import com.qualcomm.robotcore.eventloop.opmode.Disabled;
 import com.qualcomm.robotcore.eventloop.opmode.LinearOpMode;
 import com.qualcomm.robotcore.eventloop.opmode.TeleOp;
 import com.qualcomm.robotcore.hardware.DcMotor;
@@ -36,7 +37,7 @@ import com.qualcomm.robotcore.hardware.Gamepad;
 
 
 @TeleOp
-//@Disabled
+@Disabled
 public class intake_test extends LinearOpMode {
 
     public double intake_speed = 0.8;

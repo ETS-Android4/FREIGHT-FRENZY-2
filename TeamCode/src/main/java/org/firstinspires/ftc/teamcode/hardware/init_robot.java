@@ -45,6 +45,7 @@ public class init_robot {
     public DcMotor rr = null; // Right rear motor
     public DcMotor intake1 = null; // Intake motor
     public DcMotor intake2 = null; // Intake motor
+    public DcMotorEx outtake = null; // Intake motor
 
     HardwareMap hwMap = null;
 
@@ -105,6 +106,18 @@ public class init_robot {
         intake2.setZeroPowerBehavior(DcMotor.ZeroPowerBehavior.BRAKE);
         intake2.setDirection(DcMotor.Direction.FORWARD);
         intake2.setPower(0.0);
+
+
+        /* outtake */
+
+        outtake = hwMap.get(DcMotorEx.class, "intake");
+
+        outtake.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
+        outtake.setZeroPowerBehavior(DcMotor.ZeroPowerBehavior.FLOAT);
+        outtake.setDirection(DcMotor.Direction.FORWARD);
+        outtake.setTargetPosition(5);
+        outtake.setMode(DcMotor.RunMode.RUN_TO_POSITION);
+        outtake.setPower(0.0);
 
     }
 

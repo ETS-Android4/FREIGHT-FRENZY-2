@@ -29,6 +29,7 @@
 
 package org.firstinspires.ftc.teamcode.teleop;
 
+import com.qualcomm.robotcore.eventloop.opmode.Disabled;
 import com.qualcomm.robotcore.eventloop.opmode.LinearOpMode;
 import com.qualcomm.robotcore.eventloop.opmode.TeleOp;
 import com.qualcomm.robotcore.hardware.DcMotor;
@@ -37,7 +38,7 @@ import com.qualcomm.robotcore.hardware.Gamepad;
 
 
 @TeleOp
-//@Disabled
+@Disabled
 public class outtake_test2 extends LinearOpMode {
 
     public int outtake_velo = 3500;

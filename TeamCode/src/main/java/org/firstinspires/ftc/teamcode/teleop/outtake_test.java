@@ -35,15 +35,13 @@ import com.qualcomm.robotcore.hardware.DcMotor;
 import com.qualcomm.robotcore.hardware.DcMotorEx;
 import com.qualcomm.robotcore.hardware.Gamepad;
 
+import org.firstinspires.ftc.teamcode.hardware.servo_cutie;
 
 @TeleOp
 //@Disabled
 public class outtake_test extends LinearOpMode {
 
-    public int outtake_velo = 700;
-    public int outtake_dist = 100;
-    public DcMotorEx intake1 = null;
-    public int a = 0;
+    servo_cutie cutie = new servo_cutie(hardwareMap);
 
     @Override
     public void runOpMode() {
@@ -51,13 +49,7 @@ public class outtake_test extends LinearOpMode {
         /* Carousel PID */
 
 
-        intake1 = hardwareMap.get(DcMotorEx.class, "intake");
-        intake1.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
-        intake1.setZeroPowerBehavior(DcMotor.ZeroPowerBehavior.BRAKE);
-        intake1.setDirection(DcMotor.Direction.FORWARD);
-        intake1.setTargetPosition(5);
-        intake1.setMode(DcMotor.RunMode.RUN_TO_POSITION);
-        intake1.setPower(0.0);
+
 
 
         /* Gamepads */
@@ -69,31 +61,26 @@ public class outtake_test extends LinearOpMode {
         // Wait for the game to start (driver presses PLAY)
         waitForStart();
 
-        intake1.setTargetPosition(5);
+
 
         // run until the end of the match (driver presses STOP)
         while(opModeIsActive()) {
             /* gamepad 2 */
 
+
+            if(gp2.a)
+            {
+                cutie.sus();
+            }
+            if(gp2.b)
+            {
+                cutie.jos();
+            }
+
+
             /* Intake */
 
-            if(intake1.getCurrentPosition() > outtake_dist && outtake_dist == intake1.getTargetPosition())
-                intake1.setVelocity(0);
-            if(intake1.getCurrentPosition() < 5 && 5 == intake1.getTargetPosition())
-                intake1.setVelocity(0);
 
-            intake1.setVelocity(outtake_velo);
-            if(gp2.right_bumper){
-                intake1.setTargetPosition(outtake_dist);
-            }
-            else{
-                intake1.setTargetPosition(5);
-            }
-
-
-            telemetry.addData("Encoder value", intake1.getCurrentPosition());
-            telemetry.addData("Velocity value", intake1.getVelocity());
-            telemetry.update();
         }
     }
 }
