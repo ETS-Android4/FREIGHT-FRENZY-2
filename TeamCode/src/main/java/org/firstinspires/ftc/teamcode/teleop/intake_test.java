@@ -33,15 +33,24 @@ import com.qualcomm.robotcore.eventloop.opmode.Disabled;
 import com.qualcomm.robotcore.eventloop.opmode.LinearOpMode;
 import com.qualcomm.robotcore.eventloop.opmode.TeleOp;
 import com.qualcomm.robotcore.hardware.DcMotor;
+import com.qualcomm.robotcore.hardware.DcMotorEx;
 import com.qualcomm.robotcore.hardware.Gamepad;
+import com.acmerobotics.dashboard.FtcDashboard;
+import com.acmerobotics.dashboard.config.Config;
 
+import org.firstinspires.ftc.robotcore.external.Telemetry;
 
+@Config
 @TeleOp
 //@Disabled
 public class intake_test extends LinearOpMode {
 
-    public double intake_speed = 0.8;
-    public DcMotor intake1 = null;
+    FtcDashboard dashboard = FtcDashboard.getInstance();
+    Telemetry dashboardTelemetry = dashboard.getTelemetry();
+
+    public DcMotorEx intake = null;
+    public double motor_ticks = 103.8;
+    public double ticks = 0;
 
     @Override
     public void runOpMode() {
@@ -49,23 +58,21 @@ public class intake_test extends LinearOpMode {
         /* Carousel PID */
 
 
-        intake1 = hardwareMap.get(DcMotor.class, "intake1");
-        intake1.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
-        intake1.setMode(DcMotor.RunMode.RUN_WITHOUT_ENCODER);
-        intake1.setZeroPowerBehavior(DcMotor.ZeroPowerBehavior.BRAKE);
-        intake1.setDirection(DcMotor.Direction.FORWARD);
-        intake1.setPower(0.0);
+        intake = hardwareMap.get(DcMotorEx.class, "intake1");
+        intake.setMode(DcMotor.RunMode.RUN_USING_ENCODER);
+        intake.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
+        intake.setZeroPowerBehavior(DcMotor.ZeroPowerBehavior.BRAKE);
+        intake.setDirection(DcMotor.Direction.FORWARD);
+        intake.setPower(0.0);
 
 
         /* Gamepads */
 
-        Gamepad gp1 = gamepad1;
         Gamepad gp2 = gamepad2;
 
 
         // Wait for the game to start (driver presses PLAY)
         waitForStart();
-
 
         // run until the end of the match (driver presses STOP)
         while(opModeIsActive()) {
@@ -74,16 +81,19 @@ public class intake_test extends LinearOpMode {
             /* Intake */
 
             if(gp2.right_trigger > 0.1) {
-                intake1.setPower(Math.min(gp2.right_trigger, intake_speed));
-                telemetry.addData(" ", gp2.right_trigger);
-                telemetry.update();
-            }else if(gp2.left_trigger > 0.1){
-                intake1.setPower(Math.max(-gp2.left_trigger, -intake_speed));
-            }
+                intake.setVelocity(gp2.right_trigger*1000);
+           }
             else{
-                intake1.setPower(0);
+                ticks = intake.getCurrentPosition();
+                ticks = ticks % motor_ticks;
+                if(ticks<1.5 || ticks > (motor_ticks-3.5))
+                    intake.setPower(0.0);
+                else
+                    intake.setPower(0.035);
             }
 
+            dashboardTelemetry.addData("position", intake.getCurrentPosition());
+            dashboardTelemetry.update();
 
         }
 

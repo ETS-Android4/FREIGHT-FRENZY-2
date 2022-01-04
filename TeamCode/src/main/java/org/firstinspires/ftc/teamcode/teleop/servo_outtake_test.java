@@ -39,8 +39,7 @@ import org.firstinspires.ftc.teamcode.hardware.servo_cutie;
 
 @TeleOp
 //@Disabled
-public class outtake_test extends LinearOpMode {
-
+public class servo_outtake_test extends LinearOpMode {
 
 
     @Override
