@@ -29,6 +29,7 @@
 
 package org.firstinspires.ftc.teamcode.teleop;
 
+import com.acmerobotics.dashboard.FtcDashboard;
 import com.qualcomm.robotcore.eventloop.opmode.Disabled;
 import com.qualcomm.robotcore.eventloop.opmode.LinearOpMode;
 import com.qualcomm.robotcore.eventloop.opmode.TeleOp;
@@ -36,13 +37,27 @@ import com.qualcomm.robotcore.hardware.DcMotor;
 import com.qualcomm.robotcore.hardware.DcMotorEx;
 import com.qualcomm.robotcore.hardware.Gamepad;
 
+import com.acmerobotics.dashboard.FtcDashboard;
+import com.acmerobotics.dashboard.config.Config;
 
+import org.firstinspires.ftc.robotcore.external.Telemetry;
+
+@Config
 @TeleOp
-@Disabled
+//@Disabled
 public class outtake_test2 extends LinearOpMode {
 
-    public int outtake_velo = 3500;
-    public int outtake_dist = 1375;
+    FtcDashboard dashboard = FtcDashboard.getInstance();
+    Telemetry dashboardTelemetry = dashboard.getTelemetry();
+
+    public static double outtake_velo = 1000;
+    public static double outtake_dist = 1400;
+    public static double down_pos = 500;
+    public static double p = 0;
+    public static double i = 0;
+    public static double d = 0;
+    public static double f = 12.6;
+    public static double pp = 0;
     public DcMotorEx intake1 = null;
 
     @Override
@@ -55,6 +70,8 @@ public class outtake_test2 extends LinearOpMode {
         intake1.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
         intake1.setZeroPowerBehavior(DcMotor.ZeroPowerBehavior.FLOAT);
         intake1.setDirection(DcMotor.Direction.FORWARD);
+        intake1.setVelocityPIDFCoefficients(p, i, d, f);
+        intake1.setPositionPIDFCoefficients(pp);
         intake1.setTargetPosition(5);
         intake1.setMode(DcMotor.RunMode.RUN_TO_POSITION);
         intake1.setPower(0.0);
@@ -78,16 +95,16 @@ public class outtake_test2 extends LinearOpMode {
             /* Intake */
 
             if(gp2.right_bumper){
-                intake1.setTargetPosition(outtake_dist);
+                intake1.setTargetPosition((int)outtake_dist);
                 intake1.setVelocity(outtake_velo);
             }
             if(gp2.left_bumper){
-                intake1.setTargetPosition(15);
+                intake1.setTargetPosition((int)down_pos);
             }
 
-            telemetry.addData("Encoder value", intake1.getCurrentPosition());
-            telemetry.addData("Velocity value", intake1.getVelocity());
-            telemetry.update();
+            dashboardTelemetry.addData("Encoder value", intake1.getCurrentPosition());
+            dashboardTelemetry.addData("tolerance value", intake1.getTargetPositionTolerance());
+            dashboardTelemetry.update();
         }
     }
 }
