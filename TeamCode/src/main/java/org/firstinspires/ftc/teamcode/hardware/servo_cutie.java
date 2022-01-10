@@ -6,8 +6,8 @@ import com.qualcomm.robotcore.hardware.Servo;
 public class servo_cutie{
     public Servo servo = null;
 
-    public static double SERVO_RELEASE = 0.93;
-    public static double SERVO_CLOSE = 0.1;
+    public static double SERVO_RELEASE = 0.95;
+    public static double SERVO_CLOSE = 0.05; // 0.1
 
     public servo_cutie(HardwareMap hwMap) {
         servo = hwMap.get(Servo.class, "servoCutie");

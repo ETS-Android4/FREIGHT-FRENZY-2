@@ -54,7 +54,6 @@ public class drive1 extends LinearOpMode {
     private double root2 = Math.sqrt(2.0);
     private boolean slow_mode = false;
     private boolean reverse_intake = false;
-    private double intake_speed = 0.35;
 
     public boolean ok = false;
 
@@ -68,8 +67,11 @@ public class drive1 extends LinearOpMode {
     public static double pp = 10;
     public DcMotorEx outtake = null;
 
+
     public double motor_ticks = 103.8;
     public double ticks = 0;
+    public double ticks2 = 0;
+    public double intake_speed = 0.5;
 
 
     @Override
@@ -77,7 +79,16 @@ public class drive1 extends LinearOpMode {
 
         servo_cutie cutie = new servo_cutie(hardwareMap);
 
-        outtakeMotor();
+        outtake = hardwareMap.get(DcMotorEx.class, "intake");
+        outtake.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
+        outtake.setZeroPowerBehavior(DcMotor.ZeroPowerBehavior.FLOAT);
+        outtake.setDirection(DcMotor.Direction.FORWARD);
+        outtake.setVelocityPIDFCoefficients(p, i, d, f);
+        outtake.setPositionPIDFCoefficients(pp);
+        outtake.setTargetPosition(5);
+        outtake.setMode(DcMotor.RunMode.RUN_TO_POSITION);
+        outtake.setPower(0.0);
+        //outtake.setTargetPositionTolerance(2);
 
         /* Gamepads */
 
@@ -118,35 +129,34 @@ public class drive1 extends LinearOpMode {
 
 
             if(gp1.right_bumper){
-                conserva.outtake.setTargetPosition((int)outtake_dist);
-                conserva.outtake.setVelocity(outtake_velo);
+                outtake.setTargetPosition((int)outtake_dist);
+                outtake.setVelocity(outtake_velo);
             }
             if(gp1.left_bumper){
                 ok = false;
                 cutie.drept();
                 sleep(350);
-                conserva.outtake.setTargetPosition((int)down_pos);
+                outtake.setTargetPosition((int)down_pos);
             }
 
-            if(gp1.a && conserva.outtake.getCurrentPosition() > 1000 && !ok)
+            if(gp1.a && outtake.getCurrentPosition() > 1000 && !ok)
             {
                 ok = true;
                 cutie.unghi();
             }
 
 
+
             if(gp1.right_trigger > 0.1) {
-                conserva.intake1.setPower(Math.min(gp1.right_trigger, intake_speed));
-            }else if(gp1.left_trigger > 0.1){
-                conserva.intake1.setPower(Math.max(-gp1.left_trigger, -0.8));
+                conserva.intake1.setMode(DcMotor.RunMode.RUN_USING_ENCODER);
+                conserva.intake1.setVelocity(1500*Math.min(gp1.right_trigger, intake_speed));
             }
-            else{
+            else if (conserva.intake1.getCurrentPosition() % motor_ticks > 3 && conserva.intake1.getCurrentPosition() % motor_ticks < motor_ticks-3){
                 ticks = conserva.intake1.getCurrentPosition();
-                ticks = ticks % motor_ticks;
-                if(ticks<1.5 || ticks > (motor_ticks-3.5))
-                    conserva.intake1.setPower(0.0);
-                else
-                    conserva.intake1.setPower(0.032);
+                ticks2 = ticks % motor_ticks;
+                conserva.intake1.setTargetPosition((int)(ticks + (motor_ticks-ticks2)));
+                conserva.intake1.setMode(DcMotor.RunMode.RUN_TO_POSITION);
+                conserva.intake1.setVelocity(200);
             }
 
 
@@ -172,17 +182,4 @@ public class drive1 extends LinearOpMode {
         conserva.rr.setPower(-root2 * speed * sin - rotateSpeed);
     }
 
-    public void outtakeMotor()
-    {
-        outtake = hardwareMap.get(DcMotorEx.class, "intake");
-        outtake.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
-        outtake.setZeroPowerBehavior(DcMotor.ZeroPowerBehavior.FLOAT);
-        outtake.setDirection(DcMotor.Direction.FORWARD);
-        outtake.setVelocityPIDFCoefficients(p, i, d, f);
-        outtake.setPositionPIDFCoefficients(pp);
-        outtake.setTargetPosition(5);
-        outtake.setMode(DcMotor.RunMode.RUN_TO_POSITION);
-        outtake.setPower(0.0);
-        outtake.setTargetPositionTolerance(2);
-    }
 }

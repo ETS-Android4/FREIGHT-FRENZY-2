@@ -51,6 +51,7 @@ public class intake_test extends LinearOpMode {
     public DcMotorEx intake = null;
     public double motor_ticks = 103.8;
     public double ticks = 0;
+    public double ticks2 = 0;
     public static double viteza = 0.5;
 
     @Override
@@ -60,10 +61,10 @@ public class intake_test extends LinearOpMode {
 
 
         intake = hardwareMap.get(DcMotorEx.class, "intake1");
-        intake.setMode(DcMotor.RunMode.RUN_USING_ENCODER);
-        intake.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
-        intake.setZeroPowerBehavior(DcMotor.ZeroPowerBehavior.BRAKE);
-        intake.setDirection(DcMotor.Direction.FORWARD);
+        intake.setMode(DcMotorEx.RunMode.RUN_USING_ENCODER);
+        intake.setMode(DcMotorEx.RunMode.STOP_AND_RESET_ENCODER);
+        intake.setZeroPowerBehavior(DcMotorEx.ZeroPowerBehavior.BRAKE);
+        intake.setDirection(DcMotorEx.Direction.FORWARD);
         intake.setPower(0.0);
 
 
@@ -81,8 +82,8 @@ public class intake_test extends LinearOpMode {
 
             /* Intake */
 
-            /*
 
+            /*
             if(gp2.right_trigger > 0.1) {
                 intake.setVelocity(gp2.right_trigger*1000);
            }
@@ -95,21 +96,21 @@ public class intake_test extends LinearOpMode {
                     intake.setPower(0.035);
             }
 
+             */
 
 
 
             if(gp2.right_trigger > 0.1) {
-                intake.setVelocity(gp2.right_trigger*1000);
+                intake.setMode(DcMotor.RunMode.RUN_USING_ENCODER);
+                intake.setVelocity(1500*Math.min(gp2.right_trigger, viteza));
             }
-            else{
+            else if (intake.getCurrentPosition() % motor_ticks > 3 && intake.getCurrentPosition() % motor_ticks < motor_ticks-3){
                 ticks = intake.getCurrentPosition();
-                ticks = ticks % motor_ticks;
-                intake.setTargetPosition((int)(intake.getCurrentPosition()+(motor_ticks-ticks)));
+                ticks2 = ticks % motor_ticks;
+                intake.setTargetPosition((int)(ticks + (motor_ticks-ticks2)));
+                intake.setMode(DcMotor.RunMode.RUN_TO_POSITION);
+                intake.setVelocity(200);
             }
-
-             */
-
-            intake.setPower(viteza);
 
             dashboardTelemetry.addData("position", intake.getCurrentPosition());
             dashboardTelemetry.update();

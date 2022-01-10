@@ -43,9 +43,8 @@ public class init_robot {
     public DcMotor rf = null; // Right front motor
     public DcMotor lr = null; // Left rear motor
     public DcMotor rr = null; // Right rear motor
-    public DcMotor intake1 = null; // Intake motor
-    public DcMotor intake2 = null; // Intake motor
-    public DcMotorEx outtake = null; // Intake motor
+    public DcMotorEx intake1 = null; // Intake motor
+    public DcMotorEx intake2 = null; // Intake motor
 
     HardwareMap hwMap = null;
 
@@ -89,20 +88,20 @@ public class init_robot {
 
 
         /* Intake motor 1 */
-        intake1 = hwMap.get(DcMotor.class, "intake1");
+        intake1 = hwMap.get(DcMotorEx.class, "intake1");
 
+        intake1.setMode(DcMotor.RunMode.RUN_USING_ENCODER);
         intake1.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
-        intake1.setMode(DcMotor.RunMode.RUN_WITHOUT_ENCODER);
         intake1.setZeroPowerBehavior(DcMotor.ZeroPowerBehavior.BRAKE);
         intake1.setDirection(DcMotor.Direction.FORWARD);
         intake1.setPower(0.0);
 
 
         /* Intake motor 1 */
-        intake2 = hwMap.get(DcMotor.class, "intake2");
+        intake2 = hwMap.get(DcMotorEx.class, "intake2");
 
+        intake2.setMode(DcMotor.RunMode.RUN_USING_ENCODER);
         intake2.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
-        intake2.setMode(DcMotor.RunMode.RUN_WITHOUT_ENCODER);
         intake2.setZeroPowerBehavior(DcMotor.ZeroPowerBehavior.BRAKE);
         intake2.setDirection(DcMotor.Direction.FORWARD);
         intake2.setPower(0.0);
