@@ -29,57 +29,59 @@
 
 package org.firstinspires.ftc.teamcode.teleop;
 
+import com.acmerobotics.dashboard.FtcDashboard;
+import com.acmerobotics.dashboard.config.Config;
 import com.qualcomm.robotcore.eventloop.opmode.LinearOpMode;
 import com.qualcomm.robotcore.eventloop.opmode.TeleOp;
+import com.qualcomm.robotcore.hardware.DcMotor;
+import com.qualcomm.robotcore.hardware.DcMotorEx;
 import com.qualcomm.robotcore.hardware.Gamepad;
 
+import org.firstinspires.ftc.robotcore.external.Telemetry;
 import org.firstinspires.ftc.teamcode.hardware.init_robot;
 import org.firstinspires.ftc.teamcode.hardware.servo_cutie;
 
-
+@Config
 @TeleOp
 //@Disabled
 public class drive1 extends LinearOpMode {
 
     init_robot conserva = new init_robot();
 
+    FtcDashboard dashboard = FtcDashboard.getInstance();
+    Telemetry dashboardTelemetry = dashboard.getTelemetry();
 
     private double root2 = Math.sqrt(2.0);
     private boolean slow_mode = false;
     private boolean reverse_intake = false;
-    private double intake_speed = 0.5;
+    private double intake_speed = 0.35;
 
     public boolean ok = false;
 
-    public int outtake_velo = 3500;
-    public int outtake_dist = 1375;
+    public static double outtake_velo = 2000;
+    public static double outtake_dist = 1950;
+    public static double down_pos = 0;
+    public static double p = 2.5;
+    public static double i = 1;
+    public static double d = 0;
+    public static double f = 13;
+    public static double pp = 10;
+    public DcMotorEx outtake = null;
 
+    public double motor_ticks = 103.8;
+    public double ticks = 0;
 
-//    public static double CAROUSEL_P = 38;
-//    public static double CAROUSEL_I = 14;
-//    public static double CAROUSEL_D = 20;
-//    public double CAROUSEL_VELO = 1400;
 
     @Override
     public void runOpMode() {
 
-
         servo_cutie cutie = new servo_cutie(hardwareMap);
 
-        /* Carousel PID */
-
-//        DcMotorEx carousel = null; // Intake motor
-//        carousel = (DcMotorEx)hardwareMap.get(DcMotor.class, "carousel");
-//        PIDCoefficients pidOrig = carousel.getPIDCoefficients(DcMotor.RunMode.RUN_USING_ENCODER);
-//        PIDCoefficients pidNew = new PIDCoefficients(CAROUSEL_P, CAROUSEL_I, CAROUSEL_D);
-//        carousel.setPIDCoefficients(DcMotor.RunMode.RUN_USING_ENCODER, pidNew);
-//        PIDCoefficients pidModified = carousel.getPIDCoefficients(DcMotor.RunMode.RUN_USING_ENCODER);
-
+        outtakeMotor();
 
         /* Gamepads */
 
         Gamepad gp1 = gamepad1;
-        Gamepad gp2 = gamepad2;
 
 
         /* Initialize the bot */
@@ -114,32 +116,16 @@ public class drive1 extends LinearOpMode {
             }
 
 
-            /* gamepad 2 */
-
-            /* Intake */
-
-            /*
-            reverse_intake = gp2.right_bumper;
-
-            if(reverse_intake){
-                conserva.intake1.setPower(-intake_speed);
-                conserva.intake1.setPower(-intake_speed);
-            }else{
-                conserva.intake1.setPower(Math.min(gp2.right_trigger, intake_speed));
-                conserva.intake1.setPower(Math.min(gp2.right_trigger, intake_speed));
-            }
-
-             */
 
             if(gp1.right_bumper){
-                conserva.outtake.setTargetPosition(outtake_dist);
+                conserva.outtake.setTargetPosition((int)outtake_dist);
                 conserva.outtake.setVelocity(outtake_velo);
             }
             if(gp1.left_bumper){
                 ok = false;
                 cutie.drept();
-                sleep(300);
-                conserva.outtake.setTargetPosition(15);
+                sleep(350);
+                conserva.outtake.setTargetPosition((int)down_pos);
             }
 
             if(gp1.a && conserva.outtake.getCurrentPosition() > 1000 && !ok)
@@ -152,10 +138,15 @@ public class drive1 extends LinearOpMode {
             if(gp1.right_trigger > 0.1) {
                 conserva.intake1.setPower(Math.min(gp1.right_trigger, intake_speed));
             }else if(gp1.left_trigger > 0.1){
-                conserva.intake1.setPower(Math.max(-gp1.left_trigger, -intake_speed));
+                conserva.intake1.setPower(Math.max(-gp1.left_trigger, -0.8));
             }
             else{
-                conserva.intake1.setPower(0);
+                ticks = conserva.intake1.getCurrentPosition();
+                ticks = ticks % motor_ticks;
+                if(ticks<1.5 || ticks > (motor_ticks-3.5))
+                    conserva.intake1.setPower(0.0);
+                else
+                    conserva.intake1.setPower(0.032);
             }
 
 
@@ -179,5 +170,19 @@ public class drive1 extends LinearOpMode {
         conserva.rf.setPower(-root2 * speed * cos - rotateSpeed);
         conserva.lr.setPower(-root2 * speed * cos + rotateSpeed);
         conserva.rr.setPower(-root2 * speed * sin - rotateSpeed);
+    }
+
+    public void outtakeMotor()
+    {
+        outtake = hardwareMap.get(DcMotorEx.class, "intake");
+        outtake.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
+        outtake.setZeroPowerBehavior(DcMotor.ZeroPowerBehavior.FLOAT);
+        outtake.setDirection(DcMotor.Direction.FORWARD);
+        outtake.setVelocityPIDFCoefficients(p, i, d, f);
+        outtake.setPositionPIDFCoefficients(pp);
+        outtake.setTargetPosition(5);
+        outtake.setMode(DcMotor.RunMode.RUN_TO_POSITION);
+        outtake.setPower(0.0);
+        outtake.setTargetPositionTolerance(2);
     }
 }

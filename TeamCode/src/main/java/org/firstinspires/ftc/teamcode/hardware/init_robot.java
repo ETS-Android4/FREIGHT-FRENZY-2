@@ -108,16 +108,6 @@ public class init_robot {
         intake2.setPower(0.0);
 
 
-        /* outtake */
-
-        outtake = hwMap.get(DcMotorEx.class, "intake");
-
-        outtake.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
-        outtake.setZeroPowerBehavior(DcMotor.ZeroPowerBehavior.FLOAT);
-        outtake.setDirection(DcMotor.Direction.FORWARD);
-        outtake.setTargetPosition(5);
-        outtake.setMode(DcMotor.RunMode.RUN_TO_POSITION);
-        outtake.setPower(0.0);
 
     }
 

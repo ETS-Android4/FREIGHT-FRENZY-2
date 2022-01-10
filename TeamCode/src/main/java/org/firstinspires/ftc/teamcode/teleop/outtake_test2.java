@@ -50,14 +50,14 @@ public class outtake_test2 extends LinearOpMode {
     FtcDashboard dashboard = FtcDashboard.getInstance();
     Telemetry dashboardTelemetry = dashboard.getTelemetry();
 
-    public static double outtake_velo = 1000;
-    public static double outtake_dist = 1400;
-    public static double down_pos = 500;
-    public static double p = 0;
-    public static double i = 0;
+    public static double outtake_velo = 2000;
+    public static double outtake_dist = 1950;
+    public static double down_pos = 0;
+    public static double p = 2.5;
+    public static double i = 1;
     public static double d = 0;
-    public static double f = 12.6;
-    public static double pp = 0;
+    public static double f = 13;
+    public static double pp = 10;
     public DcMotorEx intake1 = null;
 
     @Override
@@ -75,7 +75,7 @@ public class outtake_test2 extends LinearOpMode {
         intake1.setTargetPosition(5);
         intake1.setMode(DcMotor.RunMode.RUN_TO_POSITION);
         intake1.setPower(0.0);
-
+        intake1.setTargetPositionTolerance(2);
 
         /* Gamepads */
 
@@ -86,6 +86,7 @@ public class outtake_test2 extends LinearOpMode {
 
         // Wait for the game to start (driver presses PLAY)
         waitForStart();
+
 
 
         // run until the end of the match (driver presses STOP)

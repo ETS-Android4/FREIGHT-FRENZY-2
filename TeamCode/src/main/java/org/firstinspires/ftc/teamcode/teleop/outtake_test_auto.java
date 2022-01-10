@@ -29,29 +29,35 @@
 
 package org.firstinspires.ftc.teamcode.teleop;
 
-import com.qualcomm.robotcore.eventloop.opmode.Disabled;
+import com.acmerobotics.dashboard.FtcDashboard;
+import com.acmerobotics.dashboard.config.Config;
 import com.qualcomm.robotcore.eventloop.opmode.LinearOpMode;
 import com.qualcomm.robotcore.eventloop.opmode.TeleOp;
 import com.qualcomm.robotcore.hardware.DcMotor;
 import com.qualcomm.robotcore.hardware.DcMotorEx;
 import com.qualcomm.robotcore.hardware.Gamepad;
-import com.acmerobotics.dashboard.FtcDashboard;
-import com.acmerobotics.dashboard.config.Config;
 
 import org.firstinspires.ftc.robotcore.external.Telemetry;
 
 @Config
 @TeleOp
 //@Disabled
-public class intake_test extends LinearOpMode {
+public class outtake_test_auto extends LinearOpMode {
 
     FtcDashboard dashboard = FtcDashboard.getInstance();
     Telemetry dashboardTelemetry = dashboard.getTelemetry();
 
-    public DcMotorEx intake = null;
-    public double motor_ticks = 103.8;
-    public double ticks = 0;
-    public static double viteza = 0.5;
+    public static double outtake_velo = 1000;
+    public static double outtake_dist = 1950;
+    public static double down_pos = 0;
+    public static double p = 2.5;
+    public static double i = 1;
+    public static double d = 0;
+    public static double f = 13;
+    public static double pp = 10;
+    public DcMotorEx intake1 = null;
+
+    public static double a = 1;
 
     @Override
     public void runOpMode() {
@@ -59,21 +65,27 @@ public class intake_test extends LinearOpMode {
         /* Carousel PID */
 
 
-        intake = hardwareMap.get(DcMotorEx.class, "intake1");
-        intake.setMode(DcMotor.RunMode.RUN_USING_ENCODER);
-        intake.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
-        intake.setZeroPowerBehavior(DcMotor.ZeroPowerBehavior.BRAKE);
-        intake.setDirection(DcMotor.Direction.FORWARD);
-        intake.setPower(0.0);
+        intake1 = hardwareMap.get(DcMotorEx.class, "intake");
+        intake1.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
+        intake1.setZeroPowerBehavior(DcMotor.ZeroPowerBehavior.FLOAT);
+        intake1.setDirection(DcMotor.Direction.FORWARD);
+        intake1.setVelocityPIDFCoefficients(p, i, d, f);
+        intake1.setPositionPIDFCoefficients(pp);
+        intake1.setTargetPosition(5);
+        intake1.setMode(DcMotor.RunMode.RUN_TO_POSITION);
+        intake1.setPower(0.0);
 
 
         /* Gamepads */
 
+        Gamepad gp1 = gamepad1;
         Gamepad gp2 = gamepad2;
+
 
 
         // Wait for the game to start (driver presses PLAY)
         waitForStart();
+
 
         // run until the end of the match (driver presses STOP)
         while(opModeIsActive()) {
@@ -81,40 +93,16 @@ public class intake_test extends LinearOpMode {
 
             /* Intake */
 
-            /*
+            intake1.setTargetPosition((int)outtake_dist);
+            intake1.setVelocity(outtake_velo);
+            sleep(10000);
+            intake1.setTargetPosition((int)down_pos);
+            sleep(5000);
 
-            if(gp2.right_trigger > 0.1) {
-                intake.setVelocity(gp2.right_trigger*1000);
-           }
-            else{
-                ticks = intake.getCurrentPosition();
-                ticks = ticks % motor_ticks;
-                if(ticks<1.5 || ticks > (motor_ticks-3.5))
-                    intake.setPower(0.0);
-                else
-                    intake.setPower(0.035);
-            }
-
-
-
-
-            if(gp2.right_trigger > 0.1) {
-                intake.setVelocity(gp2.right_trigger*1000);
-            }
-            else{
-                ticks = intake.getCurrentPosition();
-                ticks = ticks % motor_ticks;
-                intake.setTargetPosition((int)(intake.getCurrentPosition()+(motor_ticks-ticks)));
-            }
-
-             */
-
-            intake.setPower(viteza);
-
-            dashboardTelemetry.addData("position", intake.getCurrentPosition());
+            dashboardTelemetry.addData("Encoder value", intake1.getCurrentPosition());
+            dashboardTelemetry.addData("tolerance value", intake1.getTargetPositionTolerance());
             dashboardTelemetry.update();
-
         }
-
     }
 }
+//
