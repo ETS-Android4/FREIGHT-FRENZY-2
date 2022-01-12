@@ -56,10 +56,11 @@ public class drive1 extends LinearOpMode {
     private boolean reverse_intake = false;
 
     public boolean ok = false;
+    public boolean ok_intake = false;
 
     public static double outtake_velo = 2000;
     public static double outtake_dist = 1950;
-    public static double down_pos = 0;
+    public static double down_pos = 5;
     public static double p = 2.5;
     public static double i = 1;
     public static double d = 0;
@@ -71,6 +72,8 @@ public class drive1 extends LinearOpMode {
     public double motor_ticks = 103.8;
     public double ticks = 0;
     public double ticks2 = 0;
+    public double tticks = 0;
+    public double tticks2 = 0;
     public double intake_speed = 0.5;
 
 
@@ -79,7 +82,7 @@ public class drive1 extends LinearOpMode {
 
         servo_cutie cutie = new servo_cutie(hardwareMap);
 
-        outtake = hardwareMap.get(DcMotorEx.class, "intake");
+        outtake = hardwareMap.get(DcMotorEx.class, "outtake");
         outtake.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
         outtake.setZeroPowerBehavior(DcMotor.ZeroPowerBehavior.FLOAT);
         outtake.setDirection(DcMotor.Direction.FORWARD);
@@ -88,7 +91,7 @@ public class drive1 extends LinearOpMode {
         outtake.setTargetPosition(5);
         outtake.setMode(DcMotor.RunMode.RUN_TO_POSITION);
         outtake.setPower(0.0);
-        //outtake.setTargetPositionTolerance(2);
+        outtake.setTargetPositionTolerance(2);
 
         /* Gamepads */
 
@@ -114,10 +117,10 @@ public class drive1 extends LinearOpMode {
             double rotation = -gp1.right_stick_x;
             double speed = Math.sqrt(gp1.left_stick_x*gp1.left_stick_x + gp1.left_stick_y*gp1.left_stick_y);
 
-            if(gp1.left_bumper){
+            if(gp1.dpad_down){
                 slow_mode = true;
             }
-            if(gp1.right_bumper){
+            if(gp1.dpad_up){
                 slow_mode = false;
             }
             if(slow_mode){
@@ -135,7 +138,7 @@ public class drive1 extends LinearOpMode {
             if(gp1.left_bumper){
                 ok = false;
                 cutie.drept();
-                sleep(350);
+                sleep(220);
                 outtake.setTargetPosition((int)down_pos);
             }
 
@@ -149,14 +152,23 @@ public class drive1 extends LinearOpMode {
 
             if(gp1.right_trigger > 0.1) {
                 conserva.intake1.setMode(DcMotor.RunMode.RUN_USING_ENCODER);
+                conserva.intake2.setMode(DcMotor.RunMode.RUN_USING_ENCODER);
                 conserva.intake1.setVelocity(1500*Math.min(gp1.right_trigger, intake_speed));
+                conserva.intake2.setVelocity(1500*Math.min(gp1.right_trigger, intake_speed));
+                ok_intake = true;
             }
-            else if (conserva.intake1.getCurrentPosition() % motor_ticks > 3 && conserva.intake1.getCurrentPosition() % motor_ticks < motor_ticks-3){
+            else if(ok_intake){
                 ticks = conserva.intake1.getCurrentPosition();
                 ticks2 = ticks % motor_ticks;
+                tticks = conserva.intake2.getCurrentPosition();
+                tticks2 = tticks % motor_ticks;
                 conserva.intake1.setTargetPosition((int)(ticks + (motor_ticks-ticks2)));
                 conserva.intake1.setMode(DcMotor.RunMode.RUN_TO_POSITION);
-                conserva.intake1.setVelocity(200);
+                conserva.intake1.setVelocity(400);
+                conserva.intake2.setTargetPosition((int)(tticks + (motor_ticks-tticks2)));
+                conserva.intake2.setMode(DcMotor.RunMode.RUN_TO_POSITION);
+                conserva.intake2.setVelocity(400);
+                ok_intake = false;
             }
 
 
