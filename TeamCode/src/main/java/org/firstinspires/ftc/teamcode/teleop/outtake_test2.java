@@ -65,7 +65,6 @@ public class outtake_test2 extends LinearOpMode {
 
         /* Carousel PID */
 
-
         intake1 = hardwareMap.get(DcMotorEx.class, "intake");
         intake1.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
         intake1.setZeroPowerBehavior(DcMotor.ZeroPowerBehavior.FLOAT);

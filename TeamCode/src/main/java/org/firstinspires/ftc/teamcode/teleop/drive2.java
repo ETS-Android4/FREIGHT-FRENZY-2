@@ -44,7 +44,7 @@ import org.firstinspires.ftc.teamcode.hardware.servo_cutie;
 @Config
 @TeleOp
 //@Disabled
-public class drive1 extends LinearOpMode {
+public class drive2 extends LinearOpMode {
 
     init_robot conserva = new init_robot();
 
@@ -96,6 +96,7 @@ public class drive1 extends LinearOpMode {
         /* Gamepads */
 
         Gamepad gp1 = gamepad1;
+        Gamepad gp2 = gamepad2;
 
 
         /* Initialize the bot */
@@ -112,7 +113,7 @@ public class drive1 extends LinearOpMode {
             /* gamepad 1 */
 
             /* Drive */
-			
+
             double direction = Math.atan2(-gp1.left_stick_y, gp1.left_stick_x) - Math.PI/2;
             double rotation = -gp1.right_stick_x;
             double speed = Math.sqrt(gp1.left_stick_x*gp1.left_stick_x + gp1.left_stick_y*gp1.left_stick_y);
@@ -126,23 +127,23 @@ public class drive1 extends LinearOpMode {
             if(slow_mode){
                 setDrivePowers(direction, 0.38 * Math.pow(speed, 3.0), 0.35 * Math.pow(rotation, 3.0));
             }else{
-                setDrivePowers(direction, Math.pow(speed, 3.0),0.7 * Math.pow(rotation, 3.0));
+                setDrivePowers(direction, 0.8 * Math.pow(speed, 3.0),0.6 * Math.pow(rotation, 3.0));
             }
 
 
 
-            if(gp1.right_bumper){
+            if(gp2.right_bumper){
                 outtake.setTargetPosition((int)outtake_dist);
                 outtake.setVelocity(outtake_velo);
             }
-            if(gp1.left_bumper){
+            if(gp2.left_bumper){
                 ok = false;
                 cutie.drept();
                 sleep(220);
                 outtake.setTargetPosition(200);
             }
 
-            if(gp1.a && outtake.getCurrentPosition() > 1000 && !ok)
+            if(gp2.a && outtake.getCurrentPosition() > 1000 && !ok)
             {
                 ok = true;
                 cutie.unghi();
@@ -150,12 +151,12 @@ public class drive1 extends LinearOpMode {
 
 
 
-            if(gp1.right_trigger > 0.1) {
+            if(gp2.right_trigger > 0.1) {
                 outtake.setTargetPosition((int)down_pos);
                 conserva.intake1.setMode(DcMotor.RunMode.RUN_USING_ENCODER);
                 conserva.intake2.setMode(DcMotor.RunMode.RUN_USING_ENCODER);
-                conserva.intake1.setVelocity(1500*Math.min(gp1.right_trigger, intake_speed));
-                conserva.intake2.setVelocity(1500*Math.min(gp1.right_trigger, intake_speed));
+                conserva.intake1.setVelocity(1500*Math.min(gp2.right_trigger, intake_speed));
+                conserva.intake2.setVelocity(1500*Math.min(gp2.right_trigger, intake_speed));
                 ok_intake = true;
             }
             else if(ok_intake){
