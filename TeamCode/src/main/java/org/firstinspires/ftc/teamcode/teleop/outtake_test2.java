@@ -44,7 +44,7 @@ import org.firstinspires.ftc.robotcore.external.Telemetry;
 
 @Config
 @TeleOp
-//@Disabled
+@Disabled
 public class outtake_test2 extends LinearOpMode {
 
     FtcDashboard dashboard = FtcDashboard.getInstance();

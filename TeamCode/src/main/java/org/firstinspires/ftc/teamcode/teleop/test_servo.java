@@ -29,51 +29,51 @@
 
 package org.firstinspires.ftc.teamcode.teleop;
 
+import com.acmerobotics.dashboard.FtcDashboard;
+import com.acmerobotics.dashboard.config.Config;
 import com.qualcomm.robotcore.eventloop.opmode.LinearOpMode;
 import com.qualcomm.robotcore.eventloop.opmode.TeleOp;
-import com.qualcomm.robotcore.hardware.DcMotor;
-import com.qualcomm.robotcore.hardware.DcMotorEx;
 import com.qualcomm.robotcore.hardware.Gamepad;
+import com.qualcomm.robotcore.hardware.Servo;
 
-import org.firstinspires.ftc.teamcode.hardware.servo_cutie;
+import org.firstinspires.ftc.robotcore.external.Telemetry;
+import org.firstinspires.ftc.teamcode.hardware.servo_brat;
 
 
+@Config
 @TeleOp
 //@Disabled
-public class servo_outtake_test extends LinearOpMode {
+public class test_servo extends LinearOpMode {
 
+    FtcDashboard dashboard = FtcDashboard.getInstance();
+    Telemetry dashboardTelemetry = dashboard.getTelemetry();
+
+    public Servo servo = null;
+    private static double POS_JOS = 0.8;
+    private static double POS_SUS = 0.5;
 
     @Override
     public void runOpMode() {
 
-        servo_cutie cutie = new servo_cutie(hardwareMap);
+        servo = hardwareMap.get(Servo.class, "servoOdometrie");
 
         /* Gamepads */
 
         Gamepad gp1 = gamepad1;
-        Gamepad gp2 = gamepad2;
-
 
         // Wait for the game to start (driver presses PLAY)
         waitForStart();
 
         // run until the end of the match (driver presses STOP)
         while(opModeIsActive()) {
-            /* gamepad 2 */
-
-
-            if(gp2.a)
+            if(gp1.a)
             {
-                cutie.unghi();
+                servo.setPosition(POS_JOS);
             }
-            if(gp2.b)
+            if(gp1.b)
             {
-                cutie.drept();
+                servo.setPosition(POS_SUS);
             }
-
-
-            /* Intake */
-
 
         }
     }
