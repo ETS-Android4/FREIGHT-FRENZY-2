@@ -11,6 +11,9 @@ import com.qualcomm.robotcore.hardware.Gamepad;
 
 import org.firstinspires.ftc.robotcore.external.hardware.camera.WebcamName;
 import org.firstinspires.ftc.teamcode.drive.SampleMecanumDrive;
+import org.firstinspires.ftc.teamcode.hardware.servo_brat;
+import org.firstinspires.ftc.teamcode.hardware.servo_cleste1;
+import org.firstinspires.ftc.teamcode.hardware.servo_cleste2;
 import org.opencv.core.Core;
 import org.opencv.core.Mat;
 import org.opencv.core.Point;
@@ -25,10 +28,24 @@ import org.openftc.easyopencv.OpenCvWebcam;
 
 @Autonomous
 //@Disabled
-public class test extends LinearOpMode
+public class auto1 extends LinearOpMode
 {
     OpenCvCamera webcam;
     public int result = 0;
+
+    public static double outtake_velo = 2000;
+    //public static double outtake_dist = 1950;
+    public static int outtake_sus = 1600;
+    public static int outtake_mijl = 1100;
+    public static int outtake_jos = 750;
+
+    public static double down_pos = 5;
+    public static double p = 2.5;
+    public static double i = 1;
+    public static double d = 0;
+    public static double f = 13;
+    public static double pp = 10;
+    public DcMotorEx outtake = null;
 
     public class IgnitePipeline extends OpenCvPipeline {
 
@@ -188,6 +205,10 @@ public class test extends LinearOpMode
     public void runOpMode()
     {
 
+        servo_brat brat = new servo_brat(hardwareMap);
+        servo_cleste1 cleste1 = new servo_cleste1(hardwareMap);
+        servo_cleste2 cleste2 = new servo_cleste2(hardwareMap);
+
         // Camera
 
         int cameraMonitorViewId = hardwareMap.appContext.getResources().getIdentifier("cameraMonitorViewId", "id", hardwareMap.appContext.getPackageName());
@@ -200,19 +221,27 @@ public class test extends LinearOpMode
         webcam.startStreaming(320,240,OpenCvCameraRotation.UPRIGHT);
 
 
-
         // Drive
 
         SampleMecanumDrive drive = new SampleMecanumDrive(hardwareMap);
 
-        Trajectory trajectory1 = drive.trajectoryBuilder(new Pose2d(), true)
-                .strafeTo(new Vector2d(5, 0))
+        Trajectory trajectory_down = drive.trajectoryBuilder(new Pose2d())
+                .strafeTo(new Vector2d(0, 0))
                 .build();
-        Trajectory trajectory2 = drive.trajectoryBuilder(new Pose2d(), true)
-                .strafeTo(new Vector2d(5, 5))
+        Trajectory trajectory_mid = drive.trajectoryBuilder(new Pose2d())
+                .strafeTo(new Vector2d(0, 0))
                 .build();
-        Trajectory trajectory3 = drive.trajectoryBuilder(new Pose2d(), true)
-                .strafeTo(new Vector2d(0, 5))
+        Trajectory trajectory_up = drive.trajectoryBuilder(new Pose2d())
+                .strafeTo(new Vector2d(0, 20))
+                .addTemporalMarker(0.8,()-> {
+                    brat.sus();
+                })
+                .build();
+        Trajectory trajectory1 = drive.trajectoryBuilder(trajectory_up.end())
+                .splineTo(new Vector2d(20, 2), Math.toRadians(0))
+                .addTemporalMarker(1,()-> {
+                    outtake.setTargetPosition(200);
+                })
                 .build();
 
 
@@ -220,6 +249,7 @@ public class test extends LinearOpMode
 
         while (opModeIsActive())
         {
+            /*
             if(result == 0){
                 drive.followTrajectory(trajectory1);
             }
@@ -229,8 +259,35 @@ public class test extends LinearOpMode
             else if(result == 2){
                 drive.followTrajectory(trajectory3);
             }
+             */
+            cleste1.close();
+            cleste2.close();
+            outtake.setTargetPosition(outtake_sus);
+            outtake.setVelocity(outtake_velo);
+            drive.followTrajectory(trajectory_up);
+            cleste1.open();
+            cleste2.open();
+            sleep(400);
+            cleste1.close();
+            cleste2.close();
+            brat.jos();
+            drive.followTrajectory(trajectory1);
         }
 
+    }
+
+    public void someRandomShit(){
+
+        outtake = hardwareMap.get(DcMotorEx.class, "outtake");
+        outtake.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
+        outtake.setZeroPowerBehavior(DcMotor.ZeroPowerBehavior.FLOAT);
+        outtake.setDirection(DcMotor.Direction.FORWARD);
+        outtake.setVelocityPIDFCoefficients(p, i, d, f);
+        outtake.setPositionPIDFCoefficients(pp);
+        outtake.setTargetPosition(5);
+        outtake.setMode(DcMotor.RunMode.RUN_TO_POSITION);
+        outtake.setPower(0.0);
+        outtake.setTargetPositionTolerance(2);
     }
 
 }

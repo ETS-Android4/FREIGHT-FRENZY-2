@@ -61,7 +61,11 @@ public class drive1 extends LinearOpMode {
     public boolean ok_intake = false;
 
     public static double outtake_velo = 2000;
-    public static double outtake_dist = 1950;
+    //public static double outtake_dist = 1950;
+    public static double outtake_sus = 1650;
+    public static double outtake_mijl = 1100;
+    public static double outtake_jos = 750;
+
     public static double down_pos = 5;
     public static double p = 2.5;
     public static double i = 1;
@@ -70,7 +74,7 @@ public class drive1 extends LinearOpMode {
     public static double pp = 10;
     public DcMotorEx outtake = null;
 
-    public double intake_speed = 0.5;
+    public double intake_speed = 0.58;
 
 
 
@@ -79,7 +83,7 @@ public class drive1 extends LinearOpMode {
 
         someRandomShit();
         Gamepad gp1 = gamepad1;
-        //Gamepad gp2 = gamepad2;
+        Gamepad gp2 = gamepad2;
 
         servo_brat brat = new servo_brat(hardwareMap);
         servo_cleste1 cleste1 = new servo_cleste1(hardwareMap);
@@ -93,15 +97,21 @@ public class drive1 extends LinearOpMode {
             /* gamepad 1 */
 
             /* Drive */
-			
+
+            /*
             double direction = Math.atan2(-gp1.left_stick_y, gp1.left_stick_x) - Math.PI/2;
             double rotation = -gp1.right_stick_x;
             double speed = Math.sqrt(gp1.left_stick_x*gp1.left_stick_x + gp1.left_stick_y*gp1.left_stick_y);
 
-            if(gp1.dpad_down){
+             */
+            double direction = Math.atan2(gp1.left_stick_x, -gp1.left_stick_y) - Math.PI/2;
+            double rotation = -gp1.right_stick_x;
+            double speed = Math.sqrt(gp1.left_stick_x*gp1.left_stick_x + gp1.left_stick_y*gp1.left_stick_y);
+
+            if(gp1.right_bumper){
                 slow_mode = true;
             }
-            if(gp1.dpad_up){
+            if(gp1.left_bumper){
                 slow_mode = false;
             }
             if(slow_mode){
@@ -110,47 +120,68 @@ public class drive1 extends LinearOpMode {
                 setDrivePowers(direction, Math.pow(speed, 3.0),0.7 * Math.pow(rotation, 3.0));
             }
 
-            if(gp1.right_bumper){
-                outtake.setTargetPosition((int)outtake_dist);
+            if(gp2.dpad_up){
+                outtake.setTargetPosition((int)outtake_sus);
                 outtake.setVelocity(outtake_velo);
             }
-            if(gp1.left_bumper){
+            if(gp2.dpad_right){
+                outtake.setTargetPosition((int)outtake_mijl);
+                outtake.setVelocity(outtake_velo);
+            }
+            if(gp2.dpad_down){
+                outtake.setTargetPosition((int)outtake_jos);
+                outtake.setVelocity(outtake_velo);
+            }
+            if(gp2.dpad_left){
                 ok = false;
                 brat.jos();
                 cleste1.close();
                 cleste2.close();
-                sleep(1000);
+                sleep(750);
                 outtake.setTargetPosition(200);
             }
 
-            if(gp1.a && outtake.getCurrentPosition() > 1000 && !ok)
+            if(gp2.a && outtake.getCurrentPosition() > (outtake_jos-100) && !ok)
             {
                 ok = true;
                 brat.sus();
             }
-            if(gp1.b)
+            if(gp2.b)
             {
                 cleste1.open();
                 cleste2.open();
             }
 
 
-
-            if(gp1.right_trigger > 0.1) {
-                cleste1.open();
-                cleste2.close();
+            if(gp2.right_trigger > 0.1) {
+                cleste1.close();
+                cleste2.open();
                 outtake.setTargetPosition((int)down_pos);
-                conserva.intake1.setVelocity(1500*Math.min(gp1.right_trigger, intake_speed));
 
+                conserva.intake1.setVelocity(1500*Math.min(gp1.right_trigger, intake_speed));
                 //conserva.intake2.setVelocity(1500*Math.min(gp1.right_trigger, intake_speed));
+
                 ok_intake = true;
             }
-            else if(ok_intake){
+            /*
+            else if(gp2.left_trigger > 0.1){
                 cleste1.close();
-                outtake.setTargetPosition(200);
-                conserva.intake1.setVelocity(-400);
+                cleste2.open();
+                outtake.setTargetPosition((int)down_pos);
 
-                //conserva.intake2.setVelocity(-400);
+                //conserva.intake1.setVelocity(1500*Math.min(gp1.right_trigger, intake_speed));
+                conserva.intake2.setVelocity(1500*Math.min(gp1.right_trigger, intake_speed));
+
+                ok_intake = true;
+            }
+
+             */
+            else{
+                cleste1.close();
+                cleste2.close();
+                outtake.setTargetPosition(200);
+                conserva.intake1.setVelocity(-500);
+                conserva.intake2.setVelocity(-500);
                 ok_intake = false;
             }
 
