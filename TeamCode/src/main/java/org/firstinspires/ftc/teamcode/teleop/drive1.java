@@ -98,13 +98,7 @@ public class drive1 extends LinearOpMode {
 
             /* Drive */
 
-            /*
             double direction = Math.atan2(-gp1.left_stick_y, gp1.left_stick_x) - Math.PI/2;
-            double rotation = -gp1.right_stick_x;
-            double speed = Math.sqrt(gp1.left_stick_x*gp1.left_stick_x + gp1.left_stick_y*gp1.left_stick_y);
-
-             */
-            double direction = Math.atan2(gp1.left_stick_x, -gp1.left_stick_y) - Math.PI/2;
             double rotation = -gp1.right_stick_x;
             double speed = Math.sqrt(gp1.left_stick_x*gp1.left_stick_x + gp1.left_stick_y*gp1.left_stick_y);
 
@@ -180,8 +174,8 @@ public class drive1 extends LinearOpMode {
                 cleste1.close();
                 cleste2.close();
                 outtake.setTargetPosition(200);
-                conserva.intake1.setVelocity(-500);
-                conserva.intake2.setVelocity(-500);
+                //conserva.intake1.setVelocity(-500);
+                //conserva.intake2.setVelocity(-500);
                 ok_intake = false;
             }
 

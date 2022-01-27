@@ -91,6 +91,7 @@ public class init_robot {
         intake1 = hwMap.get(DcMotorEx.class, "intake1");
 
         intake1.setMode(DcMotor.RunMode.RUN_USING_ENCODER);
+        //intake1.setMode(DcMotor.RunMode.RUN_WITHOUT_ENCODER);
         intake1.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
         intake1.setZeroPowerBehavior(DcMotor.ZeroPowerBehavior.BRAKE);
         intake1.setDirection(DcMotor.Direction.FORWARD);
@@ -101,6 +102,7 @@ public class init_robot {
         intake2 = hwMap.get(DcMotorEx.class, "intake2");
 
         intake2.setMode(DcMotor.RunMode.RUN_USING_ENCODER);
+        //intake2.setMode(DcMotor.RunMode.RUN_WITHOUT_ENCODER);
         intake2.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
         intake2.setZeroPowerBehavior(DcMotor.ZeroPowerBehavior.BRAKE);
         intake2.setDirection(DcMotor.Direction.FORWARD);
