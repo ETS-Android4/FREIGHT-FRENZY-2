@@ -59,6 +59,7 @@ public class drive1 extends LinearOpMode {
 
     public boolean ok = false;
     public boolean ok_intake = false;
+    public boolean okk_intake = true;
 
     public static double outtake_velo = 2000;
     //public static double outtake_dist = 1950;
@@ -75,7 +76,6 @@ public class drive1 extends LinearOpMode {
     public DcMotorEx outtake = null;
 
     public double intake_speed = 0.58;
-
 
 
     @Override
@@ -176,13 +176,25 @@ public class drive1 extends LinearOpMode {
             }
 
              */
-            else{
+            else if(ok_intake && okk_intake){
                 cleste1.close();
                 cleste2.close();
                 outtake.setTargetPosition(200);
                 conserva.intake1.setVelocity(-500);
                 conserva.intake2.setVelocity(-500);
                 ok_intake = false;
+            }
+
+            if(gp1.a)
+            {
+                okk_intake = false;
+            }
+            if(gp1.b){
+                conserva.intake1.setVelocity(500);
+                sleep(750);
+                conserva.intake1.setVelocity(1500);
+                sleep(450);
+                conserva.intake1.setVelocity(0);
             }
 
 
