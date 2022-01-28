@@ -50,7 +50,7 @@ public class test_servo extends LinearOpMode {
 
     public Servo servo = null;
     public static double POS_JOS = 0.4;
-    public static double POS_SUS = 0.6;
+    public static double POS_SUS = 0.75;
 
     @Override
     public void runOpMode() {

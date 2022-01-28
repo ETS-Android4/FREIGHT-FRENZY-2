@@ -63,11 +63,7 @@ public class augmenteddrive extends LinearOpMode {
 
     public double intake_speed = 0.58;
 
-    public static com.acmerobotics.roadrunner.control.PIDCoefficients MOTOR_VELO_PID = new com.acmerobotics.roadrunner.control.PIDCoefficients(0.00038, 0.0000012, 0);
-
     private final FtcDashboard dashboard = FtcDashboard.getInstance();
-
-    private final ElapsedTime veloTimer = new ElapsedTime();
 
     // Define 2 states, drive control or automatic control
     enum Mode {
@@ -88,7 +84,6 @@ public class augmenteddrive extends LinearOpMode {
 
     SampleMecanumDrive drive;
 
-    Vector2d towerVector = new Vector2d(125, -23);
 
     @Override
     public void runOpMode() {
@@ -120,7 +115,6 @@ public class augmenteddrive extends LinearOpMode {
         cleste1.close();
         cleste2.close();
         brat.jos();
-
 
         drive = new SampleMecanumDrive(hardwareMap);
         drive.setMode(DcMotor.RunMode.RUN_WITHOUT_ENCODER);
@@ -158,7 +152,7 @@ public class augmenteddrive extends LinearOpMode {
 
                         Trajectory trajectory1 = drive.trajectoryBuilder(new Pose2d(0, 0, 0))
                                 .strafeTo(new Vector2d(-20, 0))
-                                .splineTo(new Vector2d(-35, -20), Math.toRadians(90))
+                                .splineTo(new Vector2d(-35, -20), Math.toRadians(0))
                                 .addTemporalMarker(0.8, () -> {
                                     outtake.setTargetPosition((int)outtake_sus);
                                     outtake.setVelocity(outtake_velo);
