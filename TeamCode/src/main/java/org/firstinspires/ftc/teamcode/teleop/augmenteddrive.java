@@ -34,7 +34,6 @@ import org.firstinspires.ftc.teamcode.drive.SampleMecanumDrive;
 
 import static java.lang.Boolean.FALSE;
 
-
 @TeleOp
 //@Disabled
 public class augmenteddrive extends LinearOpMode {
@@ -48,7 +47,6 @@ public class augmenteddrive extends LinearOpMode {
     public boolean okk_intake = true;
 
     public static double outtake_velo = 2000;
-    //public static double outtake_dist = 1950;
     public static double outtake_sus = 1200;
     public static double outtake_mijl = 770;
     public static double outtake_jos = 550;
@@ -66,7 +64,6 @@ public class augmenteddrive extends LinearOpMode {
     public double intake_speed = 0.58;
 
     public static com.acmerobotics.roadrunner.control.PIDCoefficients MOTOR_VELO_PID = new com.acmerobotics.roadrunner.control.PIDCoefficients(0.00038, 0.0000012, 0);
-
 
     private final FtcDashboard dashboard = FtcDashboard.getInstance();
 
@@ -171,13 +168,11 @@ public class augmenteddrive extends LinearOpMode {
                                 })
                                 .build();
 
-
                         drive.followTrajectory(trajectory1);
                     }
 
                     if(gamepad1.dpad_down)
                     {
-
                         Trajectory trajectory2 = drive.trajectoryBuilder(new Pose2d(0, 0, 0))
                                 .splineTo(new Vector2d(-20, 0), Math.toRadians(0))
                                 .splineTo(new Vector2d(0, 0), Math.toRadians(0))
@@ -200,7 +195,6 @@ public class augmenteddrive extends LinearOpMode {
 
                     if(gamepad1.a)
                         resetPositionLine();
-
 
 
                     // GAMEPAD 2 //

@@ -49,13 +49,13 @@ public class test_servo extends LinearOpMode {
     Telemetry dashboardTelemetry = dashboard.getTelemetry();
 
     public Servo servo = null;
-    public static double POS_JOS = 0.15;
-    public static double POS_SUS = 0.95;
+    public static double POS_JOS = 0.4;
+    public static double POS_SUS = 0.6;
 
     @Override
     public void runOpMode() {
 
-        servo = hardwareMap.get(Servo.class, "servoBrat");
+        servo = hardwareMap.get(Servo.class, "servoOdometrie");
 
         /* Gamepads */
 
