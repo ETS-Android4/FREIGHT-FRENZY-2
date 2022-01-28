@@ -50,7 +50,7 @@ public class augmenteddrive extends LinearOpMode {
     public static double outtake_velo = 2000;
     //public static double outtake_dist = 1950;
     public static double outtake_sus = 1200;
-    public static double outtake_mijl = 690;
+    public static double outtake_mijl = 770;
     public static double outtake_jos = 550;
 
     public static double down_pos = 5;
