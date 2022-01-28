@@ -130,7 +130,6 @@ public class augmenteddrive extends LinearOpMode {
 
         waitForStart();
 
-
         if (isStopRequested()) return;
 
         while (opModeIsActive() && !isStopRequested()) {
