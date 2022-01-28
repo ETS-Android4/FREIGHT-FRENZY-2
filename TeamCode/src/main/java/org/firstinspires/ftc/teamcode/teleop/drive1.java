@@ -50,8 +50,6 @@ public class drive1 extends LinearOpMode {
 
     init_robot conserva = new init_robot();
 
-    FtcDashboard dashboard = FtcDashboard.getInstance();
-    Telemetry dashboardTelemetry = dashboard.getTelemetry();
 
     private double root2 = Math.sqrt(2.0);
     private boolean slow_mode = false;
@@ -63,9 +61,13 @@ public class drive1 extends LinearOpMode {
 
     public static double outtake_velo = 2000;
     //public static double outtake_dist = 1950;
-    public static double outtake_sus = 1650;
-    public static double outtake_mijl = 1100;
-    public static double outtake_jos = 750;
+    public static double outtake_sus = 1200;
+    public static double outtake_mijl = 760;
+    public static double outtake_jos = 550;
+
+    public static double viteza = 250;
+    public static double a = 1;
+    public static double cnt = 100;
 
     public static double down_pos = 5;
     public static double p = 2.5;
@@ -77,9 +79,13 @@ public class drive1 extends LinearOpMode {
 
     public double intake_speed = 0.58;
 
+    FtcDashboard dashboard = FtcDashboard.getInstance();
+    Telemetry dashboardTelemetry = dashboard.getTelemetry();
+
 
     @Override
     public void runOpMode() {
+
 
         someRandomShit();
         Gamepad gp1 = gamepad1;
@@ -98,7 +104,7 @@ public class drive1 extends LinearOpMode {
 
             /* Drive */
 
-            double direction = Math.atan2(-gp1.left_stick_y, gp1.left_stick_x) - Math.PI/2;
+            double direction = Math.atan2(gp1.left_stick_x, gp1.left_stick_y) - Math.PI/2;
             double rotation = -gp1.right_stick_x;
             double speed = Math.sqrt(gp1.left_stick_x*gp1.left_stick_x + gp1.left_stick_y*gp1.left_stick_y);
 
@@ -109,86 +115,95 @@ public class drive1 extends LinearOpMode {
                 slow_mode = false;
             }
             if(slow_mode){
-                setDrivePowers(direction, 0.38 * Math.pow(speed, 3.0), 0.35 * Math.pow(rotation, 3.0));
+                setDrivePowers(direction, 0.43 * Math.pow(speed, 3.0), 0.35 * Math.pow(rotation, 3.0));
             }else{
-                setDrivePowers(direction, Math.pow(speed, 3.0),0.7 * Math.pow(rotation, 3.0));
+                setDrivePowers(direction, Math.pow(speed, 3.0),0.6 * Math.pow(rotation, 3.0));
             }
 
             if(gp2.dpad_up){
                 outtake.setTargetPosition((int)outtake_sus);
                 outtake.setVelocity(outtake_velo);
+                sleep(550);
+                brat.sus();
             }
             if(gp2.dpad_right){
                 outtake.setTargetPosition((int)outtake_mijl);
                 outtake.setVelocity(outtake_velo);
+                sleep(550);
+                brat.second();
             }
             if(gp2.dpad_down){
                 outtake.setTargetPosition((int)outtake_jos);
                 outtake.setVelocity(outtake_velo);
+                sleep(550);
+                brat.first();
             }
             if(gp2.dpad_left){
+                outtake.setTargetPosition(950);
+                outtake.setVelocity(outtake_velo);
+                sleep(400);
                 ok = false;
                 brat.jos();
                 cleste1.close();
                 cleste2.close();
-                sleep(750);
-                outtake.setTargetPosition(200);
+                sleep(700);
+                outtake.setTargetPosition(150);
             }
 
-            if(gp2.a && outtake.getCurrentPosition() > (outtake_jos-100) && !ok)
-            {
-                ok = true;
-                brat.sus();
-            }
-            if(gp2.b)
+            if(gp2.x)
             {
                 cleste1.open();
                 cleste2.open();
             }
 
 
-            if(gp2.right_trigger > 0.1) {
+            if(gp2.left_trigger > 0.1 && gp2.right_trigger > 0.1){
                 cleste1.close();
                 cleste2.open();
                 outtake.setTargetPosition((int)down_pos);
-
-                conserva.intake1.setVelocity(1500*Math.min(gp1.right_trigger, intake_speed));
-                //conserva.intake2.setVelocity(1500*Math.min(gp1.right_trigger, intake_speed));
+                conserva.intake1.setVelocity(-1500*Math.min(gp1.right_trigger, intake_speed));
 
                 ok_intake = true;
             }
-            /*
-            else if(gp2.left_trigger > 0.1){
+            else if(gp2.right_trigger > 0.1) {
                 cleste1.close();
                 cleste2.open();
                 outtake.setTargetPosition((int)down_pos);
-
-                //conserva.intake1.setVelocity(1500*Math.min(gp1.right_trigger, intake_speed));
-                conserva.intake2.setVelocity(1500*Math.min(gp1.right_trigger, intake_speed));
+                outtake.setVelocity(outtake_velo);
+                conserva.intake1.setVelocity(1500*Math.min(gp2.right_trigger, intake_speed));
 
                 ok_intake = true;
             }
-
-             */
-            else if(ok_intake && okk_intake){
+            else if(ok_intake){
                 cleste1.close();
                 cleste2.close();
+                conserva.intake1.setVelocity(0);
+                sleep(350);
                 outtake.setTargetPosition(200);
-                //conserva.intake1.setVelocity(-500);
-                //conserva.intake2.setVelocity(-500);
+                outtake.setVelocity(outtake_velo);
                 ok_intake = false;
             }
 
-            if(gp1.a)
-            {
-                okk_intake = false;
-            }
             if(gp1.b){
-                conserva.intake1.setVelocity(500);
-                sleep(750);
-                conserva.intake1.setVelocity(1500);
-                sleep(450);
+                conserva.intake1.setVelocity(-440);
+                conserva.intake2.setVelocity(440);
+                sleep(1430);
+                conserva.intake1.setVelocity(-1400);
+                conserva.intake2.setVelocity(1400);
+                sleep(250);
                 conserva.intake1.setVelocity(0);
+                conserva.intake2.setVelocity(0);
+            }
+            if(gp1.x){
+                viteza = 250;
+                a = 1;
+                while(a<350){
+                    conserva.intake1.setVelocity(-1*(int)(viteza+(a*a/cnt)));
+                    conserva.intake2.setVelocity((int)(viteza+(a*a/cnt)));
+                    a += 1;
+                }
+                conserva.intake1.setVelocity(0);
+                conserva.intake2.setVelocity(0);
             }
 
 
