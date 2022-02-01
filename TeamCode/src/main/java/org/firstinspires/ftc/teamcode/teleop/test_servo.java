@@ -37,7 +37,8 @@ import com.qualcomm.robotcore.hardware.Gamepad;
 import com.qualcomm.robotcore.hardware.Servo;
 
 import org.firstinspires.ftc.robotcore.external.Telemetry;
-import org.firstinspires.ftc.teamcode.hardware.servo_brat;
+import org.firstinspires.ftc.teamcode.hardware.servo_cleste2;
+import org.firstinspires.ftc.teamcode.hardware.servo_odo;
 
 
 @Config
@@ -48,14 +49,11 @@ public class test_servo extends LinearOpMode {
     FtcDashboard dashboard = FtcDashboard.getInstance();
     Telemetry dashboardTelemetry = dashboard.getTelemetry();
 
-    public Servo servo = null;
-    public static double POS_JOS = 0.4;
-    public static double POS_SUS = 0.75;
 
     @Override
     public void runOpMode() {
 
-        servo = hardwareMap.get(Servo.class, "servoOdometrie");
+        servo_odo odo = new servo_odo(hardwareMap);
 
         /* Gamepads */
 
@@ -68,11 +66,11 @@ public class test_servo extends LinearOpMode {
         while(opModeIsActive()) {
             if(gp1.a)
             {
-                servo.setPosition(POS_SUS);
+                odo.sus();
             }
             if(gp1.b)
             {
-                servo.setPosition(POS_JOS);
+                odo.jos();
             }
 
         }

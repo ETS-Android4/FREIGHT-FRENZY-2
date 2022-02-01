@@ -42,6 +42,7 @@ import org.firstinspires.ftc.teamcode.hardware.init_robot;
 import org.firstinspires.ftc.teamcode.hardware.servo_brat;
 import org.firstinspires.ftc.teamcode.hardware.servo_cleste1;
 import org.firstinspires.ftc.teamcode.hardware.servo_cleste2;
+import org.firstinspires.ftc.teamcode.hardware.servo_odo;
 
 @Config
 @TeleOp
@@ -94,6 +95,7 @@ public class drive1 extends LinearOpMode {
         servo_brat brat = new servo_brat(hardwareMap);
         servo_cleste1 cleste1 = new servo_cleste1(hardwareMap);
         servo_cleste2 cleste2 = new servo_cleste2(hardwareMap);
+        servo_odo odo = new servo_odo(hardwareMap);
 
         waitForStart();
 
@@ -156,6 +158,12 @@ public class drive1 extends LinearOpMode {
                 cleste2.open();
             }
 
+            if(gp2.y)
+            {
+                odo.sus();
+            }
+
+
 
             if(gp2.left_trigger > 0.1 && gp2.right_trigger > 0.1){
                 cleste1.close();
@@ -191,17 +199,6 @@ public class drive1 extends LinearOpMode {
                 conserva.intake1.setVelocity(-1400);
                 conserva.intake2.setVelocity(1400);
                 sleep(250);
-                conserva.intake1.setVelocity(0);
-                conserva.intake2.setVelocity(0);
-            }
-            if(gp1.x){
-                viteza = 250;
-                a = 1;
-                while(a<350){
-                    conserva.intake1.setVelocity(-1*(int)(viteza+(a*a/cnt)));
-                    conserva.intake2.setVelocity((int)(viteza+(a*a/cnt)));
-                    a += 1;
-                }
                 conserva.intake1.setVelocity(0);
                 conserva.intake2.setVelocity(0);
             }

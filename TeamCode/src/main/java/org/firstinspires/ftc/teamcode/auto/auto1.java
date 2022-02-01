@@ -14,6 +14,8 @@ import org.firstinspires.ftc.teamcode.drive.SampleMecanumDrive;
 import org.firstinspires.ftc.teamcode.hardware.servo_brat;
 import org.firstinspires.ftc.teamcode.hardware.servo_cleste1;
 import org.firstinspires.ftc.teamcode.hardware.servo_cleste2;
+import org.firstinspires.ftc.teamcode.hardware.servo_odo;
+import org.firstinspires.ftc.teamcode.trajectorysequence.TrajectorySequence;
 import org.opencv.core.Core;
 import org.opencv.core.Mat;
 import org.opencv.core.Point;
@@ -33,6 +35,7 @@ public class auto1 extends LinearOpMode
     OpenCvCamera webcam;
     public int result = 0;
 
+    public static double intake_velo = 850;
     public static double outtake_velo = 2000;
     //public static double outtake_dist = 1950;
     public static int outtake_sus = 1600;
@@ -46,6 +49,10 @@ public class auto1 extends LinearOpMode
     public static double f = 13;
     public static double pp = 10;
     public DcMotorEx outtake = null;
+    public DcMotorEx intake1 = null;
+
+    public static double startX = 0;
+    public static double startY = 0;
 
     public class IgnitePipeline extends OpenCvPipeline {
 
@@ -208,6 +215,7 @@ public class auto1 extends LinearOpMode
         servo_brat brat = new servo_brat(hardwareMap);
         servo_cleste1 cleste1 = new servo_cleste1(hardwareMap);
         servo_cleste2 cleste2 = new servo_cleste2(hardwareMap);
+        servo_odo odo = new servo_odo(hardwareMap);
 
         // Camera
 
@@ -225,24 +233,106 @@ public class auto1 extends LinearOpMode
 
         SampleMecanumDrive drive = new SampleMecanumDrive(hardwareMap);
 
-        Trajectory trajectory_down = drive.trajectoryBuilder(new Pose2d())
-                .strafeTo(new Vector2d(0, 0))
-                .build();
-        Trajectory trajectory_mid = drive.trajectoryBuilder(new Pose2d())
-                .strafeTo(new Vector2d(0, 0))
-                .build();
-        Trajectory trajectory_up = drive.trajectoryBuilder(new Pose2d())
-                .strafeTo(new Vector2d(0, 20))
-                .addTemporalMarker(0.8,()-> {
+        Trajectory trajectory1 = drive.trajectoryBuilder(new Pose2d())
+                .lineToLinearHeading(new Pose2d(startX-10.5, startY+23, Math.toRadians(15)))
+                .addTemporalMarker(0, () -> {
+                    cleste1.close();
+                    cleste2.close();
+                    brat.jos();
+                    outtake.setTargetPosition(outtake_sus);
+                    outtake.setVelocity(outtake_velo);
+                })
+                .addTemporalMarker(0, () -> {
                     brat.sus();
                 })
                 .build();
-        Trajectory trajectory1 = drive.trajectoryBuilder(trajectory_up.end())
-                .splineTo(new Vector2d(20, 2), Math.toRadians(0))
-                .addTemporalMarker(1,()-> {
-                    outtake.setTargetPosition(200);
+
+        Trajectory trajectory2 = drive.trajectoryBuilder(trajectory1.end())
+                .lineToLinearHeading(new Pose2d(startX+10, startY+1, Math.toRadians(0)))
+                .addTemporalMarker(0.7, () -> {
+                    cleste1.close();
+                    cleste2.close();
+                    brat.jos();
+                    outtake.setTargetPosition(outtake_sus);
+                    outtake.setVelocity(outtake_velo);
                 })
+                .addTemporalMarker(1.6, () -> {
+                    outtake.setTargetPosition(150);
+                    outtake.setVelocity(outtake_velo);
+                })
+                .splineToConstantHeading(new Vector2d(startX+44, startY+1), Math.toRadians(0))
+                .addTemporalMarker(2.6, () -> {
+                    outtake.setTargetPosition(10);
+                    outtake.setVelocity(outtake_velo);
+                    cleste2.open();
+                })
+                .addTemporalMarker(3.5, () -> {
+                    intake1.setVelocity(intake_velo);
+                })
+
                 .build();
+
+
+
+        /*
+
+        TrajectorySequence myBot = new TrajectorySequence()
+                // Set bot constraints: maxVel, maxAccel, maxAngVel, maxAngAccel, track width
+                .setConstraints(50, 40, Math.toRadians(180), Math.toRadians(180), 10.5)
+                .setDimensions(12.5, 17)
+                .followTrajectorySequence(drive ->
+                        drive.trajectorySequenceBuilder(new Pose2d(startX, startY, 0))
+
+
+
+                                //next cycle
+                                .UNSTABLE_addDisplacementMarkerOffset(0, () -> {
+                                    //opreste intake
+                                })
+                                .UNSTABLE_addTemporalMarkerOffset(0.1, () -> {
+                                    //invers intake
+                                    //inchide cleste
+                                })
+                                .UNSTABLE_addTemporalMarkerOffset(0.35, () -> {
+                                    //glisiera 200
+                                    //opreste intake
+                                })
+
+                                //.setAccelConstraint(TrajectoryAccelerationConstraint.get(10.0))
+                                .waitSeconds(0.25)
+                                .lineToLinearHeading(new Pose2d(startX+10, startY+1, Math.toRadians(0)))
+
+                                .UNSTABLE_addDisplacementMarkerOffset(-15, () -> {
+                                    //glisiera 1000
+                                })
+                                .UNSTABLE_addDisplacementMarkerOffset(16, () -> {
+                                    //brat sus
+                                })
+                                .UNSTABLE_addDisplacementMarkerOffset(39, () -> {
+                                    //deschide cleste
+                                })
+                                .UNSTABLE_addDisplacementMarkerOffset(52, () -> {
+                                    //inchide cleste
+                                    //brat jos
+                                })
+                                .UNSTABLE_addDisplacementMarkerOffset(80, () -> {
+                                    //glisiera 200
+                                })
+                                .splineToConstantHeading(new Vector2d(startX-13, startY+23), Math.toRadians(0))
+                                .splineToConstantHeading(new Vector2d(startX+12, startY+1), Math.toRadians(0))
+                                .splineToConstantHeading(new Vector2d(startX+44, startY+1), Math.toRadians(0))
+                                .UNSTABLE_addDisplacementMarkerOffset(18, () -> {
+                                    //glisiera 0
+                                    //cleste 1 open
+                                })
+                                .UNSTABLE_addDisplacementMarkerOffset(28, () -> {
+                                    //start intake
+                                })
+
+                                .build()
+                );
+
+         */
 
 
         waitForStart();
@@ -250,28 +340,17 @@ public class auto1 extends LinearOpMode
         while (opModeIsActive())
         {
             /*
-            if(result == 0){
-                drive.followTrajectory(trajectory1);
-            }
-            else if(result == 1){
-                drive.followTrajectory(trajectory2);
-            }
-            else if(result == 2){
-                drive.followTrajectory(trajectory3);
-            }
-             */
             cleste1.close();
             cleste2.close();
             outtake.setTargetPosition(outtake_sus);
             outtake.setVelocity(outtake_velo);
-            drive.followTrajectory(trajectory_up);
+             */
+            odo.jos();
+            drive.followTrajectory(trajectory1);
             cleste1.open();
             cleste2.open();
-            sleep(400);
-            cleste1.close();
-            cleste2.close();
-            brat.jos();
-            drive.followTrajectory(trajectory1);
+            sleep(350);
+            drive.followTrajectory(trajectory2);
         }
 
     }
@@ -288,6 +367,14 @@ public class auto1 extends LinearOpMode
         outtake.setMode(DcMotor.RunMode.RUN_TO_POSITION);
         outtake.setPower(0.0);
         outtake.setTargetPositionTolerance(2);
+
+
+        intake1 = hardwareMap.get(DcMotorEx.class, "intake1");
+        intake1.setMode(DcMotor.RunMode.RUN_USING_ENCODER);
+        intake1.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
+        intake1.setZeroPowerBehavior(DcMotor.ZeroPowerBehavior.BRAKE);
+        intake1.setDirection(DcMotor.Direction.FORWARD);
+        intake1.setPower(0.0);
     }
 
 }
