@@ -74,7 +74,7 @@ public class auto2 extends LinearOpMode
         SampleMecanumDrive drive = new SampleMecanumDrive(hardwareMap);
 
         Trajectory trajectory1 = drive.trajectoryBuilder(new Pose2d())
-                .lineToLinearHeading(new Pose2d(startX+18.25, startY+27, Math.toRadians(0)))
+                .lineToLinearHeading(new Pose2d(startX+22, startY+25.5, Math.toRadians(12)))
                 .addTemporalMarker(0, () -> {
                     cleste1.close();
                     cleste2.close();
@@ -88,11 +88,11 @@ public class auto2 extends LinearOpMode
                 .build();
 
         Trajectory trajectory2 = drive.trajectoryBuilder(trajectory1.end())
-                .splineToConstantHeading(new Vector2d(startX+44.75, startY+28), Math.toRadians(0),
+                .splineToConstantHeading(new Vector2d(startX+44.5, startY+27), Math.toRadians(5),
                         new MinVelocityConstraint(
                                 Arrays.asList(
                                         new AngularVelocityConstraint(DriveConstants.MAX_ANG_VEL),
-                                        new MecanumVelocityConstraint(8.5, DriveConstants.TRACK_WIDTH)
+                                        new MecanumVelocityConstraint(11, DriveConstants.TRACK_WIDTH)
                                 )
                         ),
                         new ProfileAccelerationConstraint(DriveConstants.MAX_ACCEL)
@@ -101,37 +101,52 @@ public class auto2 extends LinearOpMode
                     outtake.setTargetPosition((int)20);
                     outtake.setVelocity(outtake_velo);
                 })
-                .addTemporalMarker(0.7, () -> {
+                .addTemporalMarker(0.75, () -> {
                     cleste2.open();
                     intake1.setVelocity(intake_velo);
                 })
                 .build();
 
         Trajectory trajectory3 = drive.trajectoryBuilder(trajectory2.end())
-                .splineToConstantHeading(new Vector2d(startX+40, startY+1), Math.toRadians(0))
-                .splineToConstantHeading(new Vector2d(startX+52.5, startY+1), Math.toRadians(0),
-                        new MinVelocityConstraint(
-                                Arrays.asList(
-                                        new AngularVelocityConstraint(DriveConstants.MAX_ANG_VEL),
-                                        new MecanumVelocityConstraint(13, DriveConstants.TRACK_WIDTH)
-                                )
-                        ),
-                        new ProfileAccelerationConstraint(DriveConstants.MAX_ACCEL)
-                )
-                .addTemporalMarker(0.1, () -> {
-                    outtake.setTargetPosition((int)10);
-                    outtake.setVelocity(outtake_velo);
-                    cleste2.open();
-                })
-                .addTemporalMarker(0.9, () -> {
-                    intake1.setVelocity(intake_velo);
+                .lineToSplineHeading(new Pose2d(startX+20, startY+23.5, Math.toRadians(5)))
+                .addTemporalMarker(0.55, () -> {
+                    brat.sus();
                 })
 
+                .build();
+
+        Trajectory trajectory4 = drive.trajectoryBuilder(trajectory3.end())
+                .lineToSplineHeading(new Pose2d(startX-23.5, startY+14, Math.toRadians(-152)))
+                .addTemporalMarker(0.5, () -> {
+                    brat.jos();
+                    cleste1.close();
+                    cleste2.close();
+                })
+                .addTemporalMarker(1.3, () -> {
+                    outtake.setTargetPosition(150);
+                })
                 .build();
 
 
 
         /*
+
+
+            .lineToSplineHeading(new Pose2d(startX+22.5, startY+25, Math.toRadians(12)))
+            .waitSeconds(1)
+            .lineToSplineHeading(new Pose2d(startX+44.75, startY+27, Math.toRadians(5)))
+            .waitSeconds(1)
+            .lineToSplineHeading(new Pose2d(startX+20, startY+23.5, Math.toRadians(5)))
+            .waitSeconds(1)
+            .lineToSplineHeading(new Pose2d(startX-23.5, startY+14, Math.toRadians(-152)))
+            .waitSeconds(4)
+            .lineToSplineHeading(new Pose2d(startX-15, startY+5.75, Math.toRadians(-50)))
+            .lineToSplineHeading(new Pose2d(startX-4, startY+4.75, Math.toRadians(-37.5)))
+            .lineToSplineHeading(new Pose2d(startX+21, startY+23.5, Math.toRadians(0)))
+            .waitSeconds(1)
+            .lineToSplineHeading(new Pose2d(startX+44, startY+1, Math.toRadians(0)))
+            .lineToSplineHeading(new Pose2d(startX+70, startY+1, Math.toRadians(0)))
+            .build()
 
         TrajectorySequence myBot = new TrajectorySequence()
                 // Set bot constraints: maxVel, maxAccel, maxAngVel, maxAngAccel, track width
@@ -192,34 +207,38 @@ public class auto2 extends LinearOpMode
          */
 
 
+        odo.jos();
         waitForStart();
 
         while (opModeIsActive())
         {
-            /*
-            cleste1.close();
-            cleste2.close();
-            outtake.setTargetPosition(outtake_sus);
-            outtake.setVelocity(outtake_velo);
-             */
             odo.jos();
             sleep(250);
             drive.followTrajectory(trajectory1);
             cleste1.open();
             cleste2.open();
-            sleep(300);
-            outtake.setTargetPosition(1890);
+            sleep(100);
+            outtake.setTargetPosition(1880);
             outtake.setVelocity(outtake_velo);
-            sleep(600);
+            sleep(500);
             brat.jos();
             cleste1.close();
             cleste2.close();
-            sleep(700);
+            sleep(600);
             outtake.setTargetPosition(150);
             drive.followTrajectory(trajectory2);
             cleste2.close();
             cleste1.close();
-            sleep(500);
+            sleep(300);
+            outtake.setTargetPosition(outtake_sus);
+            drive.followTrajectory(trajectory3);
+            cleste1.open();
+            cleste2.open();
+            sleep(50);
+            drive.followTrajectory(trajectory4);
+            intake1.setVelocity(-440);
+            sleep(2000);
+            intake1.setVelocity(0);
             stop();
         }
 

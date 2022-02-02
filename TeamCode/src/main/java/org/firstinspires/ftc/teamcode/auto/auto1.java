@@ -3,6 +3,10 @@ package org.firstinspires.ftc.teamcode.auto;
 import com.acmerobotics.roadrunner.geometry.Pose2d;
 import com.acmerobotics.roadrunner.geometry.Vector2d;
 import com.acmerobotics.roadrunner.trajectory.Trajectory;
+import com.acmerobotics.roadrunner.trajectory.constraints.AngularVelocityConstraint;
+import com.acmerobotics.roadrunner.trajectory.constraints.MecanumVelocityConstraint;
+import com.acmerobotics.roadrunner.trajectory.constraints.MinVelocityConstraint;
+import com.acmerobotics.roadrunner.trajectory.constraints.ProfileAccelerationConstraint;
 import com.qualcomm.robotcore.eventloop.opmode.Autonomous;
 import com.qualcomm.robotcore.eventloop.opmode.LinearOpMode;
 import com.qualcomm.robotcore.hardware.DcMotor;
@@ -10,6 +14,7 @@ import com.qualcomm.robotcore.hardware.DcMotorEx;
 import com.qualcomm.robotcore.hardware.Gamepad;
 
 import org.firstinspires.ftc.robotcore.external.hardware.camera.WebcamName;
+import org.firstinspires.ftc.teamcode.drive.DriveConstants;
 import org.firstinspires.ftc.teamcode.drive.SampleMecanumDrive;
 import org.firstinspires.ftc.teamcode.hardware.servo_brat;
 import org.firstinspires.ftc.teamcode.hardware.servo_cleste1;
@@ -28,6 +33,8 @@ import org.openftc.easyopencv.OpenCvCameraRotation;
 import org.openftc.easyopencv.OpenCvPipeline;
 import org.openftc.easyopencv.OpenCvWebcam;
 
+import java.util.Arrays;
+
 @Autonomous
 //@Disabled
 public class auto1 extends LinearOpMode
@@ -35,11 +42,11 @@ public class auto1 extends LinearOpMode
     OpenCvCamera webcam;
     public int result = 0;
 
-    public static double intake_velo = 850;
+    public static double intake_velo = 950;
     public static double outtake_velo = 2000;
     //public static double outtake_dist = 1950;
-    public static int outtake_sus = 1600;
-    public static int outtake_mijl = 1100;
+    public static int outtake_sus = 1300;
+    public static int outtake_mijl = 790;
     public static int outtake_jos = 750;
 
     public static double down_pos = 5;
@@ -71,11 +78,11 @@ public class auto1 extends LinearOpMode
         final Scalar GREEN = new Scalar(0, 255, 0);
 
 
-        final Point REGION1_TOPLEFT_ANCHOR_POINT = new Point(25,98);
-        final Point REGION2_TOPLEFT_ANCHOR_POINT = new Point(150,98);
-        final Point REGION3_TOPLEFT_ANCHOR_POINT = new Point(275,98);
-        static final int REGION_WIDTH = 20;
-        static final int REGION_HEIGHT = 20;
+        final Point REGION1_TOPLEFT_ANCHOR_POINT = new Point(12,111);
+        final Point REGION2_TOPLEFT_ANCHOR_POINT = new Point(128,111);
+        final Point REGION3_TOPLEFT_ANCHOR_POINT = new Point(245,111);
+        static final int REGION_WIDTH = 25;
+        static final int REGION_HEIGHT = 18;
 
         Point region1_pointA = new Point(
                 REGION1_TOPLEFT_ANCHOR_POINT.x,
@@ -216,6 +223,7 @@ public class auto1 extends LinearOpMode
         servo_cleste1 cleste1 = new servo_cleste1(hardwareMap);
         servo_cleste2 cleste2 = new servo_cleste2(hardwareMap);
         servo_odo odo = new servo_odo(hardwareMap);
+        someRandomShit();
 
         // Camera
 
@@ -226,7 +234,7 @@ public class auto1 extends LinearOpMode
         IgnitePipeline visionPipeline = new IgnitePipeline();
         webcam.setPipeline(visionPipeline);
         // Start streaming the pipeline
-        webcam.startStreaming(320,240,OpenCvCameraRotation.UPRIGHT);
+        webcam.startStreaming(320,240,OpenCvCameraRotation.UPSIDE_DOWN);
 
 
         // Drive
@@ -234,123 +242,239 @@ public class auto1 extends LinearOpMode
         SampleMecanumDrive drive = new SampleMecanumDrive(hardwareMap);
 
         Trajectory trajectory1 = drive.trajectoryBuilder(new Pose2d())
-                .lineToLinearHeading(new Pose2d(startX-10.5, startY+23, Math.toRadians(15)))
+                .lineToLinearHeading(new Pose2d(startX+23, startY+26, Math.toRadians(12)))
                 .addTemporalMarker(0, () -> {
                     cleste1.close();
                     cleste2.close();
                     brat.jos();
-                    outtake.setTargetPosition(outtake_sus);
+                    outtake.setTargetPosition((int)outtake_sus);
                     outtake.setVelocity(outtake_velo);
                 })
-                .addTemporalMarker(0, () -> {
+                .addTemporalMarker(0.75, () -> {
                     brat.sus();
                 })
                 .build();
 
-        Trajectory trajectory2 = drive.trajectoryBuilder(trajectory1.end())
-                .lineToLinearHeading(new Pose2d(startX+10, startY+1, Math.toRadians(0)))
-                .addTemporalMarker(0.7, () -> {
+        Trajectory trajectoryy1 = drive.trajectoryBuilder(new Pose2d())
+                .lineToLinearHeading(new Pose2d(startX+23, startY+25.5, Math.toRadians(12)))
+                .addTemporalMarker(0, () -> {
                     cleste1.close();
                     cleste2.close();
                     brat.jos();
-                    outtake.setTargetPosition(outtake_sus);
+                    outtake.setTargetPosition((int)outtake_mijl);
                     outtake.setVelocity(outtake_velo);
                 })
-                .addTemporalMarker(1.6, () -> {
-                    outtake.setTargetPosition(150);
+                .addTemporalMarker(0.55, () -> {
+                    brat.first();
+                })
+                .addTemporalMarker(0.95, () -> {
+                    outtake.setTargetPosition((outtake_jos-220));
+                })
+                .build();
+
+        Trajectory trajectoryyy1 = drive.trajectoryBuilder(new Pose2d())
+                .lineToLinearHeading(new Pose2d(startX+23, startY+25.5, Math.toRadians(12)))
+                .addTemporalMarker(0, () -> {
+                    cleste1.close();
+                    cleste2.close();
+                    brat.jos();
+                    outtake.setTargetPosition((int)outtake_jos);
                     outtake.setVelocity(outtake_velo);
                 })
-                .splineToConstantHeading(new Vector2d(startX+44, startY+1), Math.toRadians(0))
-                .addTemporalMarker(2.6, () -> {
-                    outtake.setTargetPosition(10);
+                .addTemporalMarker(0.55, () -> {
+                    brat.first();
+                })
+                .addTemporalMarker(0.95, () -> {
+                    outtake.setTargetPosition((outtake_jos-570));
+                })
+                .build();
+
+        Trajectory trajectory2 = drive.trajectoryBuilder(trajectory1.end())
+                .splineToConstantHeading(new Vector2d(startX+45, startY+24), Math.toRadians(0),
+                        new MinVelocityConstraint(
+                                Arrays.asList(
+                                        new AngularVelocityConstraint(DriveConstants.MAX_ANG_VEL),
+                                        new MecanumVelocityConstraint(11, DriveConstants.TRACK_WIDTH)
+                                )
+                        ),
+                        new ProfileAccelerationConstraint(DriveConstants.MAX_ACCEL)
+                )
+                .addTemporalMarker(0.35, () -> {
+                    outtake.setTargetPosition((int)20);
                     outtake.setVelocity(outtake_velo);
+                })
+                .addTemporalMarker(0.75, () -> {
                     cleste2.open();
-                })
-                .addTemporalMarker(3.5, () -> {
                     intake1.setVelocity(intake_velo);
+                })
+                .build();
+
+        Trajectory trajectory3 = drive.trajectoryBuilder(trajectory2.end())
+                .lineToSplineHeading(new Pose2d(startX+21.25, startY+27.5, Math.toRadians(5)))
+                .addTemporalMarker(0.39, () -> {
+                    brat.sus();
+                    intake1.setVelocity(0);
                 })
 
                 .build();
 
+        Trajectory trajectory4 = drive.trajectoryBuilder(trajectory3.end())
+                .lineToSplineHeading(new Pose2d(startX-30.75, startY+6.5, Math.toRadians(-158)))
+                .addTemporalMarker(0.5, () -> {
+                    brat.jos();
+                    cleste1.close();
+                    cleste2.close();
+                })
+                .addTemporalMarker(1.3, () -> {
+                    outtake.setTargetPosition(150);
+                })
+                .build();
+
+        Trajectory trajectory5 = drive.trajectoryBuilder(trajectory4.end())
+                .lineToSplineHeading(new Pose2d(startX+38, startY+4, Math.toRadians(0)))
+                .build();
+
+        Trajectory trajectory6 = drive.trajectoryBuilder(trajectory5.end())
+                .lineToSplineHeading(new Pose2d(startX+41, startY-5, Math.toRadians(0)),
+                        new MinVelocityConstraint(
+                                Arrays.asList(
+                                        new AngularVelocityConstraint(DriveConstants.MAX_ANG_VEL),
+                                        new MecanumVelocityConstraint(7.5, DriveConstants.TRACK_WIDTH)
+                                )
+                        ),
+                        new ProfileAccelerationConstraint(DriveConstants.MAX_ACCEL)
+                )
+                .build();
+
+        Trajectory trajectory7 = drive.trajectoryBuilder(trajectory6.end())
+                .lineToSplineHeading(new Pose2d(startX+72, startY-5, Math.toRadians(0)),
+                        new MinVelocityConstraint(
+                                Arrays.asList(
+                                        new AngularVelocityConstraint(DriveConstants.MAX_ANG_VEL),
+                                        new MecanumVelocityConstraint(10, DriveConstants.TRACK_WIDTH)
+                                )
+                        ),
+                        new ProfileAccelerationConstraint(DriveConstants.MAX_ACCEL)
+                )
+                .build();
 
 
-        /*
 
-        TrajectorySequence myBot = new TrajectorySequence()
-                // Set bot constraints: maxVel, maxAccel, maxAngVel, maxAngAccel, track width
-                .setConstraints(50, 40, Math.toRadians(180), Math.toRadians(180), 10.5)
-                .setDimensions(12.5, 17)
-                .followTrajectorySequence(drive ->
-                        drive.trajectorySequenceBuilder(new Pose2d(startX, startY, 0))
-
-
-
-                                //next cycle
-                                .UNSTABLE_addDisplacementMarkerOffset(0, () -> {
-                                    //opreste intake
-                                })
-                                .UNSTABLE_addTemporalMarkerOffset(0.1, () -> {
-                                    //invers intake
-                                    //inchide cleste
-                                })
-                                .UNSTABLE_addTemporalMarkerOffset(0.35, () -> {
-                                    //glisiera 200
-                                    //opreste intake
-                                })
-
-                                //.setAccelConstraint(TrajectoryAccelerationConstraint.get(10.0))
-                                .waitSeconds(0.25)
-                                .lineToLinearHeading(new Pose2d(startX+10, startY+1, Math.toRadians(0)))
-
-                                .UNSTABLE_addDisplacementMarkerOffset(-15, () -> {
-                                    //glisiera 1000
-                                })
-                                .UNSTABLE_addDisplacementMarkerOffset(16, () -> {
-                                    //brat sus
-                                })
-                                .UNSTABLE_addDisplacementMarkerOffset(39, () -> {
-                                    //deschide cleste
-                                })
-                                .UNSTABLE_addDisplacementMarkerOffset(52, () -> {
-                                    //inchide cleste
-                                    //brat jos
-                                })
-                                .UNSTABLE_addDisplacementMarkerOffset(80, () -> {
-                                    //glisiera 200
-                                })
-                                .splineToConstantHeading(new Vector2d(startX-13, startY+23), Math.toRadians(0))
-                                .splineToConstantHeading(new Vector2d(startX+12, startY+1), Math.toRadians(0))
-                                .splineToConstantHeading(new Vector2d(startX+44, startY+1), Math.toRadians(0))
-                                .UNSTABLE_addDisplacementMarkerOffset(18, () -> {
-                                    //glisiera 0
-                                    //cleste 1 open
-                                })
-                                .UNSTABLE_addDisplacementMarkerOffset(28, () -> {
-                                    //start intake
-                                })
-
-                                .build()
-                );
-
-         */
-
-
+        odo.jos();
+        telemetry.addData("", result+1);
+        telemetry.update();
         waitForStart();
 
         while (opModeIsActive())
         {
-            /*
-            cleste1.close();
-            cleste2.close();
-            outtake.setTargetPosition(outtake_sus);
-            outtake.setVelocity(outtake_velo);
-             */
-            odo.jos();
-            drive.followTrajectory(trajectory1);
-            cleste1.open();
-            cleste2.open();
-            sleep(350);
-            drive.followTrajectory(trajectory2);
+            if(result == 0)
+            {
+                odo.jos();
+                sleep(250);
+                drive.followTrajectory(trajectoryyy1);
+                cleste1.open();
+                cleste2.open();
+                sleep(100);
+                outtake.setTargetPosition(1880);
+                outtake.setVelocity(outtake_velo);
+                sleep(500);
+                brat.jos();
+                cleste1.close();
+                cleste2.close();
+                sleep(600);
+                outtake.setTargetPosition(150);
+                drive.followTrajectory(trajectory2);
+                cleste2.close();
+                cleste1.close();
+                sleep(300);
+                outtake.setTargetPosition(outtake_sus);
+                drive.followTrajectory(trajectory3);
+                cleste1.open();
+                cleste2.open();
+                sleep(50);
+                drive.followTrajectory(trajectory4);
+                intake1.setVelocity(-440);
+                intake1.setVelocity(-440);
+                sleep(2000);
+                intake1.setVelocity(0);
+                sleep(1500);
+                drive.followTrajectory(trajectory5);
+                drive.followTrajectory(trajectory6);
+                drive.followTrajectory(trajectory7);
+                outtake.setTargetPosition(-20);
+                stop();
+            }
+            if(result == 1)
+            {
+                odo.jos();
+                sleep(250);
+                drive.followTrajectory(trajectoryy1);
+                cleste1.open();
+                cleste2.open();
+                sleep(100);
+                outtake.setTargetPosition(1880);
+                outtake.setVelocity(outtake_velo);
+                sleep(500);
+                brat.jos();
+                cleste1.close();
+                cleste2.close();
+                sleep(600);
+                outtake.setTargetPosition(150);
+                drive.followTrajectory(trajectory2);
+                cleste2.close();
+                cleste1.close();
+                sleep(300);
+                outtake.setTargetPosition(outtake_sus);
+                drive.followTrajectory(trajectory3);
+                cleste1.open();
+                cleste2.open();
+                sleep(50);
+                drive.followTrajectory(trajectory4);
+                intake1.setVelocity(-440);
+                sleep(2000);
+                intake1.setVelocity(0);
+                sleep(1500);
+                drive.followTrajectory(trajectory5);
+                drive.followTrajectory(trajectory6);
+                drive.followTrajectory(trajectory7);
+                outtake.setTargetPosition(-20);
+                stop();
+            }
+            if(result == 2)
+            {
+                odo.jos();
+                sleep(250);
+                drive.followTrajectory(trajectory1);
+                cleste2.open();
+                sleep(100);
+                outtake.setTargetPosition(1880);
+                outtake.setVelocity(outtake_velo);
+                sleep(500);
+                brat.jos();
+                cleste1.close();
+                cleste2.close();
+                sleep(600);
+                outtake.setTargetPosition(150);
+                drive.followTrajectory(trajectory2);
+                cleste2.close();
+                cleste1.close();
+                sleep(300);
+                outtake.setTargetPosition(outtake_sus);
+                drive.followTrajectory(trajectory3);
+                cleste1.open();
+                cleste2.open();
+                sleep(50);
+                drive.followTrajectory(trajectory4);
+                intake1.setVelocity(-440);
+                sleep(2000);
+                intake1.setVelocity(0);
+                sleep(1500);
+                drive.followTrajectory(trajectory5);
+                drive.followTrajectory(trajectory6);
+                drive.followTrajectory(trajectory7);
+                outtake.setTargetPosition(-20);
+                stop();
+            }
         }
 
     }

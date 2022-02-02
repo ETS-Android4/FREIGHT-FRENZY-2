@@ -30,6 +30,7 @@ import org.firstinspires.ftc.robotcore.external.navigation.AxesOrder;
 import org.firstinspires.ftc.robotcore.external.navigation.AxesReference;
 import org.firstinspires.ftc.robotcore.external.navigation.Orientation;
 import org.firstinspires.ftc.teamcode.drive.SampleMecanumDrive;
+import org.firstinspires.ftc.teamcode.hardware.servo_odo;
 
 
 import static java.lang.Boolean.FALSE;
@@ -112,6 +113,9 @@ public class augmenteddrive extends LinearOpMode {
         servo_brat brat = new servo_brat(hardwareMap);
         servo_cleste1 cleste1 = new servo_cleste1(hardwareMap);
         servo_cleste2 cleste2 = new servo_cleste2(hardwareMap);
+        servo_odo odo = new servo_odo(hardwareMap);
+
+        odo.jos();
         cleste1.close();
         cleste2.close();
         brat.jos();
