@@ -7,6 +7,7 @@ public class servo_cleste1 {
     public Servo servo = null;
 
     public static double POS_DESC = 0.44;
+    public static double POS_SEMI = 0.36;
     public static double POS_INCH = 0.24;
 
     public servo_cleste1(HardwareMap hwMap) {
@@ -21,6 +22,7 @@ public class servo_cleste1 {
     }
 
     public void open() { setServoPositions(POS_DESC);}
+    public void semi() { setServoPositions(POS_SEMI);}
     public void close() { setServoPositions(POS_INCH);}
 
 }

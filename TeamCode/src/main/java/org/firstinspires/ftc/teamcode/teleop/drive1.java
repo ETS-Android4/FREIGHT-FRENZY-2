@@ -52,7 +52,6 @@ public class drive1 extends LinearOpMode {
 
     init_robot conserva = new init_robot();
 
-
     private double root2 = Math.sqrt(2.0);
     private boolean slow_mode = false;
     private boolean reverse_intake = false;

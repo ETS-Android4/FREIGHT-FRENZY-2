@@ -46,7 +46,7 @@ public class autofreight extends LinearOpMode
     public static int outtake_mijl = 790;
     public static int outtake_jos = 750;
 
-    public static double down_pos = 5;
+    public static int down_pos = 5;
     public static double p = 2.5;
     public static double i = 1;
     public static double d = 0;
@@ -244,7 +244,7 @@ public class autofreight extends LinearOpMode
                     cleste1.close();
                     cleste2.close();
                     brat.jos();
-                    outtake.setTargetPosition((int)outtake_sus);
+                    outtake.setTargetPosition(outtake_sus);
                     outtake.setVelocity(outtake_velo);
                 })
                 .addTemporalMarker(0.6, () -> {
@@ -290,10 +290,11 @@ public class autofreight extends LinearOpMode
                 .strafeTo(new Vector2d(startX+5, startY+1))
                 .addTemporalMarker(0.55, () -> {
                     brat.jos();
-                    cleste2.close();
+                    cleste2.semi();
+                    cleste1.semi();
                 })
                 .addTemporalMarker(1.1, () -> {
-                    outtake.setTargetPosition(20);
+                    outtake.setTargetPosition(down_pos);
                 })
                 .build();
 
@@ -322,10 +323,11 @@ public class autofreight extends LinearOpMode
                 .strafeTo(new Vector2d(startX+5, startY+1))
                 .addTemporalMarker(0.55, () -> {
                     brat.jos();
-                    cleste2.close();
+                    cleste2.semi();
+                    cleste1.semi();
                 })
                 .addTemporalMarker(1.1, () -> {
-                    outtake.setTargetPosition(20);
+                    outtake.setTargetPosition(down_pos);
                 })
                 .build();
 
@@ -354,10 +356,11 @@ public class autofreight extends LinearOpMode
                 .strafeTo(new Vector2d(startX+5, startY+1))
                 .addTemporalMarker(0.55, () -> {
                     brat.jos();
-                    cleste2.close();
+                    cleste2.semi();
+                    cleste1.semi();
                 })
                 .addTemporalMarker(1.1, () -> {
-                    outtake.setTargetPosition(20);
+                    outtake.setTargetPosition(down_pos);
                 })
                 .build();
 
@@ -368,8 +371,12 @@ public class autofreight extends LinearOpMode
 
 
         odo.jos();
-        telemetry.addData("", result+1);
-        telemetry.update();
+
+        outtake.setTargetPosition(50);
+        outtake.setVelocity(outtake_velo);
+        cleste1.close();
+        cleste2.close();
+
         waitForStart();
 
         while (opModeIsActive())

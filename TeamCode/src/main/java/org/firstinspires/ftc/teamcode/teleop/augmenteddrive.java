@@ -126,6 +126,9 @@ public class augmenteddrive extends LinearOpMode {
         drive = new SampleMecanumDrive(hardwareMap);
         drive.setMode(DcMotor.RunMode.RUN_WITHOUT_ENCODER);
 
+        outtake.setTargetPosition(50);
+        outtake.setVelocity(1000);
+
         waitForStart();
 
         if (isStopRequested()) return;
@@ -147,51 +150,11 @@ public class augmenteddrive extends LinearOpMode {
 
                     drive.setDrivePower(
                             new Pose2d(
-                                    gamepad1.left_stick_x,
-                                     -gamepad1.left_stick_y,
+                                     gamepad1.left_stick_x,
+                                    -gamepad1.left_stick_y,
                                     -gamepad1.right_stick_x
                             )
                     );
-
-                    if(gamepad1.dpad_left)
-                    {
-                        resetPositionLine();
-
-                        Trajectory trajectory1 = drive.trajectoryBuilder(new Pose2d(), true)
-                                .strafeTo(new Vector2d(-32, 0))
-                                .splineToConstantHeading(new Vector2d(-56, 27), Math.toRadians(0))
-                                .addTemporalMarker(0, () -> {
-                                    outtake.setTargetPosition((int)outtake_sus);
-                                    outtake.setVelocity(outtake_velo);
-                                })
-                                .addTemporalMarker(1, () -> {
-                                    brat.sus();
-                                })
-                                .build();
-
-                        drive.followTrajectory(trajectory1);
-                    }
-
-                    if(gamepad1.dpad_right)
-                    {
-                        Trajectory trajectory2 = drive.trajectoryBuilder(new Pose2d(-56, 26, 0))
-                                .strafeTo(new Vector2d(-40, 5))
-                                .splineToConstantHeading(new Vector2d(10, 5), Math.toRadians(0))
-                                .addTemporalMarker(0.8, () -> {
-                                    cleste1.close();
-                                    cleste2.close();
-                                    brat.jos();
-                                })
-                                .addTemporalMarker(1.4, () -> {
-                                    outtake.setTargetPosition(down_pos);
-                                })
-                                .build();
-
-                        cleste1.open();
-                        cleste2.open();
-                        sleep(250);
-                        drive.followTrajectory(trajectory2);
-                    }
 
 
                     if(gamepad1.a)
@@ -234,14 +197,7 @@ public class augmenteddrive extends LinearOpMode {
                     if(gamepad2.y && outtake.getCurrentPosition() > 750){
                         brat.sus();
                     }
-            /*
-            if(gp2.b){
-                brat.second();
-            }
-            if(gp2.a){
-                brat.first();
-            }
-             */
+
                     if(gamepad2.x)
                     {
                         cleste1.open();
@@ -296,6 +252,81 @@ public class augmenteddrive extends LinearOpMode {
                     if (gamepad1.x) {
                         drive.cancelFollowing();
                         currentMode = Mode.DRIVER_CONTROL;
+                    }
+
+                    if(gamepad1.dpad_left)
+                    {
+                        resetPositionLine();
+
+                        Trajectory trajectory1 = drive.trajectoryBuilder(new Pose2d(), true)
+                                .strafeTo(new Vector2d(-32, 0))
+                                .splineToConstantHeading(new Vector2d(-56, 27), Math.toRadians(0))
+                                .addTemporalMarker(0, () -> {
+                                    outtake.setTargetPosition((int)outtake_sus);
+                                    outtake.setVelocity(outtake_velo);
+                                })
+                                .addTemporalMarker(1, () -> {
+                                    brat.sus();
+                                })
+                                .build();
+
+                        drive.followTrajectory(trajectory1);
+                    }
+
+                    if(gamepad1.dpad_right)
+                    {
+                        Trajectory trajectory2 = drive.trajectoryBuilder(new Pose2d(-56, 26, 0))
+                                .strafeTo(new Vector2d(-40, 5))
+                                .splineToConstantHeading(new Vector2d(12, 5), Math.toRadians(0))
+                                .addTemporalMarker(0.8, () -> {
+                                    cleste1.semi();
+                                    cleste2.semi();
+                                    brat.jos();
+                                })
+                                .addTemporalMarker(1.4, () -> {
+                                    outtake.setTargetPosition(down_pos);
+                                })
+                                .build();
+
+                        cleste1.open();
+                        cleste2.open();
+                        sleep(250);
+                        drive.followTrajectory(trajectory2);
+                    }
+
+                    if(gamepad1.dpad_up)
+                    {
+                        resetPositionLine();
+
+                        Trajectory trajectory1 = drive.trajectoryBuilder(new Pose2d())
+                                .strafeTo(new Vector2d(-32, 0))
+                                .splineToConstantHeading(new Vector2d(-56, 27), Math.toRadians(0))
+                                .addTemporalMarker(0, () -> {
+                                    outtake.setTargetPosition((int)outtake_sus);
+                                    outtake.setVelocity(outtake_velo);
+                                })
+                                .addTemporalMarker(1, () -> {
+                                    brat.sus();
+                                })
+                                .build();
+
+                        Trajectory trajectory2 = drive.trajectoryBuilder(trajectory1.end())
+                                .strafeTo(new Vector2d(-40, 5))
+                                .splineToConstantHeading(new Vector2d(12, 5), Math.toRadians(0))
+                                .addTemporalMarker(0.8, () -> {
+                                    cleste1.semi();
+                                    cleste2.semi();
+                                    brat.jos();
+                                })
+                                .addTemporalMarker(1.4, () -> {
+                                    outtake.setTargetPosition(down_pos);
+                                })
+                                .build();
+
+                        drive.followTrajectory(trajectory1);
+                        cleste1.semi();
+                        cleste2.semi();
+                        drive.followTrajectory(trajectory2);
                     }
 
                     // If drive finishes its task, cede control to the driver
