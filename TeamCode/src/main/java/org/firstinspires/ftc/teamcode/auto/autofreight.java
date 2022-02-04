@@ -220,6 +220,7 @@ public class autofreight extends LinearOpMode
         servo_cleste1 cleste1 = new servo_cleste1(hardwareMap);
         servo_cleste2 cleste2 = new servo_cleste2(hardwareMap);
         servo_odo odo = new servo_odo(hardwareMap);
+        odo.jos();
         someRandomShit();
 
         // Camera
@@ -370,7 +371,6 @@ public class autofreight extends LinearOpMode
 
 
 
-        odo.jos();
 
         outtake.setTargetPosition(50);
         outtake.setVelocity(outtake_velo);
