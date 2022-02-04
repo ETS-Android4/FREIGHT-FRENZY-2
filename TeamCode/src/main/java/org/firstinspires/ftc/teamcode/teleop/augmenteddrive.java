@@ -45,14 +45,15 @@ public class augmenteddrive extends LinearOpMode {
 
     public boolean ok = false;
     public boolean ok_intake = false;
-    public boolean okk_intake = true;
+    public boolean ok2 = false;
 
     public static double outtake_velo = 2000;
-    public static double outtake_sus = 1200;
-    public static double outtake_mijl = 770;
+    //public static double outtake_dist = 1950;
+    public static double outtake_sus = 1300;
+    public static double outtake_mijl = 760;
     public static double outtake_jos = 550;
+    public static int down_pos = 50;
 
-    public static double down_pos = 5;
     public static double p = 2.5;
     public static double i = 1;
     public static double d = 0;
@@ -61,6 +62,8 @@ public class augmenteddrive extends LinearOpMode {
     public DcMotorEx outtake = null;
     public DcMotorEx intake1 = null;
     public DcMotorEx intake2 = null;
+
+    private ElapsedTime runtime = new ElapsedTime();
 
     public double intake_speed = 0.58;
 
@@ -144,24 +147,24 @@ public class augmenteddrive extends LinearOpMode {
 
                     drive.setDrivePower(
                             new Pose2d(
-                                    -gamepad1.left_stick_y,
-                                    -gamepad1.left_stick_x,
+                                    gamepad1.left_stick_x,
+                                     -gamepad1.left_stick_y,
                                     -gamepad1.right_stick_x
                             )
                     );
 
-                    if(gamepad1.dpad_up)
+                    if(gamepad1.dpad_left)
                     {
                         resetPositionLine();
 
-                        Trajectory trajectory1 = drive.trajectoryBuilder(new Pose2d(0, 0, 0))
-                                .strafeTo(new Vector2d(-20, 0))
-                                .splineTo(new Vector2d(-35, -20), Math.toRadians(0))
-                                .addTemporalMarker(0.8, () -> {
+                        Trajectory trajectory1 = drive.trajectoryBuilder(new Pose2d(), true)
+                                .strafeTo(new Vector2d(-32, 0))
+                                .splineToConstantHeading(new Vector2d(-56, 27), Math.toRadians(0))
+                                .addTemporalMarker(0, () -> {
                                     outtake.setTargetPosition((int)outtake_sus);
                                     outtake.setVelocity(outtake_velo);
                                 })
-                                .addTemporalMarker(1.3, () -> {
+                                .addTemporalMarker(1, () -> {
                                     brat.sus();
                                 })
                                 .build();
@@ -169,24 +172,24 @@ public class augmenteddrive extends LinearOpMode {
                         drive.followTrajectory(trajectory1);
                     }
 
-                    if(gamepad1.dpad_down)
+                    if(gamepad1.dpad_right)
                     {
-                        Trajectory trajectory2 = drive.trajectoryBuilder(new Pose2d(0, 0, 0))
-                                .splineTo(new Vector2d(-20, 0), Math.toRadians(0))
-                                .splineTo(new Vector2d(0, 0), Math.toRadians(0))
-                                .addTemporalMarker(0.4, () -> {
+                        Trajectory trajectory2 = drive.trajectoryBuilder(new Pose2d(-56, 26, 0))
+                                .strafeTo(new Vector2d(-40, 5))
+                                .splineToConstantHeading(new Vector2d(10, 5), Math.toRadians(0))
+                                .addTemporalMarker(0.8, () -> {
                                     cleste1.close();
                                     cleste2.close();
                                     brat.jos();
                                 })
-                                .addTemporalMarker(1.1, () -> {
-                                    outtake.setTargetPosition(150);
+                                .addTemporalMarker(1.4, () -> {
+                                    outtake.setTargetPosition(down_pos);
                                 })
                                 .build();
 
                         cleste1.open();
                         cleste2.open();
-                        sleep(400);
+                        sleep(250);
                         drive.followTrajectory(trajectory2);
                     }
 
@@ -197,34 +200,92 @@ public class augmenteddrive extends LinearOpMode {
 
                     // GAMEPAD 2 //
 
-                    if(gamepad2.right_trigger > 0.1) {
-                        cleste1.close();
-                        cleste2.open();
-                        outtake.setTargetPosition((int)down_pos);
+                    if(gamepad2.dpad_up){
+                        outtake.setTargetPosition((int)outtake_sus);
                         outtake.setVelocity(outtake_velo);
-
-                        intake1.setVelocity(1500*Math.min(gamepad2.right_trigger, intake_speed));
-
-                        ok_intake = true;
                     }
 
+
+                    if(gamepad2.dpad_left){
+                        intake1.setVelocity(0);
+                        outtake.setTargetPosition(1750);
+                        outtake.setVelocity(outtake_velo);
+                        runtime.reset();
+                        ok = true;
+                    }
+
+                    if(runtime.seconds() > 0.5 && ok)
+                    {
+                        ok = false;
+                        ok2 = true;
+                        brat.jos();
+                        cleste1.close();
+                        cleste2.close();
+                        runtime.reset();
+                    }
+
+                    if(runtime.seconds() > 0.5 && ok2)
+                    {
+                        ok2 = false;
+                        outtake.setTargetPosition(down_pos);
+                    }
+
+
+                    if(gamepad2.y && outtake.getCurrentPosition() > 750){
+                        brat.sus();
+                    }
+            /*
+            if(gp2.b){
+                brat.second();
+            }
+            if(gp2.a){
+                brat.first();
+            }
+             */
+                    if(gamepad2.x)
+                    {
+                        cleste1.open();
+                        cleste2.open();
+                    }
+                    if(gamepad2.a && gamepad2.b)
+                    {
+                        outtake.setTargetPosition(-100);
+                        outtake.setVelocity(1000);
+                        sleep(250);
+                        resetOuttakeEncoder();
+                        sleep(250);
+                    }
+
+                    if(gamepad2.left_trigger > 0.1 && gamepad2.right_trigger > 0.1){
+                        cleste1.close();
+                        cleste2.open();
+                        outtake.setTargetPosition(down_pos);
+                        outtake.setVelocity(outtake_velo);
+                        intake1.setVelocity(-1500*Math.min(gamepad2.right_trigger, intake_speed));
+                        ok_intake = true;
+                    }
+                    else if(gamepad2.right_trigger > 0.1) {
+                        cleste1.close();
+                        cleste2.open();
+                        outtake.setTargetPosition(down_pos);
+                        outtake.setVelocity(outtake_velo);
+                        intake1.setVelocity(1500*Math.min(gamepad2.right_trigger, intake_speed));
+                        ok_intake = true;
+                    }
                     else if(ok_intake){
                         cleste1.close();
                         cleste2.close();
                         intake1.setVelocity(0);
-                        sleep(350);
-                        outtake.setTargetPosition(200);
-                        outtake.setVelocity(outtake_velo);
                         ok_intake = false;
                     }
 
                     if(gamepad2.b){
                         intake1.setVelocity(-440);
                         intake2.setVelocity(440);
-                        sleep(1380);
+                        sleep(1430);
                         intake1.setVelocity(-1400);
                         intake2.setVelocity(1400);
-                        sleep(180);
+                        sleep(250);
                         intake1.setVelocity(0);
                         intake2.setVelocity(0);
                     }
@@ -259,6 +320,21 @@ public class augmenteddrive extends LinearOpMode {
     }
 
     public void someRandomShit(){
+
+        outtake = hardwareMap.get(DcMotorEx.class, "outtake");
+        outtake.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
+        outtake.setZeroPowerBehavior(DcMotor.ZeroPowerBehavior.FLOAT);
+        outtake.setDirection(DcMotor.Direction.FORWARD);
+        outtake.setVelocityPIDFCoefficients(p, i, d, f);
+        outtake.setPositionPIDFCoefficients(pp);
+        outtake.setTargetPosition(5);
+        outtake.setMode(DcMotor.RunMode.RUN_TO_POSITION);
+        outtake.setPower(0.0);
+        outtake.setTargetPositionTolerance(2);
+
+    }
+
+    public void resetOuttakeEncoder(){
 
         outtake = hardwareMap.get(DcMotorEx.class, "outtake");
         outtake.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);

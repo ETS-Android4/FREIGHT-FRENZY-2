@@ -252,6 +252,40 @@ public class autofreight extends LinearOpMode
                 })
                 .build();
 
+        Trajectory trajectory11 = drive.trajectoryBuilder(new Pose2d())
+                .lineToLinearHeading(new Pose2d(startX-13.5, startY+29, Math.toRadians(0)))
+                .addTemporalMarker(0, () -> {
+                    cleste1.close();
+                    cleste2.close();
+                    brat.jos();
+                    outtake.setTargetPosition((int)outtake_mijl);
+                    outtake.setVelocity(outtake_velo);
+                })
+                .addTemporalMarker(0.5, () -> {
+                    brat.second();
+                })
+                .addTemporalMarker(0.8, () -> {
+                    outtake.setTargetPosition((int)outtake_mijl-225);
+                })
+                .build();
+
+        Trajectory trajectory111 = drive.trajectoryBuilder(new Pose2d())
+                .lineToLinearHeading(new Pose2d(startX-13.5, startY+29, Math.toRadians(0)))
+                .addTemporalMarker(0, () -> {
+                    cleste1.close();
+                    cleste2.close();
+                    brat.jos();
+                    outtake.setTargetPosition((int)outtake_sus);
+                    outtake.setVelocity(outtake_velo);
+                })
+                .addTemporalMarker(0.5, () -> {
+                    brat.first();
+                })
+                .addTemporalMarker(0.8, () -> {
+                    outtake.setTargetPosition((int)outtake_mijl-570);
+                })
+                .build();
+
         Trajectory trajectory2 = drive.trajectoryBuilder(trajectory1.end())
                 .strafeTo(new Vector2d(startX+5, startY+1))
                 .addTemporalMarker(0.55, () -> {
@@ -272,7 +306,7 @@ public class autofreight extends LinearOpMode
                 })
                 .build();
 
-        Trajectory trajectory4 = drive.trajectoryBuilder(trajectory3.end(), true)
+        Trajectory trajectory4 = drive.trajectoryBuilder(trajectory3.end())
                 .strafeTo(new Vector2d(startX+5, startY+1))
                 .addTemporalMarker(0.8, () -> {
                     brat.sus();
@@ -280,7 +314,7 @@ public class autofreight extends LinearOpMode
                 })
                 .build();
 
-        Trajectory trajectory44 = drive.trajectoryBuilder(trajectory4.end(), true)
+        Trajectory trajectory44 = drive.trajectoryBuilder(trajectory4.end())
                 .strafeTo(new Vector2d(startX-14, startY+29))
                 .build();
 
@@ -296,7 +330,7 @@ public class autofreight extends LinearOpMode
                 .build();
 
         Trajectory trajectory6 = drive.trajectoryBuilder(trajectory5.end())
-                .strafeTo(new Vector2d(startX+55.75, startY+1))
+                .strafeTo(new Vector2d(startX+55, startY+2.5))
                 .addTemporalMarker(0.1, () -> {
                     cleste1.close();
                     cleste2.open();
@@ -304,7 +338,7 @@ public class autofreight extends LinearOpMode
                 })
                 .build();
 
-        Trajectory trajectory7 = drive.trajectoryBuilder(trajectory6.end(), true)
+        Trajectory trajectory7 = drive.trajectoryBuilder(trajectory6.end())
                 .strafeTo(new Vector2d(startX+5, startY+1))
                 .addTemporalMarker(0.8, () -> {
                     brat.sus();
@@ -312,7 +346,7 @@ public class autofreight extends LinearOpMode
                 })
                 .build();
 
-        Trajectory trajectory77 = drive.trajectoryBuilder(trajectory7.end(), true)
+        Trajectory trajectory77 = drive.trajectoryBuilder(trajectory7.end())
                 .strafeTo(new Vector2d(startX-14, startY+29))
                 .build();
 
@@ -340,82 +374,84 @@ public class autofreight extends LinearOpMode
 
         while (opModeIsActive())
         {
-            /*
             if(result == 0)
             {
-                odo.jos();
-                sleep(250);
-                drive.followTrajectory(trajectoryyy1);
-                cleste1.open();
+                drive.followTrajectory(trajectory111);
                 cleste2.open();
-                sleep(100);
+                cleste1.open();
                 outtake.setTargetPosition(1880);
                 outtake.setVelocity(outtake_velo);
-                sleep(500);
-                brat.jos();
-                cleste1.close();
-                cleste2.close();
-                sleep(600);
-                outtake.setTargetPosition(150);
                 drive.followTrajectory(trajectory2);
+                drive.followTrajectory(trajectory3);
+                intake1.setVelocity(-intake_velo);
+                sleep(550);
                 cleste2.close();
                 cleste1.close();
                 sleep(300);
                 outtake.setTargetPosition(outtake_sus);
-                drive.followTrajectory(trajectory3);
-                cleste1.open();
-                cleste2.open();
-                sleep(50);
+                outtake.setVelocity(outtake_velo);
                 drive.followTrajectory(trajectory4);
-                intake1.setVelocity(-440);
-                intake1.setVelocity(-440);
-                sleep(2000);
-                intake1.setVelocity(0);
-                sleep(1500);
+                drive.followTrajectory(trajectory44);
+                cleste2.open();
+                cleste1.open();
+                outtake.setTargetPosition(1880);
+                outtake.setVelocity(outtake_velo);
                 drive.followTrajectory(trajectory5);
                 drive.followTrajectory(trajectory6);
+                intake1.setVelocity(-intake_velo);
+                sleep(550);
+                cleste2.close();
+                cleste1.close();
+                sleep(300);
+                outtake.setTargetPosition(outtake_sus);
+                outtake.setVelocity(outtake_velo);
                 drive.followTrajectory(trajectory7);
-                outtake.setTargetPosition(-20);
+                drive.followTrajectory(trajectory77);
+                cleste2.open();
+                cleste1.open();
+                drive.followTrajectory(trajectorypen);
+                drive.followTrajectory(trajectoryfin);
                 stop();
             }
             if(result == 1)
             {
-                odo.jos();
-                sleep(250);
-                drive.followTrajectory(trajectoryy1);
-                cleste1.open();
+                drive.followTrajectory(trajectory11);
                 cleste2.open();
-                sleep(100);
+                cleste1.open();
                 outtake.setTargetPosition(1880);
                 outtake.setVelocity(outtake_velo);
-                sleep(500);
-                brat.jos();
-                cleste1.close();
-                cleste2.close();
-                sleep(600);
-                outtake.setTargetPosition(150);
                 drive.followTrajectory(trajectory2);
+                drive.followTrajectory(trajectory3);
+                intake1.setVelocity(-intake_velo);
+                sleep(550);
                 cleste2.close();
                 cleste1.close();
                 sleep(300);
                 outtake.setTargetPosition(outtake_sus);
-                drive.followTrajectory(trajectory3);
-                cleste1.open();
-                cleste2.open();
-                sleep(50);
+                outtake.setVelocity(outtake_velo);
                 drive.followTrajectory(trajectory4);
-                intake1.setVelocity(-440);
-                sleep(2000);
-                intake1.setVelocity(0);
-                sleep(1500);
+                drive.followTrajectory(trajectory44);
+                cleste2.open();
+                cleste1.open();
+                outtake.setTargetPosition(1880);
+                outtake.setVelocity(outtake_velo);
                 drive.followTrajectory(trajectory5);
                 drive.followTrajectory(trajectory6);
+                intake1.setVelocity(-intake_velo);
+                sleep(550);
+                cleste2.close();
+                cleste1.close();
+                sleep(300);
+                outtake.setTargetPosition(outtake_sus);
+                outtake.setVelocity(outtake_velo);
                 drive.followTrajectory(trajectory7);
-                outtake.setTargetPosition(-20);
+                drive.followTrajectory(trajectory77);
+                cleste2.open();
+                cleste1.open();
+                drive.followTrajectory(trajectorypen);
+                drive.followTrajectory(trajectoryfin);
                 stop();
             }
-
-             */
             if(result == 2)
             {
                 drive.followTrajectory(trajectory1);
@@ -433,6 +469,7 @@ public class autofreight extends LinearOpMode
                 outtake.setTargetPosition(outtake_sus);
                 outtake.setVelocity(outtake_velo);
                 drive.followTrajectory(trajectory4);
+                drive.followTrajectory(trajectory44);
                 cleste2.open();
                 cleste1.open();
                 outtake.setTargetPosition(1880);
@@ -447,6 +484,7 @@ public class autofreight extends LinearOpMode
                 outtake.setTargetPosition(outtake_sus);
                 outtake.setVelocity(outtake_velo);
                 drive.followTrajectory(trajectory7);
+                drive.followTrajectory(trajectory77);
                 cleste2.open();
                 cleste1.open();
                 drive.followTrajectory(trajectorypen);

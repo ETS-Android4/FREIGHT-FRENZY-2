@@ -36,6 +36,7 @@ import com.qualcomm.robotcore.eventloop.opmode.TeleOp;
 import com.qualcomm.robotcore.hardware.DcMotor;
 import com.qualcomm.robotcore.hardware.DcMotorEx;
 import com.qualcomm.robotcore.hardware.Gamepad;
+import com.qualcomm.robotcore.util.ElapsedTime;
 
 import org.firstinspires.ftc.robotcore.external.Telemetry;
 import org.firstinspires.ftc.teamcode.hardware.init_robot;
@@ -57,8 +58,8 @@ public class drive1 extends LinearOpMode {
     private boolean reverse_intake = false;
 
     public boolean ok = false;
+    public boolean ok2 = false;
     public boolean ok_intake = false;
-    public boolean okk_intake = true;
 
     public static double outtake_velo = 2000;
     //public static double outtake_dist = 1950;
@@ -66,17 +67,17 @@ public class drive1 extends LinearOpMode {
     public static double outtake_mijl = 760;
     public static double outtake_jos = 550;
 
-    public static double viteza = 250;
     public static double a = 1;
-    public static double cnt = 100;
 
-    public static double down_pos = 5;
+    public static int down_pos = 20;
     public static double p = 2.5;
     public static double i = 1;
     public static double d = 0;
     public static double f = 13;
     public static double pp = 10;
     public DcMotorEx outtake = null;
+
+    private ElapsedTime runtime = new ElapsedTime();
 
     public double intake_speed = 0.58;
 
@@ -128,6 +129,7 @@ public class drive1 extends LinearOpMode {
                 outtake.setTargetPosition((int)outtake_sus);
                 outtake.setVelocity(outtake_velo);
             }
+
             /*
             if(gp2.dpad_right){
                 outtake.setTargetPosition((int)outtake_mijl);
@@ -137,18 +139,30 @@ public class drive1 extends LinearOpMode {
                 outtake.setTargetPosition((int)outtake_jos);
                 outtake.setVelocity(outtake_velo);
             }
-
              */
+
             if(gp2.dpad_left){
-                outtake.setTargetPosition(1880);
+                conserva.intake1.setVelocity(0);
+                outtake.setTargetPosition(1750);
                 outtake.setVelocity(outtake_velo);
-                sleep(400);
+                runtime.reset();
+                ok = true;
+            }
+
+            if(runtime.seconds() > 0.5 && ok)
+            {
                 ok = false;
+                ok2 = true;
                 brat.jos();
                 cleste1.close();
                 cleste2.close();
-                sleep(500);
-                outtake.setTargetPosition(0);
+                runtime.reset();
+            }
+
+            if(runtime.seconds() > 0.5 && ok2)
+            {
+                ok2 = false;
+                outtake.setTargetPosition(down_pos);
             }
 
 
@@ -162,7 +176,6 @@ public class drive1 extends LinearOpMode {
             if(gp2.a){
                 brat.first();
             }
-
              */
             if(gp2.x)
             {
@@ -173,44 +186,31 @@ public class drive1 extends LinearOpMode {
             {
                 outtake.setTargetPosition(-100);
                 outtake.setVelocity(1000);
-                outtake.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
-                outtake.setZeroPowerBehavior(DcMotor.ZeroPowerBehavior.FLOAT);
-                outtake.setDirection(DcMotor.Direction.FORWARD);
-                outtake.setVelocityPIDFCoefficients(p, i, d, f);
-                outtake.setPositionPIDFCoefficients(pp);
-                outtake.setTargetPosition(5);
-                outtake.setMode(DcMotor.RunMode.RUN_TO_POSITION);
-                outtake.setPower(0.0);
-                outtake.setTargetPositionTolerance(2);
+                sleep(250);
+                resetOuttakeEncoder();
                 sleep(250);
             }
 
             if(gp2.left_trigger > 0.1 && gp2.right_trigger > 0.1){
                 cleste1.close();
                 cleste2.open();
-                outtake.setTargetPosition((int)down_pos);
+                outtake.setTargetPosition(down_pos);
                 outtake.setVelocity(outtake_velo);
                 conserva.intake1.setVelocity(-1500*Math.min(gp2.right_trigger, intake_speed));
-
                 ok_intake = true;
             }
             else if(gp2.right_trigger > 0.1) {
                 cleste1.close();
                 cleste2.open();
-                outtake.setTargetPosition((int)down_pos);
+                outtake.setTargetPosition(down_pos);
                 outtake.setVelocity(outtake_velo);
                 conserva.intake1.setVelocity(1500*Math.min(gp2.right_trigger, intake_speed));
-
                 ok_intake = true;
             }
             else if(ok_intake){
                 cleste1.close();
                 cleste2.close();
-                conserva.intake1.setVelocity(0);
-                sleep(350);
-                //outtake.setTargetPosition(200);
-                outtake.setVelocity(outtake_velo);
-
+                conserva.intake1.setVelocity(-900);
                 ok_intake = false;
             }
 
@@ -261,6 +261,21 @@ public class drive1 extends LinearOpMode {
         outtake.setTargetPositionTolerance(2);
 
         conserva.init(hardwareMap);
+    }
+
+    public void resetOuttakeEncoder(){
+
+        outtake = hardwareMap.get(DcMotorEx.class, "outtake");
+        outtake.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
+        outtake.setZeroPowerBehavior(DcMotor.ZeroPowerBehavior.FLOAT);
+        outtake.setDirection(DcMotor.Direction.FORWARD);
+        outtake.setVelocityPIDFCoefficients(p, i, d, f);
+        outtake.setPositionPIDFCoefficients(pp);
+        outtake.setTargetPosition(5);
+        outtake.setMode(DcMotor.RunMode.RUN_TO_POSITION);
+        outtake.setPower(0.0);
+        outtake.setTargetPositionTolerance(2);
+
     }
 
 
