@@ -6,7 +6,7 @@ import com.qualcomm.robotcore.hardware.Servo;
 public class servo_brat {
     public Servo servo = null;
 
-    public static double POS_JOS = 0.19;
+    public static double POS_JOS = 0.18;
     public static double POS_1st = 0.7;
     public static double POS_2nd = 0.91;
     public static double POS_SUS = 0.98;

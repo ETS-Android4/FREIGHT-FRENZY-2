@@ -1,5 +1,9 @@
 package org.firstinspires.ftc.teamcode.teleop;
 
+import com.acmerobotics.roadrunner.trajectory.constraints.AngularVelocityConstraint;
+import com.acmerobotics.roadrunner.trajectory.constraints.MecanumVelocityConstraint;
+import com.acmerobotics.roadrunner.trajectory.constraints.MinVelocityConstraint;
+import com.acmerobotics.roadrunner.trajectory.constraints.ProfileAccelerationConstraint;
 import com.qualcomm.robotcore.eventloop.opmode.LinearOpMode;
 import com.qualcomm.robotcore.eventloop.opmode.TeleOp;
 import com.qualcomm.robotcore.hardware.DcMotor;
@@ -7,6 +11,7 @@ import com.qualcomm.robotcore.hardware.DcMotorEx;
 import com.qualcomm.robotcore.hardware.Gamepad;
 
 import org.firstinspires.ftc.robotcore.external.Telemetry;
+import org.firstinspires.ftc.teamcode.drive.DriveConstants;
 import org.firstinspires.ftc.teamcode.hardware.init_robot;
 import org.firstinspires.ftc.teamcode.hardware.servo_brat;
 import org.firstinspires.ftc.teamcode.hardware.servo_cleste1;
@@ -34,6 +39,8 @@ import org.firstinspires.ftc.teamcode.hardware.servo_odo;
 
 
 import static java.lang.Boolean.FALSE;
+
+import java.util.Arrays;
 
 @TeleOp
 //@Disabled
@@ -181,8 +188,8 @@ public class augmenteddrive extends LinearOpMode {
                         ok = false;
                         ok2 = true;
                         brat.jos();
-                        cleste1.close();
-                        cleste2.close();
+                        cleste1.semi();
+                        cleste2.semi();
                         runtime.reset();
                     }
 
@@ -233,7 +240,7 @@ public class augmenteddrive extends LinearOpMode {
                         ok_intake = false;
                     }
 
-                    if(gamepad2.b){
+                    if(gamepad1.b){
                         intake1.setVelocity(-440);
                         intake2.setVelocity(440);
                         sleep(1430);
@@ -244,23 +251,24 @@ public class augmenteddrive extends LinearOpMode {
                         intake2.setVelocity(0);
                     }
 
-                    break;
-                case AUTOMATIC_CONTROL:
-                    // If x is pressed, we break out of the automatic following
-                    if (gamepad1.x) {
-                        drive.cancelFollowing();
-                        currentMode = Mode.DRIVER_CONTROL;
-                    }
-
                     if(gamepad1.dpad_left)
                     {
+                        currentMode = Mode.AUTOMATIC_CONTROL;
                         resetPositionLine();
 
                         Trajectory trajectory1 = drive.trajectoryBuilder(new Pose2d(), true)
-                                .strafeTo(new Vector2d(-32, 0))
-                                .splineToConstantHeading(new Vector2d(-56, 27), Math.toRadians(0))
+                                .strafeTo(new Vector2d(-32, 1))
+                                .splineToConstantHeading(new Vector2d(-56, 26), Math.toRadians(0),
+                                        new MinVelocityConstraint(
+                                                Arrays.asList(
+                                                        new AngularVelocityConstraint(DriveConstants.MAX_ANG_VEL),
+                                                        new MecanumVelocityConstraint(38, DriveConstants.TRACK_WIDTH)
+                                                )
+                                        ),
+                                        new ProfileAccelerationConstraint(DriveConstants.MAX_ACCEL)
+                                )
                                 .addTemporalMarker(0, () -> {
-                                    outtake.setTargetPosition((int)outtake_sus);
+                                    outtake.setTargetPosition((int)outtake_sus+225);
                                     outtake.setVelocity(outtake_velo);
                                 })
                                 .addTemporalMarker(1, () -> {
@@ -273,9 +281,18 @@ public class augmenteddrive extends LinearOpMode {
 
                     if(gamepad1.dpad_right)
                     {
-                        Trajectory trajectory2 = drive.trajectoryBuilder(new Pose2d(-56, 26, 0))
-                                .strafeTo(new Vector2d(-40, 5))
-                                .splineToConstantHeading(new Vector2d(12, 5), Math.toRadians(0))
+                        currentMode = Mode.AUTOMATIC_CONTROL;
+                        Trajectory trajectory2 = drive.trajectoryBuilder(new Pose2d(-56, 25.5, 0))
+                                .strafeTo(new Vector2d(-46, 3.5))
+                                .splineToConstantHeading(new Vector2d(-6, 4), Math.toRadians(0),
+                                        new MinVelocityConstraint(
+                                                Arrays.asList(
+                                                        new AngularVelocityConstraint(DriveConstants.MAX_ANG_VEL),
+                                                        new MecanumVelocityConstraint(38, DriveConstants.TRACK_WIDTH)
+                                                )
+                                        ),
+                                        new ProfileAccelerationConstraint(DriveConstants.MAX_ACCEL)
+                                )
                                 .addTemporalMarker(0.8, () -> {
                                     cleste1.semi();
                                     cleste2.semi();
@@ -288,19 +305,32 @@ public class augmenteddrive extends LinearOpMode {
 
                         cleste1.open();
                         cleste2.open();
-                        sleep(250);
+                        sleep(200);
                         drive.followTrajectory(trajectory2);
+                        someRandomShit();
+                        sleep(200);
+                        outtake.setTargetPosition(50);
+                        outtake.setVelocity(outtake_velo);
                     }
 
                     if(gamepad1.dpad_up)
                     {
+                        currentMode = Mode.AUTOMATIC_CONTROL;
                         resetPositionLine();
 
                         Trajectory trajectory1 = drive.trajectoryBuilder(new Pose2d())
                                 .strafeTo(new Vector2d(-32, 0))
-                                .splineToConstantHeading(new Vector2d(-56, 27), Math.toRadians(0))
+                                .splineToConstantHeading(new Vector2d(-56, 27), Math.toRadians(0),
+                                        new MinVelocityConstraint(
+                                                Arrays.asList(
+                                                        new AngularVelocityConstraint(DriveConstants.MAX_ANG_VEL),
+                                                        new MecanumVelocityConstraint(38, DriveConstants.TRACK_WIDTH)
+                                                )
+                                        ),
+                                        new ProfileAccelerationConstraint(DriveConstants.MAX_ACCEL)
+                                )
                                 .addTemporalMarker(0, () -> {
-                                    outtake.setTargetPosition((int)outtake_sus);
+                                    outtake.setTargetPosition((int)outtake_sus+50);
                                     outtake.setVelocity(outtake_velo);
                                 })
                                 .addTemporalMarker(1, () -> {
@@ -309,8 +339,16 @@ public class augmenteddrive extends LinearOpMode {
                                 .build();
 
                         Trajectory trajectory2 = drive.trajectoryBuilder(trajectory1.end())
-                                .strafeTo(new Vector2d(-40, 5))
-                                .splineToConstantHeading(new Vector2d(12, 5), Math.toRadians(0))
+                                .strafeTo(new Vector2d(-46, 5))
+                                .splineToConstantHeading(new Vector2d(-2, 6.25), Math.toRadians(0),
+                                        new MinVelocityConstraint(
+                                                Arrays.asList(
+                                                        new AngularVelocityConstraint(DriveConstants.MAX_ANG_VEL),
+                                                        new MecanumVelocityConstraint(38, DriveConstants.TRACK_WIDTH)
+                                                )
+                                        ),
+                                        new ProfileAccelerationConstraint(DriveConstants.MAX_ACCEL)
+                                )
                                 .addTemporalMarker(0.8, () -> {
                                     cleste1.semi();
                                     cleste2.semi();
@@ -326,6 +364,15 @@ public class augmenteddrive extends LinearOpMode {
                         cleste2.semi();
                         drive.followTrajectory(trajectory2);
                     }
+
+                    break;
+                case AUTOMATIC_CONTROL:
+                    // If x is pressed, we break out of the automatic following
+                    if (gamepad1.x) {
+                        drive.cancelFollowing();
+                        currentMode = Mode.DRIVER_CONTROL;
+                    }
+
 
                     // If drive finishes its task, cede control to the driver
                     if (!drive.isBusy()) {
