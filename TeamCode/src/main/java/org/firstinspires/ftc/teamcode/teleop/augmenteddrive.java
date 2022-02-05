@@ -49,7 +49,7 @@ public class augmenteddrive extends LinearOpMode {
 
     public static double outtake_velo = 2000;
     //public static double outtake_dist = 1950;
-    public static double outtake_sus = 1300;
+    public static double outtake_sus = 1350;
     public static double outtake_mijl = 760;
     public static double outtake_jos = 550;
     public static int down_pos = 50;
@@ -168,10 +168,9 @@ public class augmenteddrive extends LinearOpMode {
                         outtake.setVelocity(outtake_velo);
                     }
 
-
                     if(gamepad2.dpad_left){
                         intake1.setVelocity(0);
-                        outtake.setTargetPosition(1750);
+                        outtake.setTargetPosition(1730);
                         outtake.setVelocity(outtake_velo);
                         runtime.reset();
                         ok = true;
@@ -193,7 +192,6 @@ public class augmenteddrive extends LinearOpMode {
                         outtake.setTargetPosition(down_pos);
                     }
 
-
                     if(gamepad2.y && outtake.getCurrentPosition() > 750){
                         brat.sus();
                     }
@@ -208,7 +206,7 @@ public class augmenteddrive extends LinearOpMode {
                         outtake.setTargetPosition(-100);
                         outtake.setVelocity(1000);
                         sleep(250);
-                        resetOuttakeEncoder();
+                        someRandomShit();
                         sleep(250);
                     }
 
@@ -351,21 +349,6 @@ public class augmenteddrive extends LinearOpMode {
     }
 
     public void someRandomShit(){
-
-        outtake = hardwareMap.get(DcMotorEx.class, "outtake");
-        outtake.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
-        outtake.setZeroPowerBehavior(DcMotor.ZeroPowerBehavior.FLOAT);
-        outtake.setDirection(DcMotor.Direction.FORWARD);
-        outtake.setVelocityPIDFCoefficients(p, i, d, f);
-        outtake.setPositionPIDFCoefficients(pp);
-        outtake.setTargetPosition(5);
-        outtake.setMode(DcMotor.RunMode.RUN_TO_POSITION);
-        outtake.setPower(0.0);
-        outtake.setTargetPositionTolerance(2);
-
-    }
-
-    public void resetOuttakeEncoder(){
 
         outtake = hardwareMap.get(DcMotorEx.class, "outtake");
         outtake.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);

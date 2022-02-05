@@ -42,7 +42,7 @@ public class autofreight extends LinearOpMode
     public static double intake_velo = 1100;
     public static double outtake_velo = 2000;
     //public static double outtake_dist = 1950;
-    public static int outtake_sus = 1300;
+    public static int outtake_sus = 1350;
     public static int outtake_mijl = 790;
     public static int outtake_jos = 750;
 
@@ -300,7 +300,7 @@ public class autofreight extends LinearOpMode
                 .build();
 
         Trajectory trajectory3 = drive.trajectoryBuilder(trajectory2.end())
-                .strafeTo(new Vector2d(startX+51.5, startY+1))
+                .strafeTo(new Vector2d(startX+50, startY+1))
                 .addTemporalMarker(0.1, () -> {
                     cleste1.close();
                     cleste2.open();
@@ -333,7 +333,7 @@ public class autofreight extends LinearOpMode
                 .build();
 
         Trajectory trajectory6 = drive.trajectoryBuilder(trajectory5.end())
-                .strafeTo(new Vector2d(startX+55, startY+2.5))
+                .strafeTo(new Vector2d(startX+52.5, startY+2.5))
                 .addTemporalMarker(0.1, () -> {
                     cleste1.close();
                     cleste2.open();
@@ -366,10 +366,8 @@ public class autofreight extends LinearOpMode
                 .build();
 
         Trajectory trajectoryfin = drive.trajectoryBuilder(trajectorypen.end())
-                .strafeTo(new Vector2d(startX+55, startY+1))
+                .strafeTo(new Vector2d(startX+57, startY+1))
                 .build();
-
-
 
 
         outtake.setTargetPosition(50);
@@ -383,7 +381,7 @@ public class autofreight extends LinearOpMode
         {
             if(result == 0)
             {
-                drive.followTrajectory(trajectory111);
+                drive.followTrajectory(trajectory1);
                 cleste2.open();
                 cleste1.open();
                 outtake.setTargetPosition(1880);
@@ -422,7 +420,7 @@ public class autofreight extends LinearOpMode
             }
             if(result == 1)
             {
-                drive.followTrajectory(trajectory11);
+                drive.followTrajectory(trajectory1);
                 cleste2.open();
                 cleste1.open();
                 outtake.setTargetPosition(1880);

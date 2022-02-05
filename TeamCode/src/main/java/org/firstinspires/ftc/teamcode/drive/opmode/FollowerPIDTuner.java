@@ -24,7 +24,7 @@ import org.firstinspires.ftc.teamcode.hardware.servo_odo;
  * These coefficients can be tuned live in dashboard.
  */
 @Config
-//@Disabled
+@Disabled
 @Autonomous(group = "drive")
 public class FollowerPIDTuner extends LinearOpMode {
     public static double DISTANCE = 40; // in
