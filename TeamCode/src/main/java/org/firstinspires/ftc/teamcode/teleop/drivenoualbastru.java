@@ -33,8 +33,6 @@ import com.acmerobotics.dashboard.FtcDashboard;
 import com.acmerobotics.dashboard.config.Config;
 import com.qualcomm.robotcore.eventloop.opmode.LinearOpMode;
 import com.qualcomm.robotcore.eventloop.opmode.TeleOp;
-import com.qualcomm.robotcore.hardware.DcMotor;
-import com.qualcomm.robotcore.hardware.DcMotorEx;
 import com.qualcomm.robotcore.hardware.Gamepad;
 import com.qualcomm.robotcore.util.ElapsedTime;
 
@@ -48,7 +46,7 @@ import org.firstinspires.ftc.teamcode.hardware.servo_odo;
 @Config
 @TeleOp
 //@Disabled
-public class drivenou extends LinearOpMode {
+public class drivenoualbastru extends LinearOpMode {
 
     init_robot conserva = new init_robot();
 
@@ -56,13 +54,12 @@ public class drivenou extends LinearOpMode {
     private boolean slow_mode = false;
     private boolean reverse_intake = false;
 
-    public boolean ok = false;
-    public boolean ok2 = false;
     public boolean ok_intake = false;
+    public boolean ok = false;
 
     private ElapsedTime runtime = new ElapsedTime();
 
-    public double intake_speed = 0.65;
+    public static double intake_speed = 0.4;
 
     FtcDashboard dashboard = FtcDashboard.getInstance();
     Telemetry dashboardTelemetry = dashboard.getTelemetry();
@@ -93,7 +90,7 @@ public class drivenou extends LinearOpMode {
 
             /* Drive */
 
-            double direction = Math.atan2(-gp1.left_stick_y, gp1.left_stick_x) - Math.PI/2;
+            double direction = Math.atan2(gp1.left_stick_y, -gp1.left_stick_x) - Math.PI/2;  //-y +x
             double rotation = -gp1.right_stick_x;
             double speed = Math.sqrt(gp1.left_stick_x*gp1.left_stick_x + gp1.left_stick_y*gp1.left_stick_y);
 
@@ -157,9 +154,16 @@ public class drivenou extends LinearOpMode {
                 cleste2.open();
             }
             if(gp2.dpad_down){
-                cleste1.close();
-                cleste2.close();
+                cleste1.open();
+                cleste2.open();
+                brat.kindajos();
+                runtime.reset();
+                ok = true;
+            }
+            if(runtime.seconds() > 1.05 && ok)
+            {
                 brat.jos();
+                ok = false;
             }
             /*
             if(gp2.a && gp2.b)
@@ -178,24 +182,31 @@ public class drivenou extends LinearOpMode {
                 conserva.intake1.setVelocity(-1500*Math.min(gp2.right_trigger, intake_speed));
                 conserva.intake2.setVelocity(-1500*Math.min(gp2.right_trigger, intake_speed));
                 ok_intake = true;
+                runtime.reset();
             }
             else if(gp2.right_trigger > 0.1) {
                 cleste1.open();
-                cleste2.close();
+                cleste2.semi();
                 conserva.intake1.setVelocity(1500*Math.min(gp2.right_trigger, intake_speed));
                 ok_intake = true;
+                runtime.reset();
             }
             else if(gp2.left_trigger > 0.1) {
-                cleste1.close();
+                cleste1.semi();
                 cleste2.open();
                 conserva.intake2.setVelocity(1500*Math.min(gp2.left_trigger, intake_speed));
                 ok_intake = true;
+                runtime.reset();
             }
             else if(ok_intake){
-                cleste1.close();
-                cleste2.close();
+                conserva.intake1.setVelocity(-870);
+                conserva.intake2.setVelocity(-870);
+            }
+            else if(ok_intake && runtime.seconds() > 0.6){
                 conserva.intake1.setVelocity(0);
                 conserva.intake2.setVelocity(0);
+                cleste1.close();
+                cleste2.close();
                 ok_intake = false;
             }
 

@@ -6,9 +6,9 @@ import com.qualcomm.robotcore.hardware.Servo;
 public class servo_cleste1 {
     public Servo servo = null;
 
-    public static double POS_DESC = 0.55;
-    public static double POS_SEMI = 0.35;
-    public static double POS_INCH = 0.24;
+    public static double POS_DESC = 0.93;
+    public static double POS_SEMI = 0.19;
+    public static double POS_INCH = 0.25;
 
     public servo_cleste1(HardwareMap hwMap) {
         servo = hwMap.get(Servo.class, "servoCleste1");
