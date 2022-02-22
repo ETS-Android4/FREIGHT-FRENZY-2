@@ -94,7 +94,7 @@ public class init_robot {
         //intake1.setMode(DcMotor.RunMode.RUN_WITHOUT_ENCODER);
         intake1.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
         intake1.setZeroPowerBehavior(DcMotor.ZeroPowerBehavior.BRAKE);
-        intake1.setDirection(DcMotor.Direction.REVERSE);
+        intake1.setDirection(DcMotor.Direction.FORWARD);
         intake1.setPower(0.0);
 
 

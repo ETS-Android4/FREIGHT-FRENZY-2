@@ -11,16 +11,13 @@ import com.qualcomm.robotcore.eventloop.opmode.Autonomous;
 import com.qualcomm.robotcore.eventloop.opmode.LinearOpMode;
 import com.qualcomm.robotcore.hardware.DcMotor;
 import com.qualcomm.robotcore.hardware.DcMotorEx;
-import com.qualcomm.robotcore.hardware.Gamepad;
 
 import org.firstinspires.ftc.robotcore.external.hardware.camera.WebcamName;
 import org.firstinspires.ftc.teamcode.drive.DriveConstants;
 import org.firstinspires.ftc.teamcode.drive.SampleMecanumDrive;
-import org.firstinspires.ftc.teamcode.hardware.servo_brat;
 import org.firstinspires.ftc.teamcode.hardware.servo_cleste1;
 import org.firstinspires.ftc.teamcode.hardware.servo_cleste2;
 import org.firstinspires.ftc.teamcode.hardware.servo_odo;
-import org.firstinspires.ftc.teamcode.trajectorysequence.TrajectorySequence;
 import org.opencv.core.Core;
 import org.opencv.core.Mat;
 import org.opencv.core.Point;
@@ -31,7 +28,6 @@ import org.openftc.easyopencv.OpenCvCamera;
 import org.openftc.easyopencv.OpenCvCameraFactory;
 import org.openftc.easyopencv.OpenCvCameraRotation;
 import org.openftc.easyopencv.OpenCvPipeline;
-import org.openftc.easyopencv.OpenCvWebcam;
 
 import java.util.Arrays;
 
@@ -219,7 +215,6 @@ public class auto1 extends LinearOpMode
     public void runOpMode()
     {
 
-        servo_brat brat = new servo_brat(hardwareMap);
         servo_cleste1 cleste1 = new servo_cleste1(hardwareMap);
         servo_cleste2 cleste2 = new servo_cleste2(hardwareMap);
         servo_odo odo = new servo_odo(hardwareMap);
@@ -246,12 +241,10 @@ public class auto1 extends LinearOpMode
                 .addTemporalMarker(0, () -> {
                     cleste1.close();
                     cleste2.close();
-                    brat.jos();
                     outtake.setTargetPosition((int)outtake_sus);
                     outtake.setVelocity(outtake_velo);
                 })
                 .addTemporalMarker(0.75, () -> {
-                    brat.sus();
                 })
                 .build();
 
@@ -260,12 +253,10 @@ public class auto1 extends LinearOpMode
                 .addTemporalMarker(0, () -> {
                     cleste1.close();
                     cleste2.close();
-                    brat.jos();
                     outtake.setTargetPosition((int)outtake_mijl);
                     outtake.setVelocity(outtake_velo);
                 })
                 .addTemporalMarker(0.55, () -> {
-                    brat.first();
                 })
                 .addTemporalMarker(0.95, () -> {
                     outtake.setTargetPosition((outtake_jos-220));
@@ -277,12 +268,10 @@ public class auto1 extends LinearOpMode
                 .addTemporalMarker(0, () -> {
                     cleste1.close();
                     cleste2.close();
-                    brat.jos();
                     outtake.setTargetPosition((int)outtake_jos);
                     outtake.setVelocity(outtake_velo);
                 })
                 .addTemporalMarker(0.55, () -> {
-                    brat.first();
                 })
                 .addTemporalMarker(0.95, () -> {
                     outtake.setTargetPosition((outtake_jos-570));
@@ -312,7 +301,6 @@ public class auto1 extends LinearOpMode
         Trajectory trajectory3 = drive.trajectoryBuilder(trajectory2.end())
                 .lineToSplineHeading(new Pose2d(startX+21.25, startY+27.5, Math.toRadians(5)))
                 .addTemporalMarker(0.39, () -> {
-                    brat.sus();
                     intake1.setVelocity(0);
                 })
 
@@ -321,7 +309,6 @@ public class auto1 extends LinearOpMode
         Trajectory trajectory4 = drive.trajectoryBuilder(trajectory3.end())
                 .lineToSplineHeading(new Pose2d(startX-30.75, startY+6.5, Math.toRadians(-158)))
                 .addTemporalMarker(0.5, () -> {
-                    brat.jos();
                     cleste1.close();
                     cleste2.close();
                 })
@@ -378,7 +365,6 @@ public class auto1 extends LinearOpMode
                 outtake.setTargetPosition(1880);
                 outtake.setVelocity(outtake_velo);
                 sleep(500);
-                brat.jos();
                 cleste1.close();
                 cleste2.close();
                 sleep(600);
@@ -415,7 +401,6 @@ public class auto1 extends LinearOpMode
                 outtake.setTargetPosition(1880);
                 outtake.setVelocity(outtake_velo);
                 sleep(500);
-                brat.jos();
                 cleste1.close();
                 cleste2.close();
                 sleep(600);
@@ -450,7 +435,6 @@ public class auto1 extends LinearOpMode
                 outtake.setTargetPosition(1880);
                 outtake.setVelocity(outtake_velo);
                 sleep(500);
-                brat.jos();
                 cleste1.close();
                 cleste2.close();
                 sleep(600);

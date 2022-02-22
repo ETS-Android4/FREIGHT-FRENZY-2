@@ -8,37 +8,19 @@ import com.qualcomm.robotcore.eventloop.opmode.LinearOpMode;
 import com.qualcomm.robotcore.eventloop.opmode.TeleOp;
 import com.qualcomm.robotcore.hardware.DcMotor;
 import com.qualcomm.robotcore.hardware.DcMotorEx;
-import com.qualcomm.robotcore.hardware.Gamepad;
 
-import org.firstinspires.ftc.robotcore.external.Telemetry;
 import org.firstinspires.ftc.teamcode.drive.DriveConstants;
-import org.firstinspires.ftc.teamcode.hardware.init_robot;
-import org.firstinspires.ftc.teamcode.hardware.servo_brat;
 import org.firstinspires.ftc.teamcode.hardware.servo_cleste1;
 import org.firstinspires.ftc.teamcode.hardware.servo_cleste2;
 import com.acmerobotics.dashboard.FtcDashboard;
 import com.acmerobotics.roadrunner.geometry.Pose2d;
 import com.acmerobotics.roadrunner.geometry.Vector2d;
 import com.acmerobotics.roadrunner.trajectory.Trajectory;
-import com.acmerobotics.roadrunner.util.Angle;
-import com.qualcomm.robotcore.eventloop.opmode.LinearOpMode;
-import com.qualcomm.robotcore.eventloop.opmode.TeleOp;
-import com.qualcomm.robotcore.hardware.DcMotor;
-import com.qualcomm.robotcore.hardware.DcMotorEx;
-import com.qualcomm.robotcore.hardware.PIDCoefficients;
-import com.qualcomm.robotcore.hardware.PIDFCoefficients;
 import com.qualcomm.robotcore.util.ElapsedTime;
 
-import org.firstinspires.ftc.robotcore.external.navigation.Acceleration;
-import org.firstinspires.ftc.robotcore.external.navigation.AngleUnit;
-import org.firstinspires.ftc.robotcore.external.navigation.AxesOrder;
-import org.firstinspires.ftc.robotcore.external.navigation.AxesReference;
-import org.firstinspires.ftc.robotcore.external.navigation.Orientation;
 import org.firstinspires.ftc.teamcode.drive.SampleMecanumDrive;
 import org.firstinspires.ftc.teamcode.hardware.servo_odo;
 
-
-import static java.lang.Boolean.FALSE;
 
 import java.util.Arrays;
 
@@ -120,7 +102,6 @@ public class augmenteddrive extends LinearOpMode {
         intake2.setPower(0.0);
 
 
-        servo_brat brat = new servo_brat(hardwareMap);
         servo_cleste1 cleste1 = new servo_cleste1(hardwareMap);
         servo_cleste2 cleste2 = new servo_cleste2(hardwareMap);
         servo_odo odo = new servo_odo(hardwareMap);
@@ -128,7 +109,6 @@ public class augmenteddrive extends LinearOpMode {
         odo.jos();
         cleste1.close();
         cleste2.close();
-        brat.jos();
 
         drive = new SampleMecanumDrive(hardwareMap);
         drive.setMode(DcMotor.RunMode.RUN_WITHOUT_ENCODER);
@@ -187,7 +167,6 @@ public class augmenteddrive extends LinearOpMode {
                     {
                         ok = false;
                         ok2 = true;
-                        brat.jos();
                         cleste1.semi();
                         cleste2.semi();
                         runtime.reset();
@@ -199,9 +178,6 @@ public class augmenteddrive extends LinearOpMode {
                         outtake.setTargetPosition(down_pos);
                     }
 
-                    if(gamepad2.y && outtake.getCurrentPosition() > 750){
-                        brat.sus();
-                    }
 
                     if(gamepad2.x)
                     {
@@ -272,7 +248,6 @@ public class augmenteddrive extends LinearOpMode {
                                     outtake.setVelocity(outtake_velo);
                                 })
                                 .addTemporalMarker(1, () -> {
-                                    brat.sus();
                                 })
                                 .build();
 
@@ -296,7 +271,6 @@ public class augmenteddrive extends LinearOpMode {
                                 .addTemporalMarker(0.8, () -> {
                                     cleste1.semi();
                                     cleste2.semi();
-                                    brat.jos();
                                 })
                                 .addTemporalMarker(1.4, () -> {
                                     outtake.setTargetPosition(down_pos);
@@ -334,7 +308,6 @@ public class augmenteddrive extends LinearOpMode {
                                     outtake.setVelocity(outtake_velo);
                                 })
                                 .addTemporalMarker(1, () -> {
-                                    brat.sus();
                                 })
                                 .build();
 
@@ -352,7 +325,6 @@ public class augmenteddrive extends LinearOpMode {
                                 .addTemporalMarker(0.8, () -> {
                                     cleste1.semi();
                                     cleste2.semi();
-                                    brat.jos();
                                 })
                                 .addTemporalMarker(1.4, () -> {
                                     outtake.setTargetPosition(down_pos);

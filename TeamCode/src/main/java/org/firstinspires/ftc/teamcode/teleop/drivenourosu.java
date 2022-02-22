@@ -40,9 +40,9 @@ import com.qualcomm.robotcore.util.ElapsedTime;
 
 import org.firstinspires.ftc.robotcore.external.Telemetry;
 import org.firstinspires.ftc.teamcode.hardware.init_robot;
-import org.firstinspires.ftc.teamcode.hardware.servo_brat;
 import org.firstinspires.ftc.teamcode.hardware.servo_cleste1;
 import org.firstinspires.ftc.teamcode.hardware.servo_cleste2;
+import org.firstinspires.ftc.teamcode.hardware.servo_gheara;
 import org.firstinspires.ftc.teamcode.hardware.servo_odo;
 
 @Config
@@ -59,9 +59,21 @@ public class drivenourosu extends LinearOpMode {
     public boolean ok_intake = false;
     public boolean ok = false;
 
-    private ElapsedTime runtime = new ElapsedTime();
+    private ElapsedTime runtime_outtake = new ElapsedTime();
+    private ElapsedTime runtime_intake = new ElapsedTime();
 
-    public static double intake_speed = 0.4;
+    DcMotorEx outtake = null;
+    DcMotorEx brat = null;
+
+    public static double outtake_power = 0.5;
+    public static int outtake_sus = 320;
+    public static int outtake_jos = 0;
+
+    public static double brat_power = 0.5;
+    public static int brat_sus = 700;
+    public static int brat_jos = 0;
+
+    public static double intake_speed = 0.35;
 
     FtcDashboard dashboard = FtcDashboard.getInstance();
     Telemetry dashboardTelemetry = dashboard.getTelemetry();
@@ -72,16 +84,19 @@ public class drivenourosu extends LinearOpMode {
 
 
         conserva.init(hardwareMap);
+        someRandomShit();
         Gamepad gp1 = gamepad1;
         Gamepad gp2 = gamepad2;
 
-        servo_brat brat = new servo_brat(hardwareMap);
         servo_cleste1 cleste1 = new servo_cleste1(hardwareMap);
         servo_cleste2 cleste2 = new servo_cleste2(hardwareMap);
+        servo_gheara gheara = new servo_gheara(hardwareMap);
         servo_odo odo = new servo_odo(hardwareMap);
 
         odo.sus();
-        brat.jos();
+        gheara.jos();
+        cleste1.close();
+        cleste2.close();
 
         waitForStart();
 
@@ -108,103 +123,85 @@ public class drivenourosu extends LinearOpMode {
                 setDrivePowers(direction, 0.7 * Math.pow(speed, 3.0),0.45 * Math.pow(rotation, 3.0));
             }
 
-            /*
-            if(gp2.dpad_right){
-                outtake.setTargetPosition((int)outtake_mijl);
-                outtake.setVelocity(outtake_velo);
+
+            if(gp2.dpad_up){
+                outtake.setTargetPosition(outtake_sus);
+                outtake.setPower(outtake_power);
+                runtime_outtake.reset();
+                ok = true;
+            }
+            if(runtime_outtake.seconds() > 0.4 && ok)
+            {
+                brat.setTargetPosition(brat_sus);
+                brat.setPower(brat_power);
+                ok = false;
             }
             if(gp2.dpad_down){
-                outtake.setTargetPosition((int)outtake_jos);
-                outtake.setVelocity(outtake_velo);
+                outtake.setTargetPosition(outtake_jos);
+                outtake.setPower(outtake_power);
             }
 
             if(gp2.dpad_left){
-                conserva.intake1.setVelocity(0);
-                runtime.reset();
-                ok = true;
-            }
-
-            if(runtime.seconds() > 0.5 && ok)
-            {
-                ok = false;
-                ok2 = true;
-                brat.jos();
-                cleste1.close();
-                cleste2.close();
-                runtime.reset();
-            }
-
-            if(runtime.seconds() > 0.5 && ok2)
-            {
-                ok2 = false;
-                outtake.setTargetPosition(down_pos);
-            }
-            */
-
-            if(gp2.y){
-                brat.sus();
-            }
-            if(gp2.b){
-                brat.second();
-            }
-            if(gp2.a){
-                brat.first();
+                brat.setTargetPosition(brat_jos);
+                brat.setPower(brat_power);
             }
             if(gp2.x)
             {
                 cleste1.open();
                 cleste2.open();
             }
+            if(gp2.y)
+            {
+                cleste1.close();
+                cleste2.close();
+            }
+
+            /*
             if(gp2.dpad_down){
                 cleste1.open();
                 cleste2.open();
-                brat.kindajos();
                 runtime.reset();
                 ok = true;
             }
             if(runtime.seconds() > 1.05 && ok)
             {
-                brat.jos();
                 ok = false;
             }
-            /*
-            if(gp2.a && gp2.b)
-            {
-                outtake.setTargetPosition(-100);
-                outtake.setVelocity(1000);
-                sleep(250);
-                resetOuttakeEncoder();
-                sleep(250);
-            }
-            */
 
-            if(gp2.left_trigger > 0.1 && gp2.right_trigger > 0.1){
+             */
+
+            if(gp2.left_trigger > 0.15 && gp2.right_trigger > 0.15){
                 cleste1.open();
                 cleste2.open();
-                conserva.intake1.setVelocity(-1500*Math.min(gp2.right_trigger, intake_speed));
-                conserva.intake2.setVelocity(-1500*Math.min(gp2.right_trigger, intake_speed));
+                conserva.intake1.setVelocity(-1000*Math.min(gp2.right_trigger, intake_speed));
+                conserva.intake2.setVelocity(-1000*Math.min(gp2.right_trigger, intake_speed));
                 ok_intake = true;
-                runtime.reset();
+                //runtime_intake.reset();
             }
-            else if(gp2.right_trigger > 0.1) {
+            else if(gp2.right_trigger > 0.15) {
                 cleste1.open();
                 cleste2.semi();
-                conserva.intake1.setVelocity(1500*Math.min(gp2.right_trigger, intake_speed));
+                conserva.intake1.setVelocity(1000*Math.min(gp2.right_trigger, intake_speed));
                 ok_intake = true;
-                runtime.reset();
+                //runtime_intake.reset();
             }
-            else if(gp2.left_trigger > 0.1) {
+            /*
+            else if(gp2.left_trigger > 0.15) {
                 cleste1.semi();
                 cleste2.open();
                 conserva.intake2.setVelocity(1500*Math.min(gp2.left_trigger, intake_speed));
                 ok_intake = true;
                 runtime.reset();
             }
+
+
             else if(ok_intake){
-                conserva.intake1.setVelocity(-870);
-                conserva.intake2.setVelocity(-870);
+                conserva.intake1.setVelocity(-600);
+                conserva.intake2.setVelocity(-600);
             }
-            else if(ok_intake && runtime.seconds() > 0.6){
+
+             */
+            else if(ok_intake){
                 conserva.intake1.setVelocity(0);
                 conserva.intake2.setVelocity(0);
                 cleste1.close();
@@ -226,6 +223,8 @@ public class drivenourosu extends LinearOpMode {
 
             /* Telemetry */
             telemetry.addData("slow_mode", slow_mode);
+            telemetry.addData("outtake", outtake.getCurrentPosition());
+            telemetry.addData("brat", brat.getCurrentPosition());
             telemetry.update();
         }
 
@@ -243,6 +242,28 @@ public class drivenourosu extends LinearOpMode {
         conserva.rf.setPower(-root2 * speed * cos - rotateSpeed);
         conserva.lr.setPower(-root2 * speed * cos + rotateSpeed);
         conserva.rr.setPower(-root2 * speed * sin - rotateSpeed);
+    }
+
+    public void someRandomShit(){
+
+        outtake = hardwareMap.get(DcMotorEx.class, "outtake");
+        outtake.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
+        outtake.setZeroPowerBehavior(DcMotor.ZeroPowerBehavior.FLOAT);
+        outtake.setDirection(DcMotor.Direction.FORWARD);
+        outtake.setTargetPosition(1);
+        outtake.setMode(DcMotor.RunMode.RUN_TO_POSITION);
+        outtake.setPower(0.0);
+        outtake.setTargetPositionTolerance(2);
+
+        brat = hardwareMap.get(DcMotorEx.class, "brat");
+        brat.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
+        brat.setZeroPowerBehavior(DcMotor.ZeroPowerBehavior.FLOAT);
+        brat.setDirection(DcMotor.Direction.FORWARD);
+        brat.setTargetPosition(1);
+        brat.setMode(DcMotor.RunMode.RUN_TO_POSITION);
+        brat.setPower(0.0);
+        brat.setTargetPositionTolerance(2);
+
     }
 
 }

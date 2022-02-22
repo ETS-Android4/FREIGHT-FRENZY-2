@@ -15,7 +15,6 @@ import com.qualcomm.robotcore.hardware.DcMotorEx;
 import org.firstinspires.ftc.robotcore.external.hardware.camera.WebcamName;
 import org.firstinspires.ftc.teamcode.drive.DriveConstants;
 import org.firstinspires.ftc.teamcode.drive.SampleMecanumDrive;
-import org.firstinspires.ftc.teamcode.hardware.servo_brat;
 import org.firstinspires.ftc.teamcode.hardware.servo_cleste1;
 import org.firstinspires.ftc.teamcode.hardware.servo_cleste2;
 import org.firstinspires.ftc.teamcode.hardware.servo_odo;
@@ -204,7 +203,6 @@ public class autofreight extends LinearOpMode
     public void runOpMode()
     {
 
-        servo_brat brat = new servo_brat(hardwareMap);
         servo_cleste1 cleste1 = new servo_cleste1(hardwareMap);
         servo_cleste2 cleste2 = new servo_cleste2(hardwareMap);
         servo_odo odo = new servo_odo(hardwareMap);
@@ -232,10 +230,8 @@ public class autofreight extends LinearOpMode
                 .addTemporalMarker(0, () -> {
                     cleste1.close();
                     cleste2.close();
-                    brat.jos();
                 })
                 .addTemporalMarker(0.6, () -> {
-                    brat.sus();
                 })
                 .build();
 
@@ -252,10 +248,8 @@ public class autofreight extends LinearOpMode
                 .addTemporalMarker(0, () -> {
                     cleste1.close();
                     cleste2.close();
-                    brat.jos();
                 })
                 .addTemporalMarker(0.5, () -> {
-                    brat.second();
                 })
                 .build();
 
@@ -272,10 +266,8 @@ public class autofreight extends LinearOpMode
                 .addTemporalMarker(0, () -> {
                     cleste1.close();
                     cleste2.close();
-                    brat.jos();
                 })
                 .addTemporalMarker(0.5, () -> {
-                    brat.first();
                 })
                 .build();
 
@@ -291,7 +283,6 @@ public class autofreight extends LinearOpMode
                         new ProfileAccelerationConstraint(DriveConstants.MAX_ACCEL)
                 )
                 .addTemporalMarker(0.4, () -> {
-                    brat.jos();
                     cleste2.semi();
                     cleste1.semi();
                 })
@@ -305,7 +296,6 @@ public class autofreight extends LinearOpMode
         Trajectory trajectory3 = drive.trajectoryBuilder(trajectory2.end())
                 .strafeTo(new Vector2d(startX+6, startY))
                 .addTemporalMarker(0.8, () -> {
-                    brat.sus();
                     intake1.setVelocity(0);
                 })
                 .build();
@@ -326,7 +316,6 @@ public class autofreight extends LinearOpMode
                         new ProfileAccelerationConstraint(DriveConstants.MAX_ACCEL)
                 )
                 .addTemporalMarker(0.4, () -> {
-                    brat.jos();
                     cleste2.semi();
                     cleste1.semi();
                 })
@@ -340,7 +329,6 @@ public class autofreight extends LinearOpMode
         Trajectory trajectory6 = drive.trajectoryBuilder(trajectory5.end())
                 .strafeTo(new Vector2d(startX+3.75, startY))
                 .addTemporalMarker(0.8, () -> {
-                    brat.sus();
                     intake1.setVelocity(0);
                 })
                 .build();
@@ -361,7 +349,6 @@ public class autofreight extends LinearOpMode
                         new ProfileAccelerationConstraint(DriveConstants.MAX_ACCEL)
                 )
                 .addTemporalMarker(0.4, () -> {
-                    brat.jos();
                     cleste2.semi();
                     cleste1.semi();
                 })
@@ -375,7 +362,6 @@ public class autofreight extends LinearOpMode
         Trajectory trajectory9 = drive.trajectoryBuilder(trajectory8.end())
                 .strafeTo(new Vector2d(startX+5, startY))
                 .addTemporalMarker(0.8, () -> {
-                    brat.sus();
                     intake1.setVelocity(0);
                 })
                 .build();
@@ -396,7 +382,6 @@ public class autofreight extends LinearOpMode
                         new ProfileAccelerationConstraint(DriveConstants.MAX_ACCEL)
                 )
                 .addTemporalMarker(0.4, () -> {
-                    brat.jos();
                     cleste2.semi();
                     cleste1.semi();
                 })
