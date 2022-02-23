@@ -8,6 +8,7 @@ import com.acmerobotics.roadrunner.trajectory.constraints.MecanumVelocityConstra
 import com.acmerobotics.roadrunner.trajectory.constraints.MinVelocityConstraint;
 import com.acmerobotics.roadrunner.trajectory.constraints.ProfileAccelerationConstraint;
 import com.qualcomm.robotcore.eventloop.opmode.Autonomous;
+import com.qualcomm.robotcore.eventloop.opmode.Disabled;
 import com.qualcomm.robotcore.eventloop.opmode.LinearOpMode;
 import com.qualcomm.robotcore.hardware.DcMotor;
 import com.qualcomm.robotcore.hardware.DcMotorEx;
@@ -32,7 +33,7 @@ import org.openftc.easyopencv.OpenCvPipeline;
 import java.util.Arrays;
 
 @Autonomous
-//@Disabled
+@Disabled
 public class autofreight extends LinearOpMode
 {
     OpenCvCamera webcam;
@@ -44,6 +45,7 @@ public class autofreight extends LinearOpMode
 
     public static double startX = 0;
     public static double startY = 0;
+
 
     public class IgnitePipeline extends OpenCvPipeline {
 
