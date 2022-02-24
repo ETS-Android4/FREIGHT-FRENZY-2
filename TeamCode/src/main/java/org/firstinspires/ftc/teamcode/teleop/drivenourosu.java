@@ -64,13 +64,14 @@ public class drivenourosu extends LinearOpMode {
     private ElapsedTime runtime_intake = new ElapsedTime();
 
     DcMotorEx brat = null;
-    public static double brat_power = 0.45;
+    public static double brat_power = 0.6;
     public static double brat_power_incet = 0.28;
-    public static int brat_sus = 720;
+    public static int brat_sus = 715;
     public static int brat_jos = 0;
-    public static int brat_jos_intake = -30;
+    public static int brat_jos_intake = -10;
+    public int outtake_error = 0;
 
-    public static double intake_speed = 0.75;
+    public static double intake_speed = 0.65;
 
     FtcDashboard dashboard = FtcDashboard.getInstance();
     Telemetry dashboardTelemetry = dashboard.getTelemetry();
@@ -93,7 +94,7 @@ public class drivenourosu extends LinearOpMode {
         cleste1.close();
         cleste2.close();
 
-        brat.setTargetPosition(-30);
+        brat.setTargetPosition(-10);
         brat.setPower(brat_power);
 
         waitForStart();
@@ -118,7 +119,7 @@ public class drivenourosu extends LinearOpMode {
             if(slow_mode){
                 setDrivePowers(direction, 0.43 * Math.pow(speed, 3.0), 0.35 * Math.pow(rotation, 3.0));
             }else{
-                setDrivePowers(direction, 0.7 * Math.pow(speed, 3.0),0.45 * Math.pow(rotation, 3.0));
+                setDrivePowers(direction, 0.7 * Math.pow(speed, 3.0),0.5 * Math.pow(rotation, 3.0));
             }
 
 
@@ -131,15 +132,29 @@ public class drivenourosu extends LinearOpMode {
             if(runtime_outtake.seconds() > 0.25 && poz_outtake_urcare == 1)
             {
                 brat.setTargetPosition(brat_sus);
-                brat.setPower(brat_power_incet);
+                brat.setPower(brat_power);
                 poz_outtake_urcare = 2;
             }
-            if(runtime_outtake.seconds() > 0.5 && poz_outtake_urcare == 2)
+            if(runtime_outtake.seconds() > 0.75 && poz_outtake_urcare == 2)
             {
-                brat.setPower(brat_power);
-                poz_outtake_urcare = 3;
+                brat.setPower(brat_power_incet);
+                poz_outtake_urcare = 0;
             }
-            if(runtime_outtake.seconds() > 0.75 && poz_outtake_urcare == 3)
+
+
+            if(gp2.dpad_right && poz_outtake_urcare == 0){
+                cleste1.close();
+                cleste2.close();
+                runtime_outtake.reset();
+                poz_outtake_urcare = 1;
+            }
+            if(runtime_outtake.seconds() > 0.25 && poz_outtake_urcare == 1)
+            {
+                brat.setTargetPosition(brat_sus+65);
+                brat.setPower(brat_power);
+                poz_outtake_urcare = 2;
+            }
+            if(runtime_outtake.seconds() > 0.75 && poz_outtake_urcare == 2)
             {
                 brat.setPower(brat_power_incet);
                 poz_outtake_urcare = 0;
@@ -149,25 +164,33 @@ public class drivenourosu extends LinearOpMode {
             if(gp2.dpad_down && poz_outtake_coborare == 0){
                 cleste1.close();
                 cleste2.semi();
-                brat.setTargetPosition(brat_jos+200);
-                brat.setPower(brat_power_incet);
+                brat.setTargetPosition(brat_jos+150);
+                brat.setPower(brat_power_incet+0.1);
                 runtime_outtake2.reset();
                 poz_outtake_coborare = 1;
             }
-            if(runtime_outtake2.seconds() > 0.23 && poz_outtake_coborare == 1)
+            if(runtime_outtake2.seconds() > 0.36 && poz_outtake_coborare == 1)
             {
                 brat.setTargetPosition(brat_jos_intake);
-                brat.setPower(brat_power_incet-0.1);
+                brat.setPower(brat_power_incet);
                 poz_outtake_coborare = 0;
             }
 
 
-
+            if(gp2.a)
+            {
+                cleste1.hub();
+                cleste2.hub();
+            }
             if(gp2.x)
             {
-                cleste1.open();
                 cleste2.open();
             }
+            if(gp2.b)
+            {
+                cleste1.open();
+            }
+
 
             if(gp2.left_trigger > 0.15 && gp2.right_trigger > 0.15){
                 cleste1.open();
@@ -185,10 +208,10 @@ public class drivenourosu extends LinearOpMode {
                 runtime_intake.reset();
             }
             else if(ok_intake){
-                conserva.intake1.setVelocity(-1250);
+                conserva.intake1.setVelocity(-1300);
                 //conserva.intake2.setVelocity(-600);
             }
-            if(ok_intake && runtime_intake.seconds()>0.85){
+            if(ok_intake && runtime_intake.seconds()>0.7){
                 conserva.intake1.setVelocity(0);
                 //conserva.intake2.setVelocity(0);
                 cleste1.close();
@@ -197,12 +220,21 @@ public class drivenourosu extends LinearOpMode {
             }
 
             if(gp1.b){
-                conserva.intake1.setVelocity(440);
-                conserva.intake2.setVelocity(440);
-                sleep(1430);
-                conserva.intake1.setVelocity(1400);
-                conserva.intake2.setVelocity(1400);
-                sleep(250);
+                conserva.intake1.setVelocity(450);
+                conserva.intake2.setVelocity(450);
+                sleep(300);
+                conserva.intake1.setVelocity(600);
+                conserva.intake2.setVelocity(600);
+                sleep(300);
+                conserva.intake1.setVelocity(720);
+                conserva.intake2.setVelocity(720);
+                sleep(300);
+                conserva.intake1.setVelocity(800);
+                conserva.intake2.setVelocity(800);
+                sleep(200);
+                conserva.intake1.setVelocity(1200);
+                conserva.intake2.setVelocity(1200);
+                sleep(200);
                 conserva.intake1.setVelocity(0);
                 conserva.intake2.setVelocity(0);
             }
@@ -210,6 +242,7 @@ public class drivenourosu extends LinearOpMode {
 
             /* Telemetry */
             telemetry.addData("slow_mode", slow_mode);
+            telemetry.addData("outtake", brat.getCurrentPosition());
             telemetry.update();
         }
 

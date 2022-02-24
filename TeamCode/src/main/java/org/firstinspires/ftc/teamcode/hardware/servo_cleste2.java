@@ -7,6 +7,7 @@ public class servo_cleste2 {
     public Servo servo = null;
 
     public static double POS_DESC = 0.28;
+    public static double POS_HUB = 0.55;
     public static double POS_SEMI = 0.71;
     public static double POS_INCH = 0.69;
 
@@ -23,6 +24,7 @@ public class servo_cleste2 {
 
     public void open() { setServoPositions(POS_DESC);}
     public void semi() { setServoPositions(POS_SEMI);}
+    public void hub() { setServoPositions(POS_HUB);}
     public void close() { setServoPositions(POS_INCH);}
 
 }
