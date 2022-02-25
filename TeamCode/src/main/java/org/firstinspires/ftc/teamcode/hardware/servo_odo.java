@@ -6,7 +6,7 @@ import com.qualcomm.robotcore.hardware.Servo;
 public class servo_odo {
     public Servo servo = null;
 
-    public static double POS_JOS = 0.76;
+    public static double POS_JOS = 0.73;
     public static double POS_SUS = 0.5;
 
     public servo_odo(HardwareMap hwMap) {
