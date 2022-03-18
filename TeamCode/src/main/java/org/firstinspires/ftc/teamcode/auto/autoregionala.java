@@ -68,8 +68,8 @@ public class autoregionala extends LinearOpMode
         final Scalar GREEN = new Scalar(0, 255, 0);
 
 
-        final Point REGION1_TOPLEFT_ANCHOR_POINT = new Point(108,167);
-        final Point REGION2_TOPLEFT_ANCHOR_POINT = new Point(176,145);
+        final Point REGION1_TOPLEFT_ANCHOR_POINT = new Point(101,141);
+        final Point REGION2_TOPLEFT_ANCHOR_POINT = new Point(174,131);
         final Point REGION3_TOPLEFT_ANCHOR_POINT = new Point(237,120);
         static final int REGION_WIDTH = 25;
         static final int REGION_HEIGHT = 18;
