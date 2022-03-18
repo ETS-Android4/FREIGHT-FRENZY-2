@@ -45,6 +45,7 @@ public class init_robot {
     public DcMotor rr = null; // Right rear motor
     public DcMotorEx intake1 = null; // Intake motor
     public DcMotorEx intake2 = null; // Intake motor
+    public DcMotorEx carusel = null; // Intake motor
 
     HardwareMap hwMap = null;
 
@@ -107,6 +108,15 @@ public class init_robot {
         intake2.setZeroPowerBehavior(DcMotor.ZeroPowerBehavior.BRAKE);
         intake2.setDirection(DcMotor.Direction.REVERSE);
         intake2.setPower(0.0);
+
+
+        carusel = hwMap.get(DcMotorEx.class, "carusel");
+
+        carusel.setMode(DcMotor.RunMode.RUN_USING_ENCODER);
+        carusel.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
+        carusel.setZeroPowerBehavior(DcMotor.ZeroPowerBehavior.BRAKE);
+        carusel.setDirection(DcMotor.Direction.FORWARD);
+        carusel.setPower(0.0);
 
 
 

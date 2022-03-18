@@ -252,21 +252,27 @@ public class drivetest extends LinearOpMode {
 
             double ruletaL = -gp2.right_stick_x;
             if(Math.abs(gp2.left_stick_x) > 0.2){
-                ruletaY += gp2.left_stick_x/7500;
+                ruletaY += gp2.left_stick_x/5500;
                 servoY.setPosition(ruletaY);
             }
             if(Math.abs(gp2.left_stick_y) > 0.2){
-                ruletaZ += gp2.left_stick_y/10000;
+                ruletaZ += gp2.left_stick_y/9000;
                 servoZ.setPosition(ruletaZ);
             }
             if(ruletaL > 0.2){
-                servoL.setPower(1);
+                servoL.setPower(-1);
             }
             else if(ruletaL < -0.2){
-                servoL.setPower(-1);
+                servoL.setPower(1);
             }
             else{
                 servoL.setPower(0);
+            }
+
+            if(gp1.b){
+                conserva.carusel.setPower(0.5);
+                sleep(1500);
+                conserva.carusel.setPower(0);
             }
 
 
