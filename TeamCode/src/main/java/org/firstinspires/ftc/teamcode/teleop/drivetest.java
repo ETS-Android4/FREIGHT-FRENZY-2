@@ -213,7 +213,7 @@ public class drivetest extends LinearOpMode {
                 cleste1.open();
                 cleste2.open();
                 conserva.intake1.setVelocity(-1000*Math.min(gp2.right_trigger, intake_speed));
-                conserva.intake2.setVelocity(-1000*Math.min(gp2.right_trigger, intake_speed));
+                conserva.intake2.setVelocity(-400*Math.min(gp2.right_trigger, intake_speed));
                 ok_intake = true;
                 ok_intake2 = true;
                 runtime_intake.reset();
@@ -229,14 +229,14 @@ public class drivetest extends LinearOpMode {
             else if(gp2.left_trigger > 0.15) {
                 cleste1.semi();
                 cleste2.open();
-                conserva.intake2.setVelocity(1000*Math.min(gp2.left_trigger, intake_speed));
+                conserva.intake2.setVelocity(400*Math.min(gp2.left_trigger, intake_speed));
                 ok_intake = true;
                 ok_intake2 = true;
                 runtime_intake.reset();
             }
             else if(ok_intake){
                 conserva.intake1.setVelocity(-1200);
-                conserva.intake2.setVelocity(-1000);
+                conserva.intake2.setVelocity(-500);
             }
             if(ok_intake2 && runtime_intake.seconds()>0.35){
                 cleste1.close();
@@ -252,7 +252,7 @@ public class drivetest extends LinearOpMode {
 
             double ruletaL = -gp2.right_stick_x;
             if(Math.abs(gp2.left_stick_x) > 0.2){
-                ruletaY += gp2.left_stick_x/8000;
+                ruletaY += gp2.left_stick_x/7500;
                 servoY.setPosition(ruletaY);
             }
             if(Math.abs(gp2.left_stick_y) > 0.2){
