@@ -318,7 +318,7 @@ public class auto_rosu_freight extends LinearOpMode
                 })
                 .addTemporalMarker(0.5, () -> {
                     cleste1.close();
-                    cleste2.semi();
+                    cleste2.close();
                 })
                 .addTemporalMarker(0.5, () -> {
                     brat.setTargetPosition(brat_jos);
@@ -370,7 +370,7 @@ public class auto_rosu_freight extends LinearOpMode
                 })
                 .addTemporalMarker(0.5, () -> {
                     cleste1.close();
-                    cleste2.semi();
+                    cleste2.close();
                 })
                 .addTemporalMarker(0.5, () -> {
                     brat.setTargetPosition(brat_jos);
@@ -422,7 +422,7 @@ public class auto_rosu_freight extends LinearOpMode
                 })
                 .addTemporalMarker(0.5, () -> {
                     cleste1.close();
-                    cleste2.semi();
+                    cleste2.close();
                 })
                 .addTemporalMarker(0.5, () -> {
                     brat.setTargetPosition(brat_jos);
@@ -475,7 +475,7 @@ public class auto_rosu_freight extends LinearOpMode
                 })
                 .addTemporalMarker(0.5, () -> {
                     cleste1.close();
-                    cleste2.semi();
+                    cleste2.close();
                 })
                 .addTemporalMarker(0.5, () -> {
                     brat.setTargetPosition(brat_jos);
@@ -518,7 +518,7 @@ public class auto_rosu_freight extends LinearOpMode
                 })
                 .addTemporalMarker(0.5, () -> {
                     cleste1.close();
-                    cleste2.semi();
+                    cleste2.close();
                 })
                 .addTemporalMarker(0.7, () -> {
                     brat.setTargetPosition(brat_jos);
