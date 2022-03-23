@@ -99,7 +99,7 @@ public class init_robot {
         intake1.setPower(0.0);
 
 
-        /* Intake motor 1 */
+        /* Intake motor 2 */
         intake2 = hwMap.get(DcMotorEx.class, "intake2");
 
         intake2.setMode(DcMotor.RunMode.RUN_USING_ENCODER);

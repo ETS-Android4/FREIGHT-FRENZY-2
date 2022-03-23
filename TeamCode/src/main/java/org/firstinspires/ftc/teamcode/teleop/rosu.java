@@ -98,7 +98,6 @@ public class rosu extends LinearOpMode {
 
 
         conserva.init(hardwareMap);
-        someservorandomshit();
         someRandomShit();
         Gamepad gp1 = gamepad1;
         Gamepad gp2 = gamepad2;
@@ -335,7 +334,7 @@ public class rosu extends LinearOpMode {
         conserva.rr.setPower(-root2 * speed * sin - rotateSpeed);
     }
 
-    public void someservorandomshit(){
+    public void someRandomShit(){
 
         servoL = hardwareMap.get(CRServo.class, "servoL");
         servoY = hardwareMap.get(Servo.class, "servoY");
@@ -343,9 +342,7 @@ public class rosu extends LinearOpMode {
         servoL.setPower(0);
         servoY.setPosition(ruletaY);
         servoZ.setPosition(ruletaZ);
-    }
 
-    public void someRandomShit(){
 
         brat = hardwareMap.get(DcMotorEx.class, "brat");
         brat.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);

@@ -9,8 +9,10 @@ import com.acmerobotics.roadrunner.trajectory.constraints.MinVelocityConstraint;
 import com.acmerobotics.roadrunner.trajectory.constraints.ProfileAccelerationConstraint;
 import com.qualcomm.robotcore.eventloop.opmode.Autonomous;
 import com.qualcomm.robotcore.eventloop.opmode.LinearOpMode;
+import com.qualcomm.robotcore.hardware.CRServo;
 import com.qualcomm.robotcore.hardware.DcMotor;
 import com.qualcomm.robotcore.hardware.DcMotorEx;
+import com.qualcomm.robotcore.hardware.Servo;
 
 import org.firstinspires.ftc.robotcore.external.hardware.camera.WebcamName;
 import org.firstinspires.ftc.teamcode.drive.DriveConstants;
@@ -39,16 +41,22 @@ public class autoregionala extends LinearOpMode
     public int result = 0;
 
     public DcMotorEx intake1 = null;
+    public DcMotorEx intake2 = null;
     public DcMotorEx brat = null;
+
+    public Servo servoY = null;
+    public Servo servoZ = null;
+    public CRServo servoL = null;
+
+    public double ruletaY = 0.45;
+    public double ruletaZ = 0.55;
 
     public static double startX = 0;
     public static double startY = 0;
 
     public static double brat_power = 1.0;
-    public static double brat_power_incet = 0.5;
     public static int brat_sus = 1987;
     public static int brat_jos = 0;
-    public static int brat_jos_intake = 0;
 
 
     public class IgnitePipeline extends OpenCvPipeline {
@@ -218,7 +226,7 @@ public class autoregionala extends LinearOpMode
         odo.jos();
         someRandomShit();
 
-        brat.setTargetPosition(-30);
+        brat.setTargetPosition(0);
         brat.setPower(brat_power);
 
         int cameraMonitorViewId = hardwareMap.appContext.getResources().getIdentifier("cameraMonitorViewId", "id", hardwareMap.appContext.getPackageName());
@@ -357,7 +365,7 @@ public class autoregionala extends LinearOpMode
                     cleste2.semi();
                 })
                 .addTemporalMarker(0.6, () -> {
-                    brat.setTargetPosition(brat_jos_intake);
+                    brat.setTargetPosition(brat_jos);
                     brat.setPower(brat_power);
                 })
                 .addTemporalMarker(2.05, () -> {
@@ -409,7 +417,7 @@ public class autoregionala extends LinearOpMode
                     cleste2.semi();
                 })
                 .addTemporalMarker(0.6, () -> {
-                    brat.setTargetPosition(brat_jos_intake);
+                    brat.setTargetPosition(brat_jos);
                     brat.setPower(brat_power);
                 })
                 .addTemporalMarker(2.05, () -> {
@@ -452,7 +460,7 @@ public class autoregionala extends LinearOpMode
                     cleste2.semi();
                 })
                 .addTemporalMarker(0.6, () -> {
-                    brat.setTargetPosition(brat_jos_intake);
+                    brat.setTargetPosition(brat_jos);
                     brat.setPower(brat_power);
                 })
                 .build();
@@ -573,13 +581,34 @@ public class autoregionala extends LinearOpMode
         }
     }
 
+
     public void someRandomShit(){
+
+        servoL = hardwareMap.get(CRServo.class, "servoL");
+        servoY = hardwareMap.get(Servo.class, "servoY");
+        servoZ = hardwareMap.get(Servo.class, "servoZ");
+        servoL.setPower(0);
+        servoY.setPosition(ruletaY);
+        servoZ.setPosition(ruletaZ);
+
+
         intake1 = hardwareMap.get(DcMotorEx.class, "intake1");
+
         intake1.setMode(DcMotor.RunMode.RUN_USING_ENCODER);
         intake1.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
         intake1.setZeroPowerBehavior(DcMotor.ZeroPowerBehavior.BRAKE);
         intake1.setDirection(DcMotor.Direction.FORWARD);
         intake1.setPower(0.0);
+
+
+        intake2 = hardwareMap.get(DcMotorEx.class, "intake2");
+
+        intake2.setMode(DcMotor.RunMode.RUN_USING_ENCODER);
+        intake2.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
+        intake2.setZeroPowerBehavior(DcMotor.ZeroPowerBehavior.BRAKE);
+        intake2.setDirection(DcMotor.Direction.REVERSE);
+        intake2.setPower(0.0);
+
 
         brat = hardwareMap.get(DcMotorEx.class, "brat");
         brat.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
