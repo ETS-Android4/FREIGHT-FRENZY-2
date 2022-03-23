@@ -206,7 +206,7 @@ public class rosu extends LinearOpMode {
 
             if(gp2.dpad_down){
                 cleste1.close();
-                cleste2.semi();
+                cleste2.close();
                 brat.setTargetPosition(brat_jos);
                 brat.setPower(brat_power);
             }
