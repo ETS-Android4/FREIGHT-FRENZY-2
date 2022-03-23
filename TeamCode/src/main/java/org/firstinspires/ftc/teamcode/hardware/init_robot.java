@@ -115,7 +115,7 @@ public class init_robot {
         carusel.setMode(DcMotor.RunMode.RUN_USING_ENCODER);
         carusel.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
         carusel.setZeroPowerBehavior(DcMotor.ZeroPowerBehavior.BRAKE);
-        carusel.setDirection(DcMotor.Direction.FORWARD);
+        carusel.setDirection(DcMotor.Direction.REVERSE);
         carusel.setPower(0.0);
 
 

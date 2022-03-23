@@ -92,9 +92,10 @@ public class rosu extends LinearOpMode {
     @Override
     public void runOpMode() {
 
-        double[] powers = {0.7, 0.7, 0.75, 0.8, 0.85};
+        double[] powers = {0.57, 0.62, 0.66, 0.71, 1};
 
-        double timeShift = 1;
+        double timeShift = 45;
+
 
 
         conserva.init(hardwareMap);
@@ -110,8 +111,12 @@ public class rosu extends LinearOpMode {
         cleste1.close();
         cleste2.close();
 
-        brat.setTargetPosition(-15);
+        brat.setTargetPosition(0);
         brat.setPower(brat_power);
+        conserva.carusel.setVelocity(400);
+        sleep(200);
+        conserva.carusel.setVelocity(0);
+
 
         waitForStart();
 
@@ -126,7 +131,7 @@ public class rosu extends LinearOpMode {
             double speed = Math.sqrt(gp1.left_stick_x*gp1.left_stick_x + gp1.left_stick_y*gp1.left_stick_y);
 
 
-            if(gp1.left_bumper && gp1.right_bumper){
+            if(gp1.dpad_up){
                 slow_mode = 2;
             }
             else if(gp1.left_bumper){
@@ -227,36 +232,36 @@ public class rosu extends LinearOpMode {
             if(gp2.left_trigger > 0.15 && gp2.right_trigger > 0.15){
                 cleste1.open();
                 cleste2.open();
-                conserva.intake1.setPower(-Math.min(gp2.right_trigger, intake_speed));
-                conserva.intake2.setPower(-Math.min(gp2.right_trigger, intake_speed));
+                conserva.intake1.setVelocity(-1500*Math.min(gp2.right_trigger, intake_speed));
+                conserva.intake2.setVelocity(-1500*Math.min(gp2.right_trigger, intake_speed));
                 intake_state = 1;
                 runtime_intake.reset();
             }
             else if(gp2.right_trigger > 0.15) {
                 cleste1.open();
-                cleste2.close();
-                conserva.intake1.setPower(Math.min(gp2.right_trigger, intake_speed));
+                cleste2.semi();
+                conserva.intake1.setVelocity(2000*Math.min(gp2.right_trigger, intake_speed));
                 intake_state = 1;
                 runtime_intake.reset();
             }
             else if(gp2.left_trigger > 0.15) {
                 cleste1.semi();
                 cleste2.open();
-                conserva.intake2.setPower(Math.min(gp2.left_trigger, intake_speed));
+                conserva.intake2.setVelocity(2000*Math.min(gp2.left_trigger, intake_speed));
                 intake_state = 1;
                 runtime_intake.reset();
             }
             else if(intake_state == 1){
-                conserva.intake1.setPower(-0.5);
-                conserva.intake2.setPower(-0.5);
+                conserva.intake1.setVelocity(-1700);
+                conserva.intake2.setVelocity(-1700);
                 intake_state = 2;
             }
-            if(intake_state == 2 && runtime_intake.seconds() > 0.35){
+            if(intake_state == 2 && runtime_intake.seconds() > 0.32){
                 cleste1.close();
                 cleste2.close();
                 intake_state = 3;
             }
-            if(intake_state == 3 && runtime_intake.seconds() > 0.7){
+            if(intake_state == 3 && runtime_intake.seconds() > 0.6){
                 conserva.intake1.setPower(0);
                 conserva.intake2.setPower(0);
                 intake_state = 0;
@@ -268,11 +273,11 @@ public class rosu extends LinearOpMode {
 
             double ruletaL = -gp2.right_stick_x;
             if(Math.abs(gp2.left_stick_x) > 0.2){
-                ruletaY += gp2.left_stick_x/5000;
+                ruletaY += gp2.left_stick_x/3000;
                 servoY.setPosition(ruletaY);
             }
             if(Math.abs(gp2.left_stick_y) > 0.2){
-                ruletaZ += gp2.left_stick_y/8500;
+                ruletaZ += gp2.left_stick_y/6000;
                 servoZ.setPosition(ruletaZ);
             }
             if(ruletaL > 0.2){
@@ -289,7 +294,8 @@ public class rosu extends LinearOpMode {
 
             // Carusel
 
-            if(gp1.b && timeCount < powers.length-1){
+            double rightTrigger = (gp1.right_trigger);
+            if(rightTrigger > 0.5){
                 if(timeCount+1 < powers.length) {
                     time += 0.01;
                     if (time > timeShift) {
@@ -310,10 +316,12 @@ public class rosu extends LinearOpMode {
 
 
 
+
             // Telemetry
 
             telemetry.addData("intake1 ", conserva.intake1.getVelocity());
             telemetry.addData("intake2 ", conserva.intake2.getVelocity());
+            telemetry.addData("carusel ", conserva.carusel.getVelocity());
             telemetry.update();
 
         }
