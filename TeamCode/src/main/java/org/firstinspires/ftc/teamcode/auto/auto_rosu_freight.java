@@ -35,7 +35,7 @@ import java.util.Arrays;
 
 @Autonomous
 //@Disabled
-public class autoregionala extends LinearOpMode
+public class auto_rosu_freight extends LinearOpMode
 {
     OpenCvCamera webcam;
     public int result = 0;
@@ -43,6 +43,8 @@ public class autoregionala extends LinearOpMode
     public DcMotorEx intake1 = null;
     public DcMotorEx intake2 = null;
     public DcMotorEx brat = null;
+    public DcMotorEx carusel = null;
+
 
     public Servo servoY = null;
     public Servo servoZ = null;
@@ -56,6 +58,8 @@ public class autoregionala extends LinearOpMode
 
     public static double brat_power = 1.0;
     public static int brat_sus = 1987;
+    public static int brat_hub_mid = 1530;
+    public static int brat_hub_jos = 1100;
     public static int brat_jos = 0;
 
 
@@ -273,7 +277,7 @@ public class autoregionala extends LinearOpMode
                 .addTemporalMarker(0, () -> {
                     cleste1.close();
                     cleste2.close();
-                    brat.setTargetPosition(1530);
+                    brat.setTargetPosition(brat_hub_mid);
                     brat.setPower(brat_power);
                 })
                 .build();
@@ -291,7 +295,7 @@ public class autoregionala extends LinearOpMode
                 .addTemporalMarker(0, () -> {
                     cleste1.close();
                     cleste2.close();
-                    brat.setTargetPosition(1100);
+                    brat.setTargetPosition(brat_hub_jos);
                     brat.setPower(brat_power);
                 })
                 .build();
@@ -477,7 +481,6 @@ public class autoregionala extends LinearOpMode
                 cleste1.open();
                 cleste2.close();
                 sleep(100);
-                brat_sus += 15;
                 drive.followTrajectory(trajectory2);
                 sleep(250);
                 intake1.setVelocity(-1800);
@@ -486,7 +489,6 @@ public class autoregionala extends LinearOpMode
                 cleste1.hub();
                 cleste2.hub();
                 sleep(230);
-                brat_sus += 15;
                 drive.followTrajectory(trajectory4);
                 sleep(250);
                 intake1.setVelocity(-1800);
@@ -495,7 +497,6 @@ public class autoregionala extends LinearOpMode
                 cleste1.hub();
                 cleste2.hub();
                 sleep(230);
-                brat_sus += 15;
                 drive.followTrajectory(trajectory6);
                 sleep(250);
                 intake1.setVelocity(-1800);
@@ -504,7 +505,6 @@ public class autoregionala extends LinearOpMode
                 cleste1.hub();
                 cleste2.hub();
                 sleep(230);
-                brat_sus += 15;
                 drive.followTrajectory(trajectory8);
             }
             else if(result == 1){
@@ -512,7 +512,6 @@ public class autoregionala extends LinearOpMode
                 cleste1.hub();
                 cleste2.open();
                 sleep(100);
-                brat_sus += 15;
                 drive.followTrajectory(trajectory2);
                 sleep(250);
                 intake1.setVelocity(-1800);
@@ -521,7 +520,6 @@ public class autoregionala extends LinearOpMode
                 cleste1.hub();
                 cleste2.hub();
                 sleep(230);
-                brat_sus += 15;
                 drive.followTrajectory(trajectory4);
                 sleep(250);
                 intake1.setVelocity(-1800);
@@ -530,7 +528,6 @@ public class autoregionala extends LinearOpMode
                 cleste1.hub();
                 cleste2.hub();
                 sleep(230);
-                brat_sus += 15;
                 drive.followTrajectory(trajectory6);
                 sleep(250);
                 intake1.setVelocity(-1800);
@@ -539,7 +536,6 @@ public class autoregionala extends LinearOpMode
                 cleste1.hub();
                 cleste2.hub();
                 sleep(230);
-                brat_sus += 15;
                 drive.followTrajectory(trajectory8);
             }
             else if(result == 2){
@@ -547,7 +543,6 @@ public class autoregionala extends LinearOpMode
                 cleste1.hub();
                 cleste2.hub();
                 sleep(100);
-                brat_sus += 15;
                 drive.followTrajectory(trajectory2);
                 sleep(250);
                 intake1.setVelocity(-1800);
@@ -556,7 +551,6 @@ public class autoregionala extends LinearOpMode
                 cleste1.hub();
                 cleste2.hub();
                 sleep(230);
-                brat_sus += 15;
                 drive.followTrajectory(trajectory4);
                 sleep(250);
                 intake1.setVelocity(-1800);
@@ -565,7 +559,6 @@ public class autoregionala extends LinearOpMode
                 cleste1.hub();
                 cleste2.hub();
                 sleep(230);
-                brat_sus += 15;
                 drive.followTrajectory(trajectory6);
                 sleep(250);
                 intake1.setVelocity(-1800);
@@ -574,7 +567,6 @@ public class autoregionala extends LinearOpMode
                 cleste1.hub();
                 cleste2.hub();
                 sleep(230);
-                brat_sus += 15;
                 drive.followTrajectory(trajectory8);
             }
             stop();
@@ -608,6 +600,15 @@ public class autoregionala extends LinearOpMode
         intake2.setZeroPowerBehavior(DcMotor.ZeroPowerBehavior.BRAKE);
         intake2.setDirection(DcMotor.Direction.REVERSE);
         intake2.setPower(0.0);
+
+
+        carusel = hardwareMap.get(DcMotorEx.class, "carusel");
+
+        carusel.setMode(DcMotor.RunMode.RUN_USING_ENCODER);
+        carusel.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
+        carusel.setZeroPowerBehavior(DcMotor.ZeroPowerBehavior.BRAKE);
+        carusel.setDirection(DcMotor.Direction.FORWARD);
+        carusel.setPower(0.0);
 
 
         brat = hardwareMap.get(DcMotorEx.class, "brat");
