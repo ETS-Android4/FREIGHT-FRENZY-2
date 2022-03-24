@@ -9,7 +9,7 @@ public class servo_cleste2 {
     public static double POS_DESC = 0.33;
     public static double POS_HUB = 0.57;
     public static double POS_SEMI = 0.65;
-    public static double POS_INCH = 0.69;
+    public static double POS_INCH = 0.71;
 
     public servo_cleste2(HardwareMap hwMap) {
         servo = hwMap.get(Servo.class, "servoCleste2");
