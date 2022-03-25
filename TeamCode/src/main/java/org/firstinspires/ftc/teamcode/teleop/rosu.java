@@ -273,11 +273,11 @@ public class rosu extends LinearOpMode {
 
             double ruletaL = -gp2.right_stick_x;
             if(Math.abs(gp2.left_stick_x) > 0.2){
-                ruletaY += gp2.left_stick_x/1000;
+                ruletaY += gp2.left_stick_x/800;
                 servoY.setPosition(ruletaY);
             }
             if(Math.abs(gp2.left_stick_y) > 0.2){
-                ruletaZ += gp2.left_stick_y/2500;
+                ruletaZ += gp2.left_stick_y/1800;
                 servoZ.setPosition(ruletaZ);
             }
             if(ruletaL > 0.2){
@@ -288,6 +288,16 @@ public class rosu extends LinearOpMode {
             }
             else{
                 servoL.setPower(0);
+            }
+            if(gp2.right_stick_button)
+            {
+                servoY.setPosition(0.5);
+                servoZ.setPosition(0.5);
+            }
+            if(gp2.left_stick_button)
+            {
+                servoY.setPosition(0.4);
+                servoZ.setPosition(0.6);
             }
 
 
