@@ -6,7 +6,7 @@ import com.qualcomm.robotcore.hardware.Servo;
 public class servo_cleste1 {
     public Servo servo = null;
 
-    public static double POS_DESC = 0.68;
+    public static double POS_DESC = 0.71;
     public static double POS_HUB = 0.42;
     public static double POS_SEMI = 0.37;
     public static double POS_INCH = 0.33;
