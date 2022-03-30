@@ -62,6 +62,16 @@ public class auto_rosu_freight_test extends LinearOpMode
     public static int brat_hub_jos = 1100;
     public static int brat_jos = 0;
 
+    Trajectory trajectory2;
+    Trajectory trajectory3;
+    Trajectory trajectory4;
+    Trajectory trajectory5;
+    Trajectory trajectory6;
+    Trajectory trajectory7;
+    Trajectory trajectory8;
+    Trajectory trajectory9;
+    Trajectory trajectory10;
+
 
     public class IgnitePipeline extends OpenCvPipeline {
 
@@ -331,9 +341,10 @@ public class auto_rosu_freight_test extends LinearOpMode
                 .addTemporalMarker(1.55, () -> {
                     intake1.setVelocity(3300);
                 })
+                .addDisplacementMarker(() -> drive.followTrajectoryAsync(trajectory3))
                 .build();
 
-        Trajectory trajectory3 = drive.trajectoryBuilder(trajectory2.end())
+        trajectory3 = drive.trajectoryBuilder(trajectory2.end())
                 .strafeTo(new Vector2d(startX+23, startY+1))
                 .splineToConstantHeading(new Vector2d(startX+2, startY+23.75), Math.toRadians(0))
                 .addTemporalMarker(0, () -> {
@@ -352,7 +363,7 @@ public class auto_rosu_freight_test extends LinearOpMode
                 })
                 .build();
 
-        Trajectory trajectory4 = drive.trajectoryBuilder(trajectory3.end())
+        trajectory4 = drive.trajectoryBuilder(trajectory3.end())
                 .strafeTo(new Vector2d(startX+21, startY+1))
                 .splineToConstantHeading(new Vector2d(startX+43, startY+1), Math.toRadians(0))
                 .splineToConstantHeading(new Vector2d(startX+62.8, startY+1), Math.toRadians(0),
@@ -365,6 +376,8 @@ public class auto_rosu_freight_test extends LinearOpMode
                         new ProfileAccelerationConstraint(DriveConstants.MAX_ACCEL)
                 )
                 .addTemporalMarker(0, () -> {
+                    cleste1.hub();
+                    cleste2.hub();
                     brat.setTargetPosition(brat_sus+150);
                     brat.setPower(brat_power);
                 })
@@ -383,9 +396,10 @@ public class auto_rosu_freight_test extends LinearOpMode
                 .addTemporalMarker(1.55, () -> {
                     intake1.setVelocity(3300);
                 })
+                .addDisplacementMarker(() -> drive.followTrajectoryAsync(trajectory5))
                 .build();
 
-        Trajectory trajectory5 = drive.trajectoryBuilder(trajectory4.end())
+        trajectory5 = drive.trajectoryBuilder(trajectory4.end())
                 .strafeTo(new Vector2d(startX+25, startY+1))
                 .splineToConstantHeading(new Vector2d(startX+1.8, startY+24.25), Math.toRadians(0))
                 .addTemporalMarker(0, () -> {
@@ -404,7 +418,7 @@ public class auto_rosu_freight_test extends LinearOpMode
                 })
                 .build();
 
-        Trajectory trajectory6 = drive.trajectoryBuilder(trajectory5.end())
+        trajectory6 = drive.trajectoryBuilder(trajectory5.end())
                 .strafeTo(new Vector2d(startX+21, startY+1))
                 .splineToConstantHeading(new Vector2d(startX+44, startY+1), Math.toRadians(0))
                 .splineToConstantHeading(new Vector2d(startX+68.75, startY+1), Math.toRadians(0),
@@ -417,6 +431,8 @@ public class auto_rosu_freight_test extends LinearOpMode
                         new ProfileAccelerationConstraint(DriveConstants.MAX_ACCEL)
                 )
                 .addTemporalMarker(0, () -> {
+                    cleste1.hub();
+                    cleste2.hub();
                     brat.setTargetPosition(brat_sus+150);
                     brat.setPower(brat_power);
                 })
@@ -435,9 +451,10 @@ public class auto_rosu_freight_test extends LinearOpMode
                 .addTemporalMarker(1.55, () -> {
                     intake1.setVelocity(3300);
                 })
+                .addDisplacementMarker(() -> drive.followTrajectoryAsync(trajectory7))
                 .build();
 
-        Trajectory trajectory7 = drive.trajectoryBuilder(trajectory6.end())
+        trajectory7 = drive.trajectoryBuilder(trajectory6.end())
                 .strafeTo(new Vector2d(startX+25, startY+1))
                 .splineToConstantHeading(new Vector2d(startX+2, startY+24.5), Math.toRadians(0))
                 .addTemporalMarker(0, () -> {
@@ -457,7 +474,7 @@ public class auto_rosu_freight_test extends LinearOpMode
                 .build();
 
 
-        Trajectory trajectory8 = drive.trajectoryBuilder(trajectory7.end())
+        trajectory8 = drive.trajectoryBuilder(trajectory7.end())
                 .strafeTo(new Vector2d(startX+21, startY+1))
                 .splineToConstantHeading(new Vector2d(startX+44, startY+1), Math.toRadians(0))
                 .splineToConstantHeading(new Vector2d(startX+75.5, startY+4), Math.toRadians(0),
@@ -470,6 +487,8 @@ public class auto_rosu_freight_test extends LinearOpMode
                         new ProfileAccelerationConstraint(DriveConstants.MAX_ACCEL)
                 )
                 .addTemporalMarker(0, () -> {
+                    cleste1.hub();
+                    cleste2.hub();
                     brat.setTargetPosition(brat_sus+150);
                     brat.setPower(brat_power);
                 })
@@ -488,9 +507,10 @@ public class auto_rosu_freight_test extends LinearOpMode
                 .addTemporalMarker(1.55, () -> {
                     intake1.setVelocity(3300);
                 })
+                .addDisplacementMarker(() -> drive.followTrajectoryAsync(trajectory9))
                 .build();
 
-        Trajectory trajectory9 = drive.trajectoryBuilder(trajectory8.end())
+        trajectory9 = drive.trajectoryBuilder(trajectory8.end())
                 .strafeTo(new Vector2d(startX+25, startY+1))
                 .splineToConstantHeading(new Vector2d(startX+3.2, startY+25.5), Math.toRadians(0))
                 .addTemporalMarker(0, () -> {
@@ -509,11 +529,31 @@ public class auto_rosu_freight_test extends LinearOpMode
                 })
                 .build();
 
-        Trajectory trajectory10 = drive.trajectoryBuilder(trajectory9.end())
+        trajectory10 = drive.trajectoryBuilder(trajectory9.end())
                 .strafeTo(new Vector2d(startX+23, startY+1))
-                .splineToConstantHeading(new Vector2d(startX+59, startY+1), Math.toRadians(0))
+                .splineToConstantHeading(new Vector2d(startX+36, startY+1), Math.toRadians(0))
+                .splineToConstantHeading(new Vector2d(startX+51.5, startY+1), Math.toRadians(0),
+                        new MinVelocityConstraint(
+                                Arrays.asList(
+                                        new AngularVelocityConstraint(DriveConstants.MAX_ANG_VEL),
+                                        new MecanumVelocityConstraint(28, DriveConstants.TRACK_WIDTH)
+                                )
+                        ),
+                        new ProfileAccelerationConstraint(DriveConstants.MAX_ACCEL)
+                )
+                .splineToConstantHeading(new Vector2d(startX+53.5, startY+29.5), Math.toRadians(0),
+                        new MinVelocityConstraint(
+                                Arrays.asList(
+                                        new AngularVelocityConstraint(DriveConstants.MAX_ANG_VEL),
+                                        new MecanumVelocityConstraint(28, DriveConstants.TRACK_WIDTH)
+                                )
+                        ),
+                        new ProfileAccelerationConstraint(DriveConstants.MAX_ACCEL)
+                )
                 .addTemporalMarker(0, () -> {
-                    brat.setTargetPosition(brat_sus+100);
+                    cleste1.hub();
+                    cleste2.hub();
+                    brat.setTargetPosition(brat_sus+150);
                     brat.setPower(brat_power);
                 })
                 .addTemporalMarker(0.5, () -> {
@@ -643,10 +683,34 @@ public class auto_rosu_freight_test extends LinearOpMode
             cleste2.hub();
             sleep(100);
             drive.followTrajectory(trajectory2);
+            sleep(50);
+            cleste1.hub();
+            cleste2.hub();
+            sleep(100);
+            drive.followTrajectory(trajectory4);
+            sleep(50);
+            cleste1.hub();
+            cleste2.hub();
+            sleep(100);
+            drive.followTrajectory(trajectory6);
+            sleep(50);
+            cleste1.hub();
+            cleste2.hub();
+            sleep(100);
+            drive.followTrajectory(trajectory8);
+            sleep(50);
+            cleste1.hub();
+            cleste2.hub();
+            sleep(100);
+            drive.followTrajectory(trajectory10);
+            /*
             sleep(100);
             intake1.setVelocity(-1800);
             sleep(100);
             drive.followTrajectory(trajectory3);
+
+             */
+            /*
             cleste1.hub();
             cleste2.hub();
             sleep(150);
@@ -675,6 +739,8 @@ public class auto_rosu_freight_test extends LinearOpMode
             cleste2.hub();
             sleep(150);
             drive.followTrajectory(trajectory10);
+
+             */
             stop();
         }
     }
