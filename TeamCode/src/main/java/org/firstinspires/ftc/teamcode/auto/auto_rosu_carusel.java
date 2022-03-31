@@ -35,7 +35,7 @@ import java.util.Arrays;
 
 @Autonomous
 //@Disabled
-public class auto_albastru_freight extends LinearOpMode
+public class auto_rosu_carusel extends LinearOpMode
 {
     OpenCvCamera webcam;
     public int result = 0;
@@ -256,312 +256,92 @@ public class auto_albastru_freight extends LinearOpMode
         SampleMecanumDrive drive = new SampleMecanumDrive(hardwareMap);
 
         Trajectory trajectory1 = drive.trajectoryBuilder(new Pose2d())
-                .lineToLinearHeading(new Pose2d(startX-1, startY+24, Math.toRadians(0)),
+                .lineToLinearHeading(new Pose2d(startX-8, startY+40, Math.toRadians(-90)),
                         new MinVelocityConstraint(
                                 Arrays.asList(
                                         new AngularVelocityConstraint(DriveConstants.MAX_ANG_VEL),
-                                        new MecanumVelocityConstraint(27, DriveConstants.TRACK_WIDTH)
+                                        new MecanumVelocityConstraint(20, DriveConstants.TRACK_WIDTH)
                                 )
                         ),
                         new ProfileAccelerationConstraint(DriveConstants.MAX_ACCEL)
                 )
-                .addTemporalMarker(0, () -> {
-                    cleste1.close();
-                    cleste2.close();
-                    brat.setTargetPosition(brat_sus);
-                    brat.setPower(brat_power);
-                })
-                .build();
-
-        Trajectory trajectory11 = drive.trajectoryBuilder(new Pose2d())
-                .lineToLinearHeading(new Pose2d(startX-1, startY+24, Math.toRadians(0)),
-                        new MinVelocityConstraint(
-                                Arrays.asList(
-                                        new AngularVelocityConstraint(DriveConstants.MAX_ANG_VEL),
-                                        new MecanumVelocityConstraint(27, DriveConstants.TRACK_WIDTH)
-                                )
-                        ),
-                        new ProfileAccelerationConstraint(DriveConstants.MAX_ACCEL)
-                )
-                .addTemporalMarker(0, () -> {
-                    cleste1.close();
-                    cleste2.close();
-                    brat.setTargetPosition(brat_hub_mid);
-                    brat.setPower(brat_power);
-                })
-                .build();
-
-        Trajectory trajectory111 = drive.trajectoryBuilder(new Pose2d())
-                .lineToLinearHeading(new Pose2d(startX-1, startY+24, Math.toRadians(0)),
-                        new MinVelocityConstraint(
-                                Arrays.asList(
-                                        new AngularVelocityConstraint(DriveConstants.MAX_ANG_VEL),
-                                        new MecanumVelocityConstraint(27, DriveConstants.TRACK_WIDTH)
-                                )
-                        ),
-                        new ProfileAccelerationConstraint(DriveConstants.MAX_ACCEL)
-                )
-                .addTemporalMarker(0, () -> {
-                    cleste1.close();
-                    cleste2.close();
-                    brat.setTargetPosition(brat_hub_jos);
-                    brat.setPower(brat_power);
-                })
                 .build();
 
         Trajectory trajectory2 = drive.trajectoryBuilder(trajectory1.end())
-                .strafeTo(new Vector2d(startX-18, startY-4))
-                .splineToConstantHeading(new Vector2d(startX-40, startY-4), Math.toRadians(0))
-                .splineToConstantHeading(new Vector2d(startX-53.5, startY-4), Math.toRadians(0),
+                .splineToConstantHeading(new Vector2d(startX+15, startY+40), Math.toRadians(0),
                         new MinVelocityConstraint(
                                 Arrays.asList(
                                         new AngularVelocityConstraint(DriveConstants.MAX_ANG_VEL),
-                                        new MecanumVelocityConstraint(28, DriveConstants.TRACK_WIDTH)
+                                        new MecanumVelocityConstraint(20, DriveConstants.TRACK_WIDTH)
                                 )
                         ),
                         new ProfileAccelerationConstraint(DriveConstants.MAX_ACCEL)
                 )
-                .addTemporalMarker(0.5, () -> {
-                    cleste1.close();
-                    cleste2.close();
-                })
-                .addTemporalMarker(0.6, () -> {
-                    brat.setTargetPosition(brat_jos);
-                    brat.setPower(brat_power);
-                })
-                .addTemporalMarker(1.5, () -> {
-                    cleste1.semi();
-                    cleste2.open();
-                })
-                .addTemporalMarker(1.65, () -> {
-                    intake2.setVelocity(3300);
-                })
-                .addDisplacementMarker(() -> drive.followTrajectoryAsync(trajectory3))
+                .splineToConstantHeading(new Vector2d(startX+17, startY+38.2), Math.toRadians(0),
+                        new MinVelocityConstraint(
+                                Arrays.asList(
+                                        new AngularVelocityConstraint(DriveConstants.MAX_ANG_VEL),
+                                        new MecanumVelocityConstraint(20, DriveConstants.TRACK_WIDTH)
+                                )
+                        ),
+                        new ProfileAccelerationConstraint(DriveConstants.MAX_ACCEL)
+                )
                 .build();
 
 
         trajectory3 = drive.trajectoryBuilder(trajectory2.end())
-                .strafeTo(new Vector2d(startX-30, startY-4.5))
-                .splineToConstantHeading(new Vector2d(startX+2.25, startY+24), Math.toRadians(0))
-                .addTemporalMarker(0, () -> {
-                    intake2.setVelocity(-2000);
-                })
+                .strafeTo(new Vector2d(startX-4.5, startY+40),
+                        new MinVelocityConstraint(
+                                Arrays.asList(
+                                        new AngularVelocityConstraint(DriveConstants.MAX_ANG_VEL),
+                                        new MecanumVelocityConstraint(20, DriveConstants.TRACK_WIDTH)
+                                )
+                        ),
+                        new ProfileAccelerationConstraint(DriveConstants.MAX_ACCEL)
+                )
+                .splineToConstantHeading(new Vector2d(startX-9, startY+31), Math.toRadians(0),
+                        new MinVelocityConstraint(
+                                Arrays.asList(
+                                        new AngularVelocityConstraint(DriveConstants.MAX_ANG_VEL),
+                                        new MecanumVelocityConstraint(20, DriveConstants.TRACK_WIDTH)
+                                )
+                        ),
+                        new ProfileAccelerationConstraint(DriveConstants.MAX_ACCEL)
+                )
                 .addTemporalMarker(0.5, () -> {
                     cleste1.close();
                     cleste2.close();
                 })
-                .addTemporalMarker(0.75, () -> {
-                    intake2.setVelocity(0);
-                })
-                .addTemporalMarker(1.05, () -> {
-                    brat.setTargetPosition(brat_sus);
+                .addTemporalMarker(1.0, () -> {
+                    brat.setTargetPosition(brat_jos);
                     brat.setPower(brat_power);
                 })
                 .build();
 
         trajectory4 = drive.trajectoryBuilder(trajectory3.end())
-                .strafeTo(new Vector2d(startX-15, startY-5))
-                .splineToConstantHeading(new Vector2d(startX-43, startY-5), Math.toRadians(0))
-                .splineToConstantHeading(new Vector2d(startX-56, startY-5), Math.toRadians(0),
+                .lineToLinearHeading(new Pose2d(startX-19.5, startY+4.5, Math.toRadians(70)),
                         new MinVelocityConstraint(
                                 Arrays.asList(
                                         new AngularVelocityConstraint(DriveConstants.MAX_ANG_VEL),
-                                        new MecanumVelocityConstraint(28, DriveConstants.TRACK_WIDTH)
+                                        new MecanumVelocityConstraint(20, DriveConstants.TRACK_WIDTH)
                                 )
                         ),
                         new ProfileAccelerationConstraint(DriveConstants.MAX_ACCEL)
                 )
-                .addTemporalMarker(0, () -> {
-                    cleste1.hub();
-                    cleste2.hub();
-                    brat.setTargetPosition(brat_sus+150);
-                    brat.setPower(brat_power);
-                })
-                .addTemporalMarker(0.5, () -> {
-                    cleste1.close();
-                    cleste2.close();
-                })
-                .addTemporalMarker(0.6, () -> {
-                    brat.setTargetPosition(brat_jos);
-                    brat.setPower(brat_power);
-                })
-                .addTemporalMarker(1.5, () -> {
-                    cleste1.semi();
-                    cleste2.open();
-                })
-                .addTemporalMarker(1.65, () -> {
-                    intake2.setVelocity(3300);
-                })
-                .addDisplacementMarker(() -> drive.followTrajectoryAsync(trajectory5))
                 .build();
 
         trajectory5 = drive.trajectoryBuilder(trajectory4.end())
-                .strafeTo(new Vector2d(startX-28, startY-5))
-                .splineToConstantHeading(new Vector2d(startX+7, startY+24), Math.toRadians(0))
-                .addTemporalMarker(0, () -> {
-                    intake2.setVelocity(-2000);
-                })
-                .addTemporalMarker(0.5, () -> {
-                    cleste1.close();
-                    cleste2.close();
-                })
-                .addTemporalMarker(0.75, () -> {
-                    intake2.setVelocity(0);
-                })
-                .addTemporalMarker(1.1, () -> {
-                    brat.setTargetPosition(brat_sus);
-                    brat.setPower(brat_power);
-                })
-                .build();
-
-        trajectory6 = drive.trajectoryBuilder(trajectory5.end())
-                .strafeTo(new Vector2d(startX-13.5, startY-5.5))
-                .splineToConstantHeading(new Vector2d(startX-44, startY-5.5), Math.toRadians(0))
-                .splineToConstantHeading(new Vector2d(startX-61.5, startY-5.5), Math.toRadians(0),
+                .lineToLinearHeading(new Pose2d(startX-14, startY+29.5, Math.toRadians(0)),
                         new MinVelocityConstraint(
                                 Arrays.asList(
                                         new AngularVelocityConstraint(DriveConstants.MAX_ANG_VEL),
-                                        new MecanumVelocityConstraint(28, DriveConstants.TRACK_WIDTH)
+                                        new MecanumVelocityConstraint(20, DriveConstants.TRACK_WIDTH)
                                 )
                         ),
                         new ProfileAccelerationConstraint(DriveConstants.MAX_ACCEL)
                 )
-                .addTemporalMarker(0, () -> {
-                    cleste1.hub();
-                    cleste2.hub();
-                    brat.setTargetPosition(brat_sus+150);
-                    brat.setPower(brat_power);
-                })
-                .addTemporalMarker(0.5, () -> {
-                    cleste1.close();
-                    cleste2.close();
-                })
-                .addTemporalMarker(0.6, () -> {
-                    brat.setTargetPosition(brat_jos);
-                    brat.setPower(brat_power);
-                })
-                .addTemporalMarker(1.5, () -> {
-                    cleste1.semi();
-                    cleste2.open();
-                })
-                .addTemporalMarker(1.65, () -> {
-                    intake2.setVelocity(3300);
-                })
-                .addDisplacementMarker(() -> drive.followTrajectoryAsync(trajectory7))
                 .build();
 
-        trajectory7 = drive.trajectoryBuilder(trajectory6.end())
-                .strafeTo(new Vector2d(startX-26, startY-6))
-                .splineToConstantHeading(new Vector2d(startX+8, startY+24.5), Math.toRadians(0))
-                .addTemporalMarker(0, () -> {
-                    intake2.setVelocity(-2000);
-                })
-                .addTemporalMarker(0.5, () -> {
-                    cleste1.close();
-                    cleste2.close();
-                })
-                .addTemporalMarker(0.75, () -> {
-                    intake2.setVelocity(0);
-                })
-                .addTemporalMarker(1.15, () -> {
-                    brat.setTargetPosition(brat_sus+30);
-                    brat.setPower(brat_power);
-                })
-                .build();
-
-
-        trajectory8 = drive.trajectoryBuilder(trajectory7.end())
-                .strafeTo(new Vector2d(startX-10, startY-6.5))
-                .splineToConstantHeading(new Vector2d(startX-44, startY-6.5), Math.toRadians(0))
-                .splineToConstantHeading(new Vector2d(startX-62, startY-6.5), Math.toRadians(0),
-                        new MinVelocityConstraint(
-                                Arrays.asList(
-                                        new AngularVelocityConstraint(DriveConstants.MAX_ANG_VEL),
-                                        new MecanumVelocityConstraint(28, DriveConstants.TRACK_WIDTH)
-                                )
-                        ),
-                        new ProfileAccelerationConstraint(DriveConstants.MAX_ACCEL)
-                )
-                .addTemporalMarker(0, () -> {
-                    cleste1.hub();
-                    cleste2.hub();
-                    brat.setTargetPosition(brat_sus+150);
-                    brat.setPower(brat_power);
-                })
-                .addTemporalMarker(0.5, () -> {
-                    cleste1.close();
-                    cleste2.close();
-                })
-                .addTemporalMarker(0.6, () -> {
-                    brat.setTargetPosition(brat_jos);
-                    brat.setPower(brat_power);
-                })
-                .addTemporalMarker(1.5, () -> {
-                    cleste1.semi();
-                    cleste2.open();
-                })
-                .addTemporalMarker(1.65, () -> {
-                    intake2.setVelocity(3300);
-                })
-                .addDisplacementMarker(() -> drive.followTrajectoryAsync(trajectory9))
-                .build();
-
-        trajectory9 = drive.trajectoryBuilder(trajectory8.end())
-                .strafeTo(new Vector2d(startX-60, startY-8))
-                .splineToConstantHeading(new Vector2d(startX-24, startY-8), Math.toRadians(0))
-                .splineToConstantHeading(new Vector2d(startX+10, startY+24.2), Math.toRadians(0))
-                .addTemporalMarker(0, () -> {
-                    intake2.setVelocity(-2000);
-                })
-                .addTemporalMarker(0.5, () -> {
-                    cleste1.close();
-                    cleste2.close();
-                })
-                .addTemporalMarker(0.75, () -> {
-                    intake2.setVelocity(0);
-                })
-                .addTemporalMarker(1.25, () -> {
-                    brat.setTargetPosition(brat_sus+30);
-                    brat.setPower(brat_power);
-                })
-                .build();
-
-        trajectory10 = drive.trajectoryBuilder(trajectory9.end())
-                .strafeTo(new Vector2d(startX-9, startY-9))
-                .splineToConstantHeading(new Vector2d(startX-36, startY-9), Math.toRadians(0))
-                .splineToConstantHeading(new Vector2d(startX-50, startY-9), Math.toRadians(0),
-                        new MinVelocityConstraint(
-                                Arrays.asList(
-                                        new AngularVelocityConstraint(DriveConstants.MAX_ANG_VEL),
-                                        new MecanumVelocityConstraint(40, DriveConstants.TRACK_WIDTH)
-                                )
-                        ),
-                        new ProfileAccelerationConstraint(DriveConstants.MAX_ACCEL)
-                )
-                .splineToConstantHeading(new Vector2d(startX-53.5, startY+20), Math.toRadians(0),
-                        new MinVelocityConstraint(
-                                Arrays.asList(
-                                        new AngularVelocityConstraint(DriveConstants.MAX_ANG_VEL),
-                                        new MecanumVelocityConstraint(28, DriveConstants.TRACK_WIDTH)
-                                )
-                        ),
-                        new ProfileAccelerationConstraint(DriveConstants.MAX_ACCEL)
-                )
-                .addTemporalMarker(0, () -> {
-                    cleste1.hub();
-                    cleste2.hub();
-                    brat.setTargetPosition(brat_sus+150);
-                    brat.setPower(brat_power);
-                })
-                .addTemporalMarker(0.5, () -> {
-                    cleste1.close();
-                    cleste2.close();
-                })
-                .addTemporalMarker(0.8, () -> {
-                    brat.setTargetPosition(brat_jos);
-                    brat.setPower(brat_power);
-                })
-                .build();
 
         cleste1.close();
         cleste2.close();
@@ -571,75 +351,51 @@ public class auto_albastru_freight extends LinearOpMode
         while (opModeIsActive())
         {
             if(result == 0){
-                drive.followTrajectory(trajectory111);
-                cleste1.hub();
-                cleste2.hub();
-                sleep(150);
+                drive.followTrajectory(trajectory1);
+                brat.setTargetPosition(brat_hub_jos);
+                brat.setPower(brat_power);
                 drive.followTrajectory(trajectory2);
                 cleste1.hub();
                 cleste2.hub();
                 sleep(150);
+                drive.followTrajectory(trajectory3);
                 drive.followTrajectory(trajectory4);
-                cleste1.hub();
-                cleste2.hub();
-                sleep(150);
-                drive.followTrajectory(trajectory6);
-                cleste1.hub();
-                cleste2.hub();
-                sleep(150);
-                drive.followTrajectory(trajectory8);
-                cleste1.hub();
-                cleste2.hub();
-                sleep(150);
-                drive.followTrajectory(trajectory10);
+                carusel.setVelocity(-1000);
+                sleep(3000);
+                carusel.setVelocity(0);
+                drive.followTrajectory(trajectory5);
                 stop();
             }
             else if(result == 1){
-                drive.followTrajectory(trajectory11);
-                cleste1.hub();
-                cleste2.hub();
-                sleep(150);
+                drive.followTrajectory(trajectory1);
+                brat.setTargetPosition(brat_hub_mid);
+                brat.setPower(brat_power);
                 drive.followTrajectory(trajectory2);
                 cleste1.hub();
                 cleste2.hub();
                 sleep(150);
+                drive.followTrajectory(trajectory3);
                 drive.followTrajectory(trajectory4);
-                cleste1.hub();
-                cleste2.hub();
-                sleep(150);
-                drive.followTrajectory(trajectory6);
-                cleste1.hub();
-                cleste2.hub();
-                sleep(150);
-                drive.followTrajectory(trajectory8);
-                cleste1.hub();
-                cleste2.hub();
-                sleep(150);
-                drive.followTrajectory(trajectory10);
+                carusel.setVelocity(-1000);
+                sleep(3000);
+                carusel.setVelocity(0);
+                drive.followTrajectory(trajectory5);
                 stop();
             }
             else if(result == 2){
                 drive.followTrajectory(trajectory1);
-                cleste1.hub();
-                cleste2.hub();
-                sleep(150);
+                brat.setTargetPosition(brat_sus);
+                brat.setPower(brat_power);
                 drive.followTrajectory(trajectory2);
                 cleste1.hub();
                 cleste2.hub();
                 sleep(150);
+                drive.followTrajectory(trajectory3);
                 drive.followTrajectory(trajectory4);
-                cleste1.hub();
-                cleste2.hub();
-                sleep(150);
-                drive.followTrajectory(trajectory6);
-                cleste1.hub();
-                cleste2.hub();
-                sleep(150);
-                drive.followTrajectory(trajectory8);
-                cleste1.hub();
-                cleste2.hub();
-                sleep(150);
-                drive.followTrajectory(trajectory10);
+                carusel.setVelocity(-1000);
+                sleep(3000);
+                carusel.setVelocity(0);
+                drive.followTrajectory(trajectory5);
                 stop();
             }
 

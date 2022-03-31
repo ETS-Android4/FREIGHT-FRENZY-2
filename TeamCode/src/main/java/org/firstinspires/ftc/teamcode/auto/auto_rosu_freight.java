@@ -51,7 +51,7 @@ public class auto_rosu_freight extends LinearOpMode
     public CRServo servoL = null;
 
     public double ruletaY = 0.80;
-    public double ruletaZ = 0.67;
+    public double ruletaZ = 0.60;
 
     public static double startX = 0;
     public static double startY = -1;

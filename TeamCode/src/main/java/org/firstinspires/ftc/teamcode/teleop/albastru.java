@@ -98,7 +98,6 @@ public class albastru extends LinearOpMode {
         double timeShift = 45;
 
 
-
         conserva.init(hardwareMap);
         someRandomShit();
         Gamepad gp1 = gamepad1;
