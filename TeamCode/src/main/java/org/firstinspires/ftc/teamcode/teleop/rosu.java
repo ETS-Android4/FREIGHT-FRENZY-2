@@ -79,7 +79,7 @@ public class rosu extends LinearOpMode {
     public Servo servoZ = null;
     public CRServo servoL = null;
 
-    public double ruletaY = 0.41;
+    public double ruletaY = 0.80;
     public double ruletaZ = 0.53;
 
     double power = 0;
@@ -96,7 +96,6 @@ public class rosu extends LinearOpMode {
         double[] powers = {0.57, 0.62, 0.66, 0.71, 1};
 
         double timeShift = 45;
-
 
 
         conserva.init(hardwareMap);
