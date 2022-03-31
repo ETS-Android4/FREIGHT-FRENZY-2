@@ -186,28 +186,16 @@ public class rosu extends LinearOpMode {
             if(gp2.dpad_left && poz_outtake_urcare == 0){
                 cleste1.close();
                 cleste2.close();
-                runtime_outtake.reset();
-                poz_outtake_urcare = 1;
-            }
-            if(runtime_outtake.seconds() > 0.25 && poz_outtake_urcare == 1)
-            {
-                brat.setTargetPosition(brat_shared_jos+outtake_error);
+                brat.setTargetPosition(brat_shared_jos);
                 brat.setPower(brat_power);
-                poz_outtake_urcare = 0;
             }
 
 
             if(gp2.dpad_right && poz_outtake_urcare == 0){
                 cleste1.close();
                 cleste2.close();
-                runtime_outtake.reset();
-                poz_outtake_urcare = 1;
-            }
-            if(runtime_outtake.seconds() > 0.25 && poz_outtake_urcare == 1)
-            {
-                brat.setTargetPosition(brat_shared+outtake_error);
+                brat.setTargetPosition(brat_shared);
                 brat.setPower(brat_power);
-                poz_outtake_urcare = 0;
             }
 
 
