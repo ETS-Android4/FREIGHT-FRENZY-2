@@ -49,7 +49,7 @@ import org.firstinspires.ftc.teamcode.hardware.servo_odo;
 @Config
 @TeleOp
 //@Disabled
-public class rosu extends LinearOpMode {
+public class albastru extends LinearOpMode {
 
     init_robot conserva = new init_robot();
 
@@ -127,7 +127,7 @@ public class rosu extends LinearOpMode {
 
             // Drive
 
-            double direction = Math.atan2(-gp1.left_stick_y, gp1.left_stick_x) - Math.PI/2;
+            double direction = Math.atan2(gp1.left_stick_y, -gp1.left_stick_x) - Math.PI/2;
             double rotation = -gp1.right_stick_x;
             double speed = Math.sqrt(gp1.left_stick_x*gp1.left_stick_x + gp1.left_stick_y*gp1.left_stick_y);
 
