@@ -256,7 +256,7 @@ public class auto_rosu_carusel extends LinearOpMode
         SampleMecanumDrive drive = new SampleMecanumDrive(hardwareMap);
 
         Trajectory trajectory1 = drive.trajectoryBuilder(new Pose2d())
-                .lineToLinearHeading(new Pose2d(startX+8, startY+40, Math.toRadians(90)),
+                .lineToLinearHeading(new Pose2d(startX-8, startY+40, Math.toRadians(-90)),
                         new MinVelocityConstraint(
                                 Arrays.asList(
                                         new AngularVelocityConstraint(DriveConstants.MAX_ANG_VEL),
@@ -268,7 +268,7 @@ public class auto_rosu_carusel extends LinearOpMode
                 .build();
 
         Trajectory trajectory2 = drive.trajectoryBuilder(trajectory1.end())
-                .splineToConstantHeading(new Vector2d(startX-15, startY+40), Math.toRadians(0),
+                .splineToConstantHeading(new Vector2d(startX+15, startY+40), Math.toRadians(0),
                         new MinVelocityConstraint(
                                 Arrays.asList(
                                         new AngularVelocityConstraint(DriveConstants.MAX_ANG_VEL),
@@ -277,7 +277,7 @@ public class auto_rosu_carusel extends LinearOpMode
                         ),
                         new ProfileAccelerationConstraint(DriveConstants.MAX_ACCEL)
                 )
-                .splineToConstantHeading(new Vector2d(startX-17, startY+38.2), Math.toRadians(0),
+                .splineToConstantHeading(new Vector2d(startX+17, startY+38.2), Math.toRadians(0),
                         new MinVelocityConstraint(
                                 Arrays.asList(
                                         new AngularVelocityConstraint(DriveConstants.MAX_ANG_VEL),
@@ -290,7 +290,7 @@ public class auto_rosu_carusel extends LinearOpMode
 
 
         trajectory3 = drive.trajectoryBuilder(trajectory2.end())
-                .strafeTo(new Vector2d(startX+4.5, startY+40),
+                .strafeTo(new Vector2d(startX-3, startY+40),
                         new MinVelocityConstraint(
                                 Arrays.asList(
                                         new AngularVelocityConstraint(DriveConstants.MAX_ANG_VEL),
@@ -299,7 +299,7 @@ public class auto_rosu_carusel extends LinearOpMode
                         ),
                         new ProfileAccelerationConstraint(DriveConstants.MAX_ACCEL)
                 )
-                .splineToConstantHeading(new Vector2d(startX+9, startY+31), Math.toRadians(0),
+                .splineToConstantHeading(new Vector2d(startX-6, startY+31), Math.toRadians(0),
                         new MinVelocityConstraint(
                                 Arrays.asList(
                                         new AngularVelocityConstraint(DriveConstants.MAX_ANG_VEL),
@@ -319,7 +319,7 @@ public class auto_rosu_carusel extends LinearOpMode
                 .build();
 
         trajectory4 = drive.trajectoryBuilder(trajectory3.end())
-                .lineToLinearHeading(new Pose2d(startX+19.5, startY+4.5, Math.toRadians(-70)),
+                .lineToLinearHeading(new Pose2d(startX-19.5, startY+4.5, Math.toRadians(70)),
                         new MinVelocityConstraint(
                                 Arrays.asList(
                                         new AngularVelocityConstraint(DriveConstants.MAX_ANG_VEL),
@@ -331,7 +331,7 @@ public class auto_rosu_carusel extends LinearOpMode
                 .build();
 
         trajectory5 = drive.trajectoryBuilder(trajectory4.end())
-                .lineToLinearHeading(new Pose2d(startX+14, startY+25, Math.toRadians(0)),
+                .lineToLinearHeading(new Pose2d(startX-14, startY+30, Math.toRadians(0)),
                         new MinVelocityConstraint(
                                 Arrays.asList(
                                         new AngularVelocityConstraint(DriveConstants.MAX_ANG_VEL),
@@ -360,7 +360,7 @@ public class auto_rosu_carusel extends LinearOpMode
                 sleep(150);
                 drive.followTrajectory(trajectory3);
                 drive.followTrajectory(trajectory4);
-                carusel.setVelocity(1000);
+                carusel.setVelocity(-1000);
                 sleep(3500);
                 carusel.setVelocity(0);
                 drive.followTrajectory(trajectory5);
@@ -376,7 +376,7 @@ public class auto_rosu_carusel extends LinearOpMode
                 sleep(150);
                 drive.followTrajectory(trajectory3);
                 drive.followTrajectory(trajectory4);
-                carusel.setVelocity(1000);
+                carusel.setVelocity(-1000);
                 sleep(3500);
                 carusel.setVelocity(0);
                 drive.followTrajectory(trajectory5);
@@ -392,7 +392,7 @@ public class auto_rosu_carusel extends LinearOpMode
                 sleep(150);
                 drive.followTrajectory(trajectory3);
                 drive.followTrajectory(trajectory4);
-                carusel.setVelocity(1000);
+                carusel.setVelocity(-1000);
                 sleep(3500);
                 carusel.setVelocity(0);
                 drive.followTrajectory(trajectory5);
