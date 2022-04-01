@@ -58,7 +58,7 @@ public class auto_albastru_freight extends LinearOpMode
 
     public static double brat_power = 1.0;
     public static int brat_sus = 1990;
-    public static int brat_hub_mid = 1510;
+    public static int brat_hub_mid = 1470;
     public static int brat_hub_jos = 1100;
     public static int brat_jos = 0;
 
@@ -256,7 +256,7 @@ public class auto_albastru_freight extends LinearOpMode
         SampleMecanumDrive drive = new SampleMecanumDrive(hardwareMap);
 
         Trajectory trajectory1 = drive.trajectoryBuilder(new Pose2d())
-                .lineToLinearHeading(new Pose2d(startX-1, startY+24, Math.toRadians(0)),
+                .lineToLinearHeading(new Pose2d(startX-1, startY+23, Math.toRadians(0)),
                         new MinVelocityConstraint(
                                 Arrays.asList(
                                         new AngularVelocityConstraint(DriveConstants.MAX_ANG_VEL),
@@ -274,7 +274,7 @@ public class auto_albastru_freight extends LinearOpMode
                 .build();
 
         Trajectory trajectory11 = drive.trajectoryBuilder(new Pose2d())
-                .lineToLinearHeading(new Pose2d(startX-1, startY+24, Math.toRadians(0)),
+                .lineToLinearHeading(new Pose2d(startX-1, startY+23, Math.toRadians(0)),
                         new MinVelocityConstraint(
                                 Arrays.asList(
                                         new AngularVelocityConstraint(DriveConstants.MAX_ANG_VEL),
@@ -292,7 +292,7 @@ public class auto_albastru_freight extends LinearOpMode
                 .build();
 
         Trajectory trajectory111 = drive.trajectoryBuilder(new Pose2d())
-                .lineToLinearHeading(new Pose2d(startX-1, startY+24, Math.toRadians(0)),
+                .lineToLinearHeading(new Pose2d(startX-1, startY+23, Math.toRadians(0)),
                         new MinVelocityConstraint(
                                 Arrays.asList(
                                         new AngularVelocityConstraint(DriveConstants.MAX_ANG_VEL),
@@ -310,9 +310,9 @@ public class auto_albastru_freight extends LinearOpMode
                 .build();
 
         Trajectory trajectory2 = drive.trajectoryBuilder(trajectory1.end())
-                .strafeTo(new Vector2d(startX-18, startY-4))
-                .splineToConstantHeading(new Vector2d(startX-40, startY-4), Math.toRadians(0))
-                .splineToConstantHeading(new Vector2d(startX-53.5, startY-4), Math.toRadians(0),
+                .strafeTo(new Vector2d(startX-18, startY))
+                .splineToConstantHeading(new Vector2d(startX-40, startY), Math.toRadians(0))
+                .splineToConstantHeading(new Vector2d(startX-51, startY), Math.toRadians(0),
                         new MinVelocityConstraint(
                                 Arrays.asList(
                                         new AngularVelocityConstraint(DriveConstants.MAX_ANG_VEL),
@@ -341,8 +341,8 @@ public class auto_albastru_freight extends LinearOpMode
 
 
         trajectory3 = drive.trajectoryBuilder(trajectory2.end())
-                .strafeTo(new Vector2d(startX-30, startY-4.5))
-                .splineToConstantHeading(new Vector2d(startX+2.25, startY+24), Math.toRadians(0))
+                .strafeTo(new Vector2d(startX-30, startY))
+                .splineToConstantHeading(new Vector2d(startX+2, startY+22.5), Math.toRadians(0))
                 .addTemporalMarker(0, () -> {
                     intake2.setVelocity(-2000);
                 })
@@ -360,9 +360,9 @@ public class auto_albastru_freight extends LinearOpMode
                 .build();
 
         trajectory4 = drive.trajectoryBuilder(trajectory3.end())
-                .strafeTo(new Vector2d(startX-15, startY-5))
-                .splineToConstantHeading(new Vector2d(startX-43, startY-5), Math.toRadians(0))
-                .splineToConstantHeading(new Vector2d(startX-56, startY-5), Math.toRadians(0),
+                .strafeTo(new Vector2d(startX-15, startY))
+                .splineToConstantHeading(new Vector2d(startX-43, startY), Math.toRadians(0))
+                .splineToConstantHeading(new Vector2d(startX-55, startY), Math.toRadians(0),
                         new MinVelocityConstraint(
                                 Arrays.asList(
                                         new AngularVelocityConstraint(DriveConstants.MAX_ANG_VEL),
@@ -396,8 +396,8 @@ public class auto_albastru_freight extends LinearOpMode
                 .build();
 
         trajectory5 = drive.trajectoryBuilder(trajectory4.end())
-                .strafeTo(new Vector2d(startX-28, startY-5))
-                .splineToConstantHeading(new Vector2d(startX+7, startY+24), Math.toRadians(0))
+                .strafeTo(new Vector2d(startX-28, startY))
+                .splineToConstantHeading(new Vector2d(startX+7, startY+22), Math.toRadians(0))
                 .addTemporalMarker(0, () -> {
                     intake2.setVelocity(-2000);
                 })
@@ -415,9 +415,9 @@ public class auto_albastru_freight extends LinearOpMode
                 .build();
 
         trajectory6 = drive.trajectoryBuilder(trajectory5.end())
-                .strafeTo(new Vector2d(startX-13.5, startY-5.5))
-                .splineToConstantHeading(new Vector2d(startX-44, startY-5.5), Math.toRadians(0))
-                .splineToConstantHeading(new Vector2d(startX-61.5, startY-5.5), Math.toRadians(0),
+                .strafeTo(new Vector2d(startX-13.5, startY))
+                .splineToConstantHeading(new Vector2d(startX-44, startY), Math.toRadians(0))
+                .splineToConstantHeading(new Vector2d(startX-60, startY), Math.toRadians(0),
                         new MinVelocityConstraint(
                                 Arrays.asList(
                                         new AngularVelocityConstraint(DriveConstants.MAX_ANG_VEL),
@@ -451,8 +451,8 @@ public class auto_albastru_freight extends LinearOpMode
                 .build();
 
         trajectory7 = drive.trajectoryBuilder(trajectory6.end())
-                .strafeTo(new Vector2d(startX-26, startY-6))
-                .splineToConstantHeading(new Vector2d(startX+8, startY+24.5), Math.toRadians(0))
+                .strafeTo(new Vector2d(startX-26, startY))
+                .splineToConstantHeading(new Vector2d(startX+8, startY+22), Math.toRadians(0))
                 .addTemporalMarker(0, () -> {
                     intake2.setVelocity(-2000);
                 })
@@ -471,9 +471,9 @@ public class auto_albastru_freight extends LinearOpMode
 
 
         trajectory8 = drive.trajectoryBuilder(trajectory7.end())
-                .strafeTo(new Vector2d(startX-10, startY-6.5))
-                .splineToConstantHeading(new Vector2d(startX-44, startY-6.5), Math.toRadians(0))
-                .splineToConstantHeading(new Vector2d(startX-62, startY-6.5), Math.toRadians(0),
+                .strafeTo(new Vector2d(startX-10, startY))
+                .splineToConstantHeading(new Vector2d(startX-44, startY), Math.toRadians(0))
+                .splineToConstantHeading(new Vector2d(startX-62, startY), Math.toRadians(0),
                         new MinVelocityConstraint(
                                 Arrays.asList(
                                         new AngularVelocityConstraint(DriveConstants.MAX_ANG_VEL),
@@ -507,9 +507,9 @@ public class auto_albastru_freight extends LinearOpMode
                 .build();
 
         trajectory9 = drive.trajectoryBuilder(trajectory8.end())
-                .strafeTo(new Vector2d(startX-60, startY-8))
-                .splineToConstantHeading(new Vector2d(startX-24, startY-8), Math.toRadians(0))
-                .splineToConstantHeading(new Vector2d(startX+10, startY+24.2), Math.toRadians(0))
+                .strafeTo(new Vector2d(startX-60, startY))
+                .splineToConstantHeading(new Vector2d(startX-24, startY), Math.toRadians(0))
+                .splineToConstantHeading(new Vector2d(startX+10, startY+21.5), Math.toRadians(0))
                 .addTemporalMarker(0, () -> {
                     intake2.setVelocity(-2000);
                 })
@@ -527,17 +527,9 @@ public class auto_albastru_freight extends LinearOpMode
                 .build();
 
         trajectory10 = drive.trajectoryBuilder(trajectory9.end())
-                .strafeTo(new Vector2d(startX-9, startY-9))
-                .splineToConstantHeading(new Vector2d(startX-36, startY-9), Math.toRadians(0))
-                .splineToConstantHeading(new Vector2d(startX-50, startY-9), Math.toRadians(0),
-                        new MinVelocityConstraint(
-                                Arrays.asList(
-                                        new AngularVelocityConstraint(DriveConstants.MAX_ANG_VEL),
-                                        new MecanumVelocityConstraint(40, DriveConstants.TRACK_WIDTH)
-                                )
-                        ),
-                        new ProfileAccelerationConstraint(DriveConstants.MAX_ACCEL)
-                )
+                .strafeTo(new Vector2d(startX-9, startY))
+                .splineToConstantHeading(new Vector2d(startX-36, startY), Math.toRadians(0))
+                .splineToConstantHeading(new Vector2d(startX-50, startY), Math.toRadians(0))
                 .splineToConstantHeading(new Vector2d(startX-53.5, startY+20), Math.toRadians(0),
                         new MinVelocityConstraint(
                                 Arrays.asList(
