@@ -90,8 +90,8 @@ public class auto_albastru_freight extends LinearOpMode
 
 
         final Point REGION1_TOPLEFT_ANCHOR_POINT = new Point(101,141);
-        final Point REGION2_TOPLEFT_ANCHOR_POINT = new Point(174,131);
-        final Point REGION3_TOPLEFT_ANCHOR_POINT = new Point(237,120);
+        final Point REGION2_TOPLEFT_ANCHOR_POINT = new Point(166,137);
+        final Point REGION3_TOPLEFT_ANCHOR_POINT = new Point(237,132);
         static final int REGION_WIDTH = 25;
         static final int REGION_HEIGHT = 18;
 

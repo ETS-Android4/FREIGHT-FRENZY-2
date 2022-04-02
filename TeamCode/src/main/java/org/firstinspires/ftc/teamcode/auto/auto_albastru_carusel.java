@@ -89,9 +89,9 @@ public class auto_albastru_carusel extends LinearOpMode
         final Scalar GREEN = new Scalar(0, 255, 0);
 
 
-        final Point REGION1_TOPLEFT_ANCHOR_POINT = new Point(101,141);
-        final Point REGION2_TOPLEFT_ANCHOR_POINT = new Point(174,131);
-        final Point REGION3_TOPLEFT_ANCHOR_POINT = new Point(237,120);
+        final Point REGION1_TOPLEFT_ANCHOR_POINT = new Point(63,141);
+        final Point REGION2_TOPLEFT_ANCHOR_POINT = new Point(158,131);
+        final Point REGION3_TOPLEFT_ANCHOR_POINT = new Point(265,120);
         static final int REGION_WIDTH = 25;
         static final int REGION_HEIGHT = 18;
 
@@ -311,6 +311,7 @@ public class auto_albastru_carusel extends LinearOpMode
                 .addTemporalMarker(0.5, () -> {
                     cleste1.close();
                     cleste2.close();
+                    servoZ.setPosition(0.38);
                 })
                 .addTemporalMarker(1.0, () -> {
                     brat.setTargetPosition(brat_jos);
@@ -319,7 +320,7 @@ public class auto_albastru_carusel extends LinearOpMode
                 .build();
 
         trajectory4 = drive.trajectoryBuilder(trajectory3.end())
-                .lineToLinearHeading(new Pose2d(startX+19.5, startY+10, Math.toRadians(110)),
+                .lineToLinearHeading(new Pose2d(startX+20, startY+8.3, Math.toRadians(110)),
                         new MinVelocityConstraint(
                                 Arrays.asList(
                                         new AngularVelocityConstraint(DriveConstants.MAX_ANG_VEL),

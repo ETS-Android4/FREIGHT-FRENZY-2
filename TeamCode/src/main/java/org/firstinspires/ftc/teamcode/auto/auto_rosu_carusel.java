@@ -89,8 +89,8 @@ public class auto_rosu_carusel extends LinearOpMode
         final Scalar GREEN = new Scalar(0, 255, 0);
 
 
-        final Point REGION1_TOPLEFT_ANCHOR_POINT = new Point(101,141);
-        final Point REGION2_TOPLEFT_ANCHOR_POINT = new Point(174,131);
+        final Point REGION1_TOPLEFT_ANCHOR_POINT = new Point(70,141);
+        final Point REGION2_TOPLEFT_ANCHOR_POINT = new Point(160,131);
         final Point REGION3_TOPLEFT_ANCHOR_POINT = new Point(237,120);
         static final int REGION_WIDTH = 25;
         static final int REGION_HEIGHT = 18;
@@ -290,7 +290,7 @@ public class auto_rosu_carusel extends LinearOpMode
 
 
         trajectory3 = drive.trajectoryBuilder(trajectory2.end())
-                .strafeTo(new Vector2d(startX-3, startY+40),
+                .strafeTo(new Vector2d(startX-3, startY+45),
                         new MinVelocityConstraint(
                                 Arrays.asList(
                                         new AngularVelocityConstraint(DriveConstants.MAX_ANG_VEL),
@@ -299,7 +299,7 @@ public class auto_rosu_carusel extends LinearOpMode
                         ),
                         new ProfileAccelerationConstraint(DriveConstants.MAX_ACCEL)
                 )
-                .splineToConstantHeading(new Vector2d(startX-6, startY+31), Math.toRadians(0),
+                .splineToConstantHeading(new Vector2d(startX-2, startY+31), Math.toRadians(0),
                         new MinVelocityConstraint(
                                 Arrays.asList(
                                         new AngularVelocityConstraint(DriveConstants.MAX_ANG_VEL),
@@ -311,6 +311,7 @@ public class auto_rosu_carusel extends LinearOpMode
                 .addTemporalMarker(0.5, () -> {
                     cleste1.close();
                     cleste2.close();
+                    servoZ.setPosition(0.38);
                 })
                 .addTemporalMarker(1.0, () -> {
                     brat.setTargetPosition(brat_jos);
@@ -319,7 +320,7 @@ public class auto_rosu_carusel extends LinearOpMode
                 .build();
 
         trajectory4 = drive.trajectoryBuilder(trajectory3.end())
-                .lineToLinearHeading(new Pose2d(startX-19.5, startY+4.5, Math.toRadians(70)),
+                .lineToLinearHeading(new Pose2d(startX-17, startY+4.5, Math.toRadians(70)),
                         new MinVelocityConstraint(
                                 Arrays.asList(
                                         new AngularVelocityConstraint(DriveConstants.MAX_ANG_VEL),

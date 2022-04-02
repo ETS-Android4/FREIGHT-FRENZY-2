@@ -80,7 +80,7 @@ public class albastru extends LinearOpMode {
     public CRServo servoL = null;
 
     public double ruletaY = 0.80;
-    public double ruletaZ = 0.53;
+    public double ruletaZ = 0.38;
 
     double power = 0;
     double time = 0;
